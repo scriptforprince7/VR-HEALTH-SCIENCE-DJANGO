@@ -108,6 +108,31 @@ class Category(models.Model):
         return self.cat_title
     
 
+class Ingredients(models.Model):
+    iid = ShortUUIDField(unique=True, max_length=30, prefix="ingred_", alphabet="abcdefgh12345")
+    ingredient_title = models.CharField(max_length=100)
+    description = models.CharField(max_length=500, default="N/A")
+    meta_description = models.CharField(max_length=100, default="N/A")
+    meta_title = models.CharField(max_length=100, default="N/A")
+    meta_tag = models.CharField(max_length=100, default="N/A")
+    active_status = models.CharField(choices=ACTIVE_STATUS, max_length=10, default="published")
+    image = models.ImageField(upload_to="category",default="maincategory.jpg")
+    banner_image = models.ImageField(upload_to="category",default="maincategorybanner.jpg")
+
+    class Meta:
+        verbose_name_plural = "Shop Ingredients"
+
+    def ingredient_image(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
+    
+    def ingredient_banner_image(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.banner_image.url))
+
+    
+    def __str__(self):
+        return self.ingredient_title
+    
+
 class Tags(models.Model):
     pass    
     

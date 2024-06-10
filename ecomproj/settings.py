@@ -72,6 +72,7 @@ TEMPLATES = [
             "context_processors": [
                 "core.context_processor.default",
                 "core.context_processor.defaultOne",
+                "core.context_processor.defaultTwo",
                 "core.context_processor.cart_context",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -140,9 +141,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 JAZZMIN_SETTINGS = {
-    'site_header': "Urban Farms",
-    'site_brand': "Urban Farms",
-    'site_logo': "images/admin-logo.png",
+    'site_header': "VR HEALTH SCIENCE",
+    'site_brand': "VR HEALTH SCIENCE",
+    'site_logo': "assets/images/VRH-LOGO-BLACK.png",
     'copyright': "Prince Sachdeva (Software Developer)",
 }
 

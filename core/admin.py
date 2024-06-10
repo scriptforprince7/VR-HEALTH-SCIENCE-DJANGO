@@ -52,7 +52,10 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description'] 
 
 class MainCategoryAdmin(admin.ModelAdmin):
-    list_display = ['main_title', 'image', 'description', 'banner_image']     
+    list_display = ['main_title', 'image', 'description', 'banner_image']  
+
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ['ingredient_title', 'image', 'description', 'banner_image']    
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['main_category', 'cat_title', 'meta_description', 'meta_title', 'meta_tag', 'image', 'big_image']
@@ -85,6 +88,7 @@ class TestimonialsAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Main_category, MainCategoryAdmin)
+admin.site.register(Ingredients, IngredientAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(CartOrder, CartOrderAdmin)
 admin.site.register(CartOrderItems, CartOrderItemsAdmin)

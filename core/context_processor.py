@@ -3,15 +3,8 @@ from core.models import *
 def default(request):
     main_categories = Main_category.objects.filter(active_status='published')
 
-    halfway_index = len(main_categories) // 2
-
-    first_half_categories = main_categories[:halfway_index]
-    second_half_categories = main_categories[halfway_index:]
-
     return {
         "main_cat": main_categories,
-        'first_half_categories': first_half_categories,
-        'second_half_categories': second_half_categories,
     }
 
 
@@ -20,6 +13,13 @@ def defaultOne(request):
 
     return {
         "products_count": products,
+    }
+
+def defaultTwo(request):
+    ingredients = Ingredients.objects.filter(active_status='published')
+
+    return {
+        "ingredients": ingredients,
     }
 
 def cart_context(request):

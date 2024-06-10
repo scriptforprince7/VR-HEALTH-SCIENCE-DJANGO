@@ -469,8 +469,14 @@ def contact(request):
 def career(request):
     return render(request, "core/career.html")
 
+def product(request):
+    return render(request, "core/product.html")
+
 def write_to_ceo(request):
     return render(request, "core/write-to-ceo.html")
+
+def cart(request):
+    return render(request, "core/cart.html")
 
 def blogs(request):
     blogs = Blogs.objects.all()
