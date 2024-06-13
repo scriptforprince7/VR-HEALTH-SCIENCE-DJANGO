@@ -37,7 +37,8 @@ from core.forms import *
 
 
 def index(request):
-    main_categories = Main_category.objects.filter(active_status='published')
+    categories = Category.objects.filter(home_page_display='approved')
+    home_banner = BannerHome.objects.filter(active_status='published')
     new_arrival = Product.objects.filter(new_arrival=True)
     deal_of_week = Product.objects.filter(deal_of_week=True)
     summer_sale = Product.objects.filter(summer_sale=True)
@@ -49,11 +50,6 @@ def index(request):
     # Fetching product variants and variant types for products in summer sale
     product_variants = ProductVarient.objects.filter(product__in=summer_sale)
     product_variant_types = ProductVariantTypes.objects.filter(product_variant__product__in=summer_sale)
-
-    halfway_index = len(main_categories) // 2
-
-    first_half_categories = main_categories[:halfway_index]
-    second_half_categories = main_categories[halfway_index:]
     
     for product in summer_sale:
         # Check if the product has variants
@@ -120,13 +116,12 @@ def index(request):
 
 
     context = {
-        "main_cat": main_categories,
-        "first_half_categories": first_half_categories,
-        "second_half_categories": second_half_categories,
+        "category": categories,
         "new_arrival": new_arrival,
         "deal_of_week": deal_of_week,
         "summer_sale": summer_sale,
         "product_images": product_images,
+        "home_banner": home_banner,
         # "product": product,
         "new_arrival_main_categories":new_arrival_main_categories,
         "product_variants": product_variants,

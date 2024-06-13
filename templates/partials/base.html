@@ -1,10 +1,11 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
 <meta
         http-equiv="content-type"
         content="text/html;charset=utf-8"
-    /><!-- /Added by HTTrack -->
+    />
     <head>
         <meta charset="UTF-8" />
         <meta
@@ -519,37 +520,28 @@
                       aria-labelledby="menu-item-pages"
                     >
                     {% for cat in main_cat %}
-                      <li
-                        class="dropend dropdown-hover"
-                        aria-haspopup="true"
-                        aria-expanded="false"
+                    <li class="dropend dropdown-hover" aria-haspopup="true" aria-expanded="false">
+                      <a
+                        class="dropdown-item pe-6 dropdown-toggle d-flex justify-content-between border-hover"
+                        href="/shop-category"
+                        data-bs-toggle="dropdown"
+                        id="menu-item-about-us"
                       >
-                        <a
-                          class="dropdown-item pe-6 dropdown-toggle d-flex justify-content-between border-hover"
-                          href="/shop-category"
-                          data-bs-toggle="dropdown"
-                          id="menu-item-about-us"
-                        >
-                          <span class="border-hover-target"> {{cat.main_title}} </span>
-                        </a>
-                        <ul
-                          class="dropdown-menu py-6"
-                          aria-labelledby="menu-item-about-us"
-                          data-bs-popper="none"
-                        >
+                        <span class="border-hover-target">{{ cat.main_title }}</span>
+                      </a>
+                      <ul class="dropdown-menu py-6" aria-labelledby="menu-item-about-us" data-bs-popper="none">
+                        {% for category in categories_by_main_category|get_item:cat.id %}
                           <li>
-                            <a
-                              class="dropdown-item border-hover"
-                              href="/shop-category"
-                            >
-                              <span class="border-hover-target"
-                                >Haironomics</span
-                              >
+                            <a class="dropdown-item border-hover" href="/shop-category">
+                              <span class="border-hover-target">{{ category.cat_title }}</span>
                             </a>
                           </li>
-                        </ul>
-                      </li>
-                      {% endfor %}
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endfor %}
+                  
+                  
                       <li>
                         <a
                           class="dropdown-item pe-6 border-hover"

@@ -6,18 +6,19 @@
     class="slick-slider hero hero-header-02 slick-slider-dots-inside"
     data-slick-options="{&#34;arrows&#34;:false,&#34;autoplay&#34;:true,&#34;autoplaySpeed&#34;:9000,&#34;cssEase&#34;:&#34;ease-in-out&#34;,&#34;dots&#34;:false,&#34;fade&#34;:true,&#34;infinite&#34;:true,&#34;slidesToShow&#34;:1,&#34;speed&#34;:600}"
   >
+
+    {% for bh in home_banner %}
     <div class="vh-100 d-flex align-items-center">
       <div
         class="z-index-2 container container-xxl py-21 pt-xl-10 pb-xl-11"
       >
         <div class="hero-content text-start">
           <div data-animate="fadeInDown">
-            <p class="text-white mb-8 fw-semibold fs-4">
+            {% comment %} <p class="text-white mb-8 fw-semibold fs-4">
               Made for You!
-            </p>
+            </p> {% endcomment %}
             <h1 class="mb-15 text-white hero-title-2 fw-500">
-              Love Your Skin  <br />
-              Naturally
+              {{bh.banner_title}}
             </h1>
           </div>
           <a
@@ -34,7 +35,7 @@
       </div>
       <div
         class="lazy-bg bg-overlay position-absolute z-index-1 w-100 h-100"
-        data-bg-src="{% static 'assets/images/hero-slider/hero-slider-21.jpg' %}"
+        data-bg-src="{{bh.banner_image.url}}"
       ></div>
       <div
         data-animate="fadeInDown"
@@ -46,116 +47,7 @@
         ><span class="fs-5 fw-semibold text-white px-5">03.</span>
       </div>
     </div>
-    <div class="vh-100 d-flex align-items-center">
-      <div
-        class="z-index-2 container container-xxl py-21 pt-xl-10 pb-xl-11"
-      >
-        <div class="hero-content text-start">
-          <div data-animate="fadeInDown">
-            <p class="text-white mb-8 fw-semibold fs-4">
-              
-            </p>
-            <h1 class="mb-15 text-white hero-title-2 fw-500">
-             
-            </h1>
-          </div>
-          <a
-            href="#"
-            data-animate="fadeInUp"
-            class="pb-2 bg-transparent fw-semibold text-decoration-none hero-link btn btn-link p-0 text-white"
-          >
-            
-            <!-- <svg class="icon">
-              <use xlink:href="#icon-arrow-right"></use>
-            </svg> -->
-          </a>
-        </div>
-      </div>
-      <div
-        class="lazy-bg bg-overlay position-absolute z-index-1 w-100 h-100"
-        data-bg-src="{% static 'assets/images/hero-slider/Haironomics.jpg' %}"
-      ></div>
-      <div
-        data-animate="fadeInDown"
-        class="hero-creative-dots position-absolute bottom-0 mb-7 start-50 translate-middle-x"
-      >
-        <span class="fs-5 fw-semibold text-white px-5 active active-first"
-          >01.</span
-        ><span class="fs-5 fw-semibold text-white px-5">02.</span
-        ><span class="fs-5 fw-semibold text-white px-5">03.</span>
-      </div>
-    </div>
-    <div class="vh-100 d-flex align-items-center">
-      <div
-        class="z-index-2 container container-xxl py-21 pt-xl-10 pb-xl-11"
-      >
-        <div class="hero-content text-start">
-          <div data-animate="fadeInDown">
-            <p class="text-white mb-8 fw-semibold fs-4">Shop Our Set</p>
-            <h1 class="mb-15 text-white hero-title-2 fw-500">
-              The 3-Step<br />Skincare Routine
-            </h1>
-          </div>
-          <a
-            href="#"
-            data-animate="fadeInUp"
-            class="pb-2 bg-transparent fw-semibold text-decoration-none hero-link btn btn-link p-0 text-white"
-          >
-            Discover Now
-            <svg class="icon">
-              <use xlink:href="#icon-arrow-right"></use>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div
-        class="lazy-bg bg-overlay position-absolute z-index-1 w-100 h-100"
-        data-bg-src="{% static 'assets/images/banner-1.jpg' %}"
-      ></div>
-      <div
-        data-animate="fadeInDown"
-        class="hero-creative-dots position-absolute bottom-0 mb-7 start-50 translate-middle-x"
-      >
-        <span class="fs-5 fw-semibold text-white px-5">01.</span
-        ><span class="fs-5 fw-semibold text-white px-5 active">02.</span
-        ><span class="fs-5 fw-semibold text-white px-5">03.</span>
-      </div>
-    </div>
-    <div class="vh-100 d-flex align-items-center">
-      <div
-        class="z-index-2 container container-xxl py-21 pt-xl-10 pb-xl-11"
-      >
-        <div class="hero-content text-start">
-          <div data-animate="fadeInDown">
-            <p class="text-white mb-8 fw-semibold fs-4"></p>
-            <h1 class="mb-15 text-white hero-title-2 fw-500"></h1>
-          </div>
-          <a
-            href="#"
-            data-animate="fadeInUp"
-            class="pb-2 bg-transparent fw-semibold text-decoration-none hero-link btn btn-link p-0 text-white"
-          >
-            <svg class="icon">
-              <use xlink:href="#icon-arrow-right"></use>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <div
-        class="lazy-bg bg-overlay position-absolute z-index-1 w-100 h-100"
-        data-bg-src="{% static 'assets/images/acne-face-serum.jpg' %}"
-      ></div>
-      <div
-        data-animate="fadeInDown"
-        class="hero-creative-dots position-absolute bottom-0 mb-7 start-50 translate-middle-x"
-      >
-        <span class="fs-5 fw-semibold text-white px-5">01.</span
-        ><span class="fs-5 fw-semibold text-white px-5">02.</span
-        ><span class="fs-5 fw-semibold text-white px-5 active active-last"
-          >03.</span
-        >
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 <section class="container container-xxl pt-14 pt-lg-17">
@@ -166,24 +58,25 @@
     </div>
   </div>
   <div class="row">
+    {% for cat in category %}
     <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
       <div class="card border-0 fw-semibold">
         <a
-          href="#"
+          href="{% url 'core:category' cat.cat_title %}"
           class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
         >
           <img
             class="lazy-image img-fluid card-img light-mode-img"
-            src="{% static 'assets/images/acnenomics.jpg' %}"
-            data-src="{% static 'assets/images/acnenomics.jpg' %}"
+            src="{{cat.home_image.url}}"
+            data-src="{{cat.home_image.url}}"
             width="160"
             height="160"
             alt="Moisturizers"
           />
           <img
             class="lazy-image dark-mode-img img-fluid card-img"
-            src="{% static 'assets/images/acnenomics.jpg' %}"
-            data-src="{% static 'assets/images/acnenomics.jpg' %}"
+            src="{{cat.home_image.url}}"
+            data-src="{{cat.home_image.url}}"
             width="160"
             height="160"
             alt="Moisturizers"
@@ -193,7 +86,7 @@
           class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
         >
           <h4 class="fs-5 text-center position-relative">
-            <a href="#" class="text-decoration-none">Acnenomics</a>
+            <a href="{% url 'core:category' cat.cat_title %}" class="text-decoration-none">{{cat.cat_title}}</a>
             <!-- <span
               class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
             >
@@ -203,191 +96,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
-      <div class="card border-0 fw-semibold">
-        <a
-          href="#"
-          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
-        >
-          <img
-            class="lazy-image img-fluid card-img light-mode-img"
-            src="{% static 'assets/images/sunonomics.jpg' %}"
-            data-src="{% static 'assets/images/sunonomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Toners"
-          />
-          <img
-            class="lazy-image dark-mode-img img-fluid card-img"
-            src="{% static 'assets/images/sunonomics.jpg' %}"
-            data-src="{% static 'assets/images/sunonomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Toners"
-          />
-        </a>
-        <div
-          class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
-        >
-          <h4 class="fs-5 text-center position-relative">
-            <a href="#" class="text-decoration-none">Sunonomics</a>
-            <!-- <span
-              class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
-            >
-              12
-            </span> -->
-          </h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
-      <div class="card border-0 fw-semibold">
-        <a
-          href="#"
-          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
-        >
-          <img
-            class="lazy-image img-fluid card-img light-mode-img"
-            src="{% static 'assets/images/hydronomics.jpg' %}"
-            data-src="{% static 'assets/images/hydronomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Masks"
-          />
-          <img
-            class="lazy-image dark-mode-img img-fluid card-img"
-            src="{% static 'assets/images/hydronomics.jpg' %}"
-            data-src="{% static 'assets/images/hydronomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Masks"
-          />
-        </a>
-        <div
-          class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
-        >
-          <h4 class="fs-5 text-center position-relative">
-            <a href="#" class="text-decoration-none">Hydronomics</a>
-            <!-- <span
-              class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
-            >
-              12
-            </span> -->
-          </h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
-      <div class="card border-0 fw-semibold">
-        <a
-          href="#"
-          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
-        >
-          <img
-            class="lazy-image img-fluid card-img light-mode-img"
-            src="{% static 'assets/images/faironmincs.jpg' %}"
-            data-src="{% static 'assets/images/faironmincs.jpg' %}"
-            width="160"
-            height="160"
-            alt="Kits"
-          />
-          <img
-            class="lazy-image dark-mode-img img-fluid card-img"
-            src="{% static 'assets/images/faironmincs.jpg' %}"
-            data-src="{% static 'assets/images/faironmincs.jpg' %}"
-            width="160"
-            height="160"
-            alt="Kits"
-          />
-        </a>
-        <div
-          class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
-        >
-          <h4 class="fs-5 text-center position-relative">
-            <a href="#" class="text-decoration-none">Fairnomics</a>
-            <!-- <span
-              class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
-            >
-              12
-            </span> -->
-          </h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
-      <div class="card border-0 fw-semibold">
-        <a
-          href="#"
-          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
-        >
-          <img
-            class="lazy-image img-fluid card-img light-mode-img"
-            src="{% static 'assets/images/strecthonomics.jpg' %}"
-            data-src="{% static 'assets/images/strecthonomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Serum"
-          />
-          <img
-            class="lazy-image dark-mode-img img-fluid card-img"
-            src="{% static 'assets/images/strecthonomics.jpg' %}"
-            data-src="{% static 'assets/images/strecthonomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Serum"
-          />
-        </a>
-        <div
-          class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
-        >
-          <h4 class="fs-5 text-center position-relative">
-            <a href="#" class="text-decoration-none">Stretchonomics</a>
-            <!-- <span
-              class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
-            >
-              12
-            </span> -->
-          </h4>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
-      <div class="card border-0 fw-semibold">
-        <a
-          href="#"
-          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
-        >
-          <img
-            class="lazy-image img-fluid card-img light-mode-img"
-            src="{% static 'assets/images/footonomics.jpg' %}"
-            data-src="{% static 'assets/images/footonomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Oil Cleansers"
-          />
-          <img
-            class="lazy-image dark-mode-img img-fluid card-img"
-            src="{% static 'assets/images/footonomics.jpg' %}"
-            data-src="{% static 'assets/images/footonomics.jpg' %}"
-            width="160"
-            height="160"
-            alt="Oil Cleansers"
-          />
-        </a>
-        <div
-          class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
-        >
-          <h4 class="fs-5 text-center position-relative">
-            <a href="#" class="text-decoration-none">Footonimcs</a>
-            <!-- <span
-              class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
-            >
-              12
-            </span> -->
-          </h4>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 
@@ -398,8 +107,8 @@
         <div class="card border-0 rounded-0 hover-zoom-in hover-shine">
           <img
             class="lazy-image card-img object-fit-cover lazy-image light-mode-img"
-            src="{% static 'assets/images/banner-05.jpg' %}"
-            data-src="{% static 'assets/images/banner-05.jpg' %}"
+            src="{% static 'assets/images/SKINCARE-home.jpg' %}"
+            data-src="{% static 'assets/images/SKINCARE-home.jpg' %}"
             width="450"
             height="600"
             alt="Autumn Skincare"

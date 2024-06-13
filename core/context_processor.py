@@ -2,10 +2,17 @@ from core.models import *
 
 def default(request):
     main_categories = Main_category.objects.filter(active_status='published')
+    categories_by_main_category = {main_cat.id: [] for main_cat in main_categories}
+
+    categories = Category.objects.filter(main_category__in=main_categories)
+    for category in categories:
+        categories_by_main_category[category.main_category_id].append(category)
 
     return {
         "main_cat": main_categories,
+        "categories_by_main_category": categories_by_main_category,
     }
+
 
 
 def defaultOne(request):

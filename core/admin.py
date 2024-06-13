@@ -55,10 +55,13 @@ class MainCategoryAdmin(admin.ModelAdmin):
     list_display = ['main_title', 'image', 'description', 'banner_image']  
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ['ingredient_title', 'image', 'description', 'banner_image']    
+    list_display = ['ingredient_title', 'image', 'description', 'banner_image']   
+
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ['banner_title', 'active_status', 'display_banner_image']  
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['main_category', 'cat_title', 'meta_description', 'meta_title', 'meta_tag', 'image', 'big_image']
+    list_display = ['main_category', 'cat_title', 'meta_description', 'meta_title', 'meta_tag', 'home_page_display', 'image', 'big_image']
     list_filter = ['main_category']  # Fields to filter by
 
 class CartOrderAdmin(admin.ModelAdmin):
@@ -98,4 +101,5 @@ admin.site.register(Address, AddressAdmin)
 admin.site.register(PrivacyPolicy, PrivacyPolicyAdmin)
 admin.site.register(Blogs, BlogsAdmin)
 admin.site.register(Testimonials, TestimonialsAdmin)
+admin.site.register(BannerHome, BannerAdmin)
 

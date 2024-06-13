@@ -45,6 +45,11 @@ COLOR = (
     ("orange", "Orange"),
 )
 
+APPROVE = (
+    ("approved", "Approved"),
+    ("not approved", "Not Approved"),
+)
+
 def user_directory_path(instance, filename):
     user_id = instance.user.id if instance.user else 'unknown'
     return 'user_{0}/{1}'.format(user_id, filename)
@@ -88,7 +93,9 @@ class Category(models.Model):
     meta_description = models.CharField(max_length=100)
     meta_title = models.CharField(max_length=100)
     meta_tag = models.CharField(max_length=100)
+    home_page_display = models.CharField(choices=APPROVE, max_length=25, default="not approved")
     image = models.ImageField(upload_to=user_directory_path, default="category.jpg")
+    home_image = models.ImageField(upload_to=user_directory_path, default="home_img.jpg")
     big_image = models.ImageField(upload_to=user_directory_path, default="bigcategory.jpg")
 
 
@@ -100,6 +107,9 @@ class Category(models.Model):
     
     def category_big_image(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.big_image.url))
+    
+    def category_home_image(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.home_image.url))
     
     def get_absolute_url(self):
         return reverse('core:inner-category', kwargs={'cat_title': str(self.cat_title)})
@@ -127,10 +137,25 @@ class Ingredients(models.Model):
     
     def ingredient_banner_image(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.banner_image.url))
-
     
     def __str__(self):
         return self.ingredient_title
+    
+
+class BannerHome(models.Model):
+    bhid = ShortUUIDField(unique=True, max_length=30, prefix="bhid", alphabet="abcdefgh12345")
+    banner_title = models.CharField(max_length=100, blank=True)
+    active_status = models.CharField(choices=ACTIVE_STATUS, max_length=10, default="disabled")
+    banner_image = models.ImageField(upload_to="category", default="homebanner.jpg")
+
+    class Meta:
+        verbose_name_plural = "Banners and Sliders"
+    
+    def display_banner_image(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.banner_image.url))
+    
+    def __str__(self):
+        return self.banner_title
     
 
 class Tags(models.Model):
