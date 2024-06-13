@@ -62,7 +62,7 @@
     <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
       <div class="card border-0 fw-semibold">
         <a
-          href="{% url 'core:category' cat.cat_title %}"
+          href="{% url 'core:main_category' cat.category_slug %}"
           class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
         >
           <img
@@ -86,7 +86,7 @@
           class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
         >
           <h4 class="fs-5 text-center position-relative">
-            <a href="{% url 'core:category' cat.cat_title %}" class="text-decoration-none">{{cat.cat_title}}</a>
+            <a href="{% url 'core:main_category' cat.category_slug %}" class="text-decoration-none">{{cat.cat_title}}</a>
             <!-- <span
               class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
             >
@@ -169,8 +169,8 @@
         <div class="card border-0 rounded-0 hover-zoom-in hover-shine">
           <img
             class="lazy-image card-img object-fit-cover lazy-image light-mode-img"
-            src="{% static 'assets/images/banner-04.jpg' %}"
-            data-src="{% static 'assets/images/banner-04.jpg' %}"
+            src="{% static 'assets/images/banner/yellow-peel-banner.jpg' %}"
+            data-src="{% static 'assets/images/banner/yellow-peel-banner.jpg' %}"
             width="450"
             height="600"
             alt="Sale Up To 40% Off"
@@ -178,7 +178,7 @@
           <img
             class="lazy-image dark-mode-img card-img object-fit-cover lazy-image"
             src="{% static '#' %}"
-            data-src="{% static 'assets/images/banner/banner-white-04.jpg' %}"
+            data-src="{% static 'assets/images/banner/yellow-peel-banner.jpg' %}"
             width="450"
             height="600"
             alt="Sale Up To 40% Off"

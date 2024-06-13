@@ -132,12 +132,9 @@ def index(request):
     return render(request, 'core/index.html', context)
 
 
-def category(request, main_title):
-    main_categories = Main_category.objects.get(main_title=main_title)
-    categories = Category.objects.filter(main_category=main_categories).exclude(cat_title="None")
-    categories_all = Category.objects.all().exclude(cid="catbef1g41g2g4gbgda5dahbd")
-    products_categories = Product.objects.filter(category__in=categories_all)
-    products = Product.objects.filter(main_category=main_categories)
+def main_category(request, category_slug):
+    categories = Category.objects.get(category_slug=category_slug)
+    products = Product.objects.filter(category=categories, product_status='published')
     product_images = ProductImages.objects.filter(product__in=products)
 
     product_variants = ProductVarient.objects.filter(product__in=products)
@@ -151,12 +148,6 @@ def category(request, main_title):
     variation_prices = {}
     for variation_type in variation_types:
         variation_prices[variation_type] = ProductVariationTypesPrices.objects.filter(product_variation_types=variation_type)
-    
-    materials = Product.objects.filter(main_category=main_categories).values_list('material', flat=True).distinct()
-
-    selected_material = request.GET.get('material')
-    if selected_material:
-        products = products.filter(material=selected_material)
 
     prices = products.values_list('price', flat=True)
     min_price = min(prices) if prices else 0
@@ -202,46 +193,10 @@ def category(request, main_title):
             product.variant_price = None
             product.first_variant_type_title = None  # Add this line
             product.first_variant_type_id = None  # Add this line
-            
-    # Fetching variant details for products_categories
-    for product in products_categories:
-        # Check if the product has variants
-        product_has_variants = product.productvarient_set.exists()
-
-        if product_has_variants:
-            # Get the first variant
-            first_variant = product.productvarient_set.first()
-            first_variant_type = first_variant.productvarianttypes_set.first() if first_variant.productvarianttypes_set.exists() else None
-
-            product.first_variant_type_title = first_variant_type.variant_title if first_variant_type else None
-            product.first_variant_type_id = first_variant_type.id if first_variant_type else None  # Add this line
-            
-            # Calculate default price without GST
-            price_wo_gst = first_variant_type.varient_price if first_variant_type else product.price
-            # Fetching GST rate
-            gst_rate = first_variant_type.gst_rate if first_variant_type else product.gst_rate
-            # Calculate default price including GST
-            base_price = first_variant_type.varient_price if first_variant_type else product.price
-            # Calculate GST amount
-            gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
-            # Calculate total price including GST and round off to two decimal places
-            product.gst_inclusive_price = round(base_price + gst_amount, 2)
-            # Include original variant price in the context
-            product.variant_price = price_wo_gst
-        else:
-            # Use the existing GST-inclusive price for the product
-            product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
-            gst_rate = product.gst_rate
-            # If the product doesn't have variants, set variant_price to None
-            product.variant_price = None
-            product.first_variant_type_title = None  # Add this line
-            product.first_variant_type_id = None  # Add this line
 
     context = {
-        "main_categories": main_categories,
         "categories": categories,  # Keep the filtered categories
         "products": products,
-        "products_categories": products_categories,
         "product_images": product_images,
         "min_price": min_price,
         "max_price": max_price,
@@ -249,11 +204,8 @@ def category(request, main_title):
         "variant_types": variant_types,
         "gst_rate": gst_rate,  # Include gst_rate in the context
     }
-    
-    if materials:
-        context["materials"] = materials
 
-    return render(request, "core/category.html", context)
+    return render(request, "core/main_category.html", context)
 
 
 
@@ -292,10 +244,6 @@ def fetch_pin_details(request):
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-
-
-def main_category(request):
-    return render(request, "core/main_category.html")
 
 def checkout(request):
     return render(request, "core/checkout.html")
@@ -896,8 +844,8 @@ class RobotsTxtView(View):
 
         return HttpResponse(content, content_type='text/plain')
     
-def product_new(request, title):
-    product = Product.objects.get(title=title)
+def product_new(request, product_slug):
+    product = Product.objects.get(product_slug=product_slug)
     product_variants = ProductVarient.objects.filter(product=product)
     product_variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants)
     product_variations = ProductVariation.objects.filter(product=product)

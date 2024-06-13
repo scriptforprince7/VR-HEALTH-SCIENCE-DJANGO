@@ -90,6 +90,7 @@ class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     main_category = models.ForeignKey(Main_category, on_delete=models.SET_NULL, null=True)
     cat_title = models.CharField(max_length=100, default="Mobile & Laptop")
+    category_slug = models.SlugField(unique=True, max_length=150, blank=True, null=True)
     meta_description = models.CharField(max_length=100)
     meta_title = models.CharField(max_length=100)
     meta_tag = models.CharField(max_length=100)
@@ -111,8 +112,13 @@ class Category(models.Model):
     def category_home_image(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.home_image.url))
     
+    def save(self, *args, **kwargs):
+        if not self.category_slug:
+            self.category_slug = slugify(self.cat_title)
+        super().save(*args, **kwargs)
+    
     def get_absolute_url(self):
-        return reverse('core:inner-category', kwargs={'cat_title': str(self.cat_title)})
+        return reverse('core:main_category', kwargs={'category_slug': self.category_slug})
     
     def __str__(self):
         return self.cat_title

@@ -5,11 +5,9 @@ app_name = "core"
 
 urlpatterns = [
     path("", index, name="index"),
-    path("shop-category/", main_category, name="main_category"),
-    path("category/<main_title>/", category, name="category"),
-    path("product", product, name="product"),
+    path("shop-category/<category_slug>/", main_category, name="main_category"),
     path("cart/", cart, name="cart"),
-    path("product/<title>/", product_new, name="product_new"),
+    path("product/<product_slug>/", product_new, name="product_new"),
     path("add-to-cart/", add_to_cart, name="add-to-cart"),
     path("search/", search_view, name="search"),
     path("delete-from-cart/", delete_item_from_cart, name="delete-from-cart"),
