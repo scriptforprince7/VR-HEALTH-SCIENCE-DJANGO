@@ -176,25 +176,20 @@ class Product(models.Model):
     title = models.CharField(max_length=500, default="Mobile & Laptop")
     packing_size = models.CharField(max_length=500, default="Box 100 Pcs")
     minimum_order_qty = models.CharField(max_length=500, default="1")
-    unit_item = models.CharField(max_length=100, default="BOX")
-    application = models.CharField(max_length=100, default="starter/seed")
-    material = models.CharField(max_length=100, default="Cocopith")
     hsn_code = models.CharField(max_length=100, default="5305")
     gst_rate = models.CharField(max_length=100, default="18%")
     product_slug = models.SlugField(unique=True, max_length=150, blank=True, null=True)
-    description = models.TextField(max_length=500, null=True, blank=True, default="This is the product")
     price = models.DecimalField(max_digits=9999, decimal_places=2, default="1")
     old_price = models.DecimalField(max_digits=9999, decimal_places=2, default="2")
-    specifications = models.TextField(max_length=500,null=True, blank=True, default="N/A")
     product_status = models.CharField(choices=STATUS, max_length=10, default="in_review")
     status = models.BooleanField(default=True)
     in_stock = models.BooleanField(default=True)
     summer_sale= models.BooleanField(default=False)
     new_arrival= models.BooleanField(default=False)
-    deal_of_week= models.BooleanField(default=False)
-    featured = models.BooleanField(default=False)
     sku = ShortUUIDField(unique=True, max_length=25, prefix="sku", alphabet="12345678900")
     date = models.DateTimeField(auto_now_add=True)
+    youtube_link = models.CharField(max_length=12000, default="youtube video link..")
+    youtube_content = models.CharField(max_length=12000, default="100percent free from..")
     image = models.ImageField(upload_to=user_directory_path, default="product.jpg")
 
     class Meta:
@@ -223,9 +218,15 @@ class ProductImages(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     date = models.DateField(auto_now_add=True)
 
-
     class Meta:
         verbose_name_plural = "Product Images"
+
+class ProductDescription(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product_description = HTMLField()
+
+    class Meta:
+        verbose_name_plural = "Product Description"
 
 class ProductSeo(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)

@@ -40,9 +40,7 @@ def index(request):
     categories = Category.objects.filter(home_page_display='approved')
     home_banner = BannerHome.objects.filter(active_status='published')
     new_arrival = Product.objects.filter(new_arrival=True)
-    deal_of_week = Product.objects.filter(deal_of_week=True)
     summer_sale = Product.objects.filter(summer_sale=True)
-    product_images = ProductImages.objects.filter(product__in=deal_of_week)
     testimonials = Testimonials.objects.all()
 
     new_arrival_main_categories = Main_category.objects.filter(product__in=new_arrival).distinct()
@@ -118,9 +116,7 @@ def index(request):
     context = {
         "category": categories,
         "new_arrival": new_arrival,
-        "deal_of_week": deal_of_week,
         "summer_sale": summer_sale,
-        "product_images": product_images,
         "home_banner": home_banner,
         # "product": product,
         "new_arrival_main_categories":new_arrival_main_categories,
