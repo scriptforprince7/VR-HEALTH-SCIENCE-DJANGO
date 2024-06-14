@@ -140,15 +140,6 @@ def main_category(request, category_slug):
     product_variants = ProductVarient.objects.filter(product__in=products)
     variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants)
 
-    # Fetch product variations
-    product_variations = ProductVariation.objects.filter(product__in=products)
-    # Fetch product variation types
-    variation_types = ProductVariationTypes.objects.filter(product_variation__in=product_variations)
-    # Fetch product variation types prices
-    variation_prices = {}
-    for variation_type in variation_types:
-        variation_prices[variation_type] = ProductVariationTypesPrices.objects.filter(product_variation_types=variation_type)
-
     prices = products.values_list('price', flat=True)
     min_price = min(prices) if prices else 0
     max_price = max(prices) if prices else 0
@@ -848,19 +839,11 @@ def product_new(request, product_slug):
     product = Product.objects.get(product_slug=product_slug)
     product_variants = ProductVarient.objects.filter(product=product)
     product_variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants)
-    product_variations = ProductVariation.objects.filter(product=product)
-    product_variation_types = ProductVariationTypes.objects.filter(product_variation__in=product_variations)
     related_products = Product.objects.filter(main_category=product.main_category).exclude(pid=product.pid)[:10]
     related_maincategory = product.main_category
 
-    variation_prices = []
-    for variation_type in product_variation_types:
-        prices = ProductVariationTypesPrices.objects.filter(product=product, product_variation_types=variation_type)
-        variation_prices.append((variation_type, prices))
-
     # Check if variants and variations exist
     has_variants = product_variants.exists()
-    has_variations = product_variations.exists()
 
     # Fetching rate without GST
     price_wo_gst = product_variant_types.first().varient_price if product_variant_types.exists() else product.price
@@ -885,16 +868,12 @@ def product_new(request, product_slug):
         "products": product,
         "product_variants": product_variants,
         "product_variant_types": product_variant_types,
-        "product_variations": product_variations,
-        "product_variation_types": product_variation_types,
-        "variation_prices": variation_prices,
         "product_images": product_images,
         "default_price": total_price,
         "price_wo_gst": price_wo_gst,
         "default_packaging_size": default_packaging_size,
         "gst_rate": gst_rate,
         "has_variants": has_variants,
-        "has_variations": has_variations,
         "related_products": related_products,
         "related_maincategory":  related_maincategory,
     }
