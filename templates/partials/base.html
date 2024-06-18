@@ -29,16 +29,13 @@
             rel="stylesheet"
             href="{% static 'assets/vendors/mapbox-gl/mapbox-gl.min.css' %}"
         />
-        <link
-            rel="stylesheet"
-            href="{% static '../../cdn.jsdelivr.net/npm/bootstrap-icons%401.9.1/font/bootstrap-icons.css' %}"
-        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" integrity="sha512-5PV92qsds/16vyYIJo3T/As4m2d8b6oWYfoqV+vtizRB6KhF1F9kYzWzQmsO6T3z3QG2Xdhrx7FQ+5R1LiQdUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="{% static 'assets/vendors/lightgallery/css/lightgallery-bundle.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/vendors/fontawesome/css/all.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/vendors/animate/animate.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/vendors/slick/slick.css' %}">
 <link rel="stylesheet" href="{% static 'assets/vendors/mapbox-gl/mapbox-gl.min.css' %}">
-<link rel="stylesheet" href="{% static '../../cdn.jsdelivr.net/npm/bootstrap-icons%401.9.1/font/bootstrap-icons.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" integrity="sha512-5PV92qsds/16vyYIJo3T/As4m2d8b6oWYfoqV+vtizRB6KhF1F9kYzWzQmsO6T3z3QG2Xdhrx7FQ+5R1LiQdUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="{% static 'assets/vendors/fonts/a-antara-distance/stylesheet.min.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'assets/css/theme-violet.css' %}">
@@ -812,8 +809,7 @@
                   >
                     <a
                       class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px dropdown-toggle"
-                      href="#"
-                      data-bs-toggle="dropdown"
+                      href="http://127.0.0.1:8000/shop-category/expert-series/"
                       id="menu-item-docs"
                       aria-haspopup="true"
                       aria-expanded="false"
@@ -994,7 +990,7 @@
                       <span
                         class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
                         style="--square-size: 18px"
-                        >3</span
+                        >{{ request.session.cart_data_obj|length }}</span
                       >
                     </a>
                   </div> {% endcomment %}
@@ -1013,7 +1009,7 @@
                       <span
                         class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
                         style="--square-size: 18px"
-                        >3</span
+                        >{{ request.session.cart_data_obj|length }}</span
                       >
                     </a>
                   </div>
@@ -1282,8 +1278,9 @@ integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2i
 crossorigin="anonymous"
 referrerpolicy="no-referrer"
 ></script>
-<script src="{% static '../../cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'assets/vendors/bootstrap/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
 <script src="{% static 'assets/vendors/clipboard/clipboard.min.js' %}"></script>
 <script src="{% static 'assets/vendors/vanilla-lazyload/lazyload.min.js' %}"></script>
 <script src="{% static 'assets/vendors/waypoints/jquery.waypoints.min.js' %}"></script>
@@ -2673,7 +2670,7 @@ referrerpolicy="no-referrer"
                         <span
                             class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
                             style="--square-size: 18px"
-                            >3</span
+                            >{{ request.session.cart_data_obj|length }}</span
                         >
                     </a>
                 </div>
@@ -2694,7 +2691,7 @@ referrerpolicy="no-referrer"
                         <span
                             class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
                             style="--square-size: 18px"
-                            >3</span
+                            >{{ request.session.cart_data_obj|length }}</span
                         >
                     </a>
                 </div>
@@ -2727,17 +2724,19 @@ referrerpolicy="no-referrer"
                             <i
                                 class="far fa-check fs-12px border me-4 px-2 py-1 text-body-emphasis border-dark rounded-circle"
                             ></i>
-                            Your cart is saved for the next
+                            You have 
                             <span class="text-body-emphasis"
-                                >4m34s</span
-                            >
+                                >{{ request.session.cart_data_obj|length }}</span
+                            > item in your bag
                         </td>
                     </tr>
                 </thead>
                 <tbody>
+              {% if cart_data.items %}
+              {% for product_id, item in cart_data.items %}
                     <tr class="position-relative">
                         <td class="align-middle text-center">
-                            <a href="#" class="d-block clear-product">
+                            <a href="#" class="d-block clear-product remove-cart delete-product js-cart-item-remove" data-product="{{ product_id }}">
                                 <i class="far fa-times"></i>
                             </a>
                         </td>
@@ -2745,27 +2744,27 @@ referrerpolicy="no-referrer"
                             <div class="d-flex align-items-center">
                                 <div class="me-6">
                                     <img
-                                        src="{% static 'assets/images/products/product-03-75x100.jpg' %}"
+                                        src="{{ item.image }}"
                                         width="60"
                                         height="80"
-                                        alt="natural coconut cleansing oil"
+                                        alt="{{ item.title }}"
                                     />
                                 </div>
                                 <div class>
                                     <p class="card-text mb-1">
-                                        <span
+                                        <!-- <span
                                             class="fs-13px fw-500 text-decoration-line-through pe-3"
                                             >₹39.00</span
-                                        >
+                                        > -->
                                         <span
                                             class="fs-15px fw-bold text-body-emphasis"
-                                            >₹29.00</span
+                                            >₹ {{ item.price|floatformat:"2" }}</span
                                         >
                                     </p>
                                     <p
                                         class="fw-500 text-body-emphasis"
                                     >
-                                        Natural Coconut Cleansing Oil
+                                    {{ item.title }}
                                     </p>
                                 </div>
                             </div>
@@ -2794,124 +2793,20 @@ referrerpolicy="no-referrer"
                             </div>
                         </td>
                     </tr>
-                    <tr class="position-relative">
-                        <td class="align-middle text-center">
-                            <a href="#" class="d-block clear-product">
-                                <i class="far fa-times"></i>
-                            </a>
-                        </td>
-                        <td class="shop-product">
-                            <div class="d-flex align-items-center">
-                                <div class="me-6">
-                                    <img
-                                        src="{% static 'assets/images/products/product-06-75x100.jpg' %}"
-                                        width="60"
-                                        height="80"
-                                        alt="natural coconut cleansing oil"
-                                    />
-                                </div>
-                                <div class>
-                                    <p class="card-text mb-1">
-                                        <span
-                                            class="fs-13px fw-500 text-decoration-line-through pe-3"
-                                            >₹39.00</span
-                                        >
-                                        <span
-                                            class="fs-15px fw-bold text-body-emphasis"
-                                            >₹29.00</span
-                                        >
-                                    </p>
-                                    <p
-                                        class="fw-500 text-body-emphasis"
-                                    >
-                                        Super Pure
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="align-middle p-0">
-                            <div
-                                class="input-group position-relative shop-quantity"
-                            >
-                                <a
-                                    href="#"
-                                    class="shop-down position-absolute z-index-2"
-                                    ><i class="far fa-minus"></i
-                                ></a>
-                                <input
-                                    name="number[]"
-                                    type="number"
-                                    class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0"
-                                    value="1"
-                                    required
-                                />
-                                <a
-                                    href="#"
-                                    class="shop-up position-absolute z-index-2"
-                                    ><i class="far fa-plus"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="position-relative">
-                        <td class="align-middle text-center">
-                            <a href="#" class="d-block clear-product">
-                                <i class="far fa-times"></i>
-                            </a>
-                        </td>
-                        <td class="shop-product">
-                            <div class="d-flex align-items-center">
-                                <div class="me-6">
-                                    <img
-                                        src="{% static 'assets/images/products/product-09-75x100.jpg' %}"
-                                        width="60"
-                                        height="80"
-                                        alt="natural coconut cleansing oil"
-                                    />
-                                </div>
-                                <div class>
-                                    <p class="card-text mb-1">
-                                        <span
-                                            class="fs-13px fw-500 text-decoration-line-through pe-3"
-                                            >₹39.00</span
-                                        >
-                                        <span
-                                            class="fs-15px fw-bold text-body-emphasis"
-                                            >₹29.00</span
-                                        >
-                                    </p>
-                                    <p
-                                        class="fw-500 text-body-emphasis"
-                                    >
-                                        Cleansing Balm
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="align-middle p-0">
-                            <div
-                                class="input-group position-relative shop-quantity"
-                            >
-                                <a
-                                    href="#"
-                                    class="shop-down position-absolute z-index-2"
-                                    ><i class="far fa-minus"></i
-                                ></a>
-                                <input
-                                    name="number[]"
-                                    type="number"
-                                    class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0"
-                                    value="1"
-                                    required
-                                />
-                                <a
-                                    href="#"
-                                    class="shop-up position-absolute z-index-2"
-                                    ><i class="far fa-plus"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+              {% endfor %}
+              {% else %}
+              <div style="text-align: center;">
+                <img src="{% static 'images/no-product.png' %}" alt="Empty Cart Image" width="70%">
+                <style>
+                    .explore:hover {
+                        background-color: #9fcfb5;
+                    }
+                </style>
+                <a href="/shop-category" style="text-align: center;">
+                    <button class="btn btn-success mt-3 d-block explore">Explore Categories</button>
+                </a>
+            </div>
+            {% endif %}
                 </tbody>
             </table>
         </form>
@@ -2922,7 +2817,7 @@ referrerpolicy="no-referrer"
         >
             <span class="text-body-emphasis">Total price:</span>
             <span class="cart-total fw-bold text-body-emphasis"
-                >₹106.00</span
+                >₹ {{ cart_total_amount|floatformat:"2" }}</span
             >
         </div>
         <a

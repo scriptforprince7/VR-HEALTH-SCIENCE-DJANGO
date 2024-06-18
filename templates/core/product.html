@@ -233,24 +233,32 @@
             aria-valuemax="100"
           ></div>
         </div>
-        <form class="mb-9 pb-2">
+        <style>
+          .selected-swatch {
+            background-color: greenyellow;
+          }
+        </style>
+        <form class="mb-9 pb-2" name="addtocart-form" method="post">
+          {% csrf_token %}
+          {% for variant in product_variants %}
             <div class="form-group shop-swatch mb-7 d-flex align-items-center">
-              <span class="fw-semibold text-body-emphasis me-7">Packaging Size: </span>
+              <span class="fw-semibold text-body-emphasis me-7">{{ variant.title }}</span>
               <ul class="list-inline d-flex justify-content-start mb-0">
+                {% for variant_type in product_variant_types %}
+                {% if variant_type.product_variant == variant %}
               <li class="list-inline-item me-4 fw-semibold">
-              <input type="radio" id="radio1" name="radio" class="product-info-size d-none" checked>
-              <label for="radio1" class="fs-14px p-4 d-block rounded text-decoration-none border" data-var="full size">100ml</label>
+
+              <input type="radio" id="radio{{ variant_type.id }}" name="variant_size" class="product-info-size d-none" {% if forloop.first %}checked{% endif %} data-price="{{ variant_type.varient_price }}" data-gst="{{ variant_type.gst_rate }}" data-variant-type-id="{{ variant_type.id }}">
+
+
+              <label for="radio{{ variant_type.id }}" class="fs-14px p-4 d-block rounded text-decoration-none border {% if forloop.first %}selected-swatch{% endif %}" data-var="full size" aria-label="{{ variant_type.variant_title }}" title="{{ variant_type.variant_title }}">{{ variant_type.variant_title }}</label>
               </li>
-              <li class="list-inline-item me-4 fw-semibold">
-              <input type="radio" id="radio2" name="radio" class="product-info-size d-none">
-              <label for="radio2" class="fs-14px p-4 d-block rounded text-decoration-none border" data-var="full size">350ml</label>
-              </li>
-              <li class="list-inline-item me-4 fw-semibold">
-                <input type="radio" id="radio3" name="radio" class="product-info-size d-none">
-                <label for="radio3" class="fs-14px p-4 d-block rounded text-decoration-none border" data-var="full size">1000ml</label>
-                </li>
+
+              {% endif %}
+              {% endfor %}
               </ul>
-              </div>
+            </div>
+              {% endfor %}
           <div class="row align-items-end">
             <div class="form-group col-sm-4">
               <label
@@ -267,10 +275,10 @@
                   ><i class="far fa-minus"></i
                 ></a>
                 <input
-                  name="number"
+                name="quantity"
                   type="number"
-                  id="number"
-                  class="product-info-2-quantity form-control w-100 px-6 text-center"
+                  id="product-quantity-{{ products.pid }}"
+                  class="product-info-2-quantity form-control w-100 px-6 text-center product-quantity-{{ products.pid }}"
                   value="1"
                   required
                 />
@@ -282,9 +290,20 @@
               </div>
             </div>
             <div class="col-sm-8 pt-9 mt-2 mt-sm-0 pt-sm-0">
+              <input type="hidden" value="{{products.pid}}" class="product-id">
+              <input type="hidden" value="{{products.pid}}" class="product-id-{{products.pid}}">
+              <input type="hidden" value="{{products.title}}" class="product-title-{{products.pid}}" id="product-title-hidden">
+              <input type="hidden" value="{{default_price}}" class="product-price-{{products.pid}}">
+              <input type="hidden" value="{{price_wo_gst}}" class="product-price-wo-gst-{{products.pid}}">
+              <input type="hidden" value="{{gst_rate}}" class="gst_rate-{{products.pid}}">
+              <input type="hidden" value="{{products.sku}}" class="product-sku-{{products.pid}}">
+              <input type="hidden" value="{{products.image.url}}" class="product-image-{{products.pid}}">
+              <input type="hidden" id="variant-id-hidden-{{ products.pid }}" value="None">
               <button
                 type="submit"
-                class="btn-hover-bg-primary btn-hover-border-primary btn btn-lg btn-dark w-100"
+                class="btn-hover-bg-primary btn-hover-border-primary btn btn-lg btn-dark w-100 add-to-cart-btn"
+                id="add-to-cart-btn"
+                data-index="{{products.pid}}"
               >
                 Add To Bag
               </button>
@@ -424,7 +443,7 @@
                   <div class="col-12 col-lg-6 pe-lg-10 pe-xl-20">
                     <img
                       src="{% static '#' %}"
-                      data-src="http://127.0.0.1:5500/assets/images/products-new/Hair%20Growth%20Serum%20No%20logo.jpg"
+                      data-src="{{products.image.url}}"
                       class="w-100 lazy-image"
                       alt
                       width="470"
@@ -469,7 +488,7 @@
                         <img
                           class="lazy-image light-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-3-1.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -477,7 +496,7 @@
                         <img
                           class="lazy-image dark-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-white-3-1.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -487,7 +506,7 @@
                         <img
                           class="lazy-image light-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-3-2.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -495,7 +514,7 @@
                         <img
                           class="lazy-image dark-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-white-3-2.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -505,7 +524,7 @@
                         <img
                           class="lazy-image light-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-3-3.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -513,7 +532,7 @@
                         <img
                           class="lazy-image dark-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-white-3-3.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -523,7 +542,7 @@
                         <img
                           class="lazy-image light-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-3-4.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -531,7 +550,7 @@
                         <img
                           class="lazy-image dark-mode-img"
                           src="#"
-                          data-src="{% static '../assets/images/shop/product-info-white-3-4.png' %}"
+                          data-src=""
                           width="66"
                           height="77"
                           alt
@@ -737,12 +756,17 @@
               >
                 <div
                   class="lazy-bg bg-overlay position-absolute z-index-0 w-100 h-100 bg-col-lg-half-screen-right light-mode-img"
-                  data-bg-src="{% static 'assets/images/others/video-01.jpg' %}"
-                ></div>
+                  data-bg-src="https://www.youtube.com/embed/qGcB1T59qoI?si=BHRYt9dtJmpoyBfK"
+                >
+                <iframe width="80%" height="50%" src="https://www.youtube.com/embed/qGcB1T59qoI?si=BHRYt9dtJmpoyBfK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+              </div>
                 <div
                   class="lazy-bg bg-overlay dark-mode-img position-absolute z-index-0 w-100 h-100 bg-col-lg-half-screen-right"
                   data-bg-src="{% static 'assets/images/others/video-white-01.jpg' %}"
-                ></div>
+                >
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/qGcB1T59qoI?si=BHRYt9dtJmpoyBfK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
                 <a
                   href="https://www.youtube.com/watch?v=6v2L2UGZJAM"
                   class="square view-video rounded-circle z-index-1 bg-body text-body-emphasis fs-2 bg-dark-hover text-light-hover"
@@ -941,7 +965,7 @@
     <div class="card card-product grid-2 bg-transparent border-0">
     <figure class="card-img-top position-relative mb-7 overflow-hidden">
     <a href="product-details-v1.html" class="hover-zoom-in d-block" title="Enriched Hand &amp; Body Wash">
-    <img src="#" data-src="{% static '../assets/images/products/product-03-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Hand &amp; Body Wash" width="330" height="440">
+    <img src="#" data-src="{% static 'assets/images/products/product-03-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Hand &amp; Body Wash" width="330" height="440">
     </a>
     <div class="position-absolute product-flash z-index-2 "><span class="badge badge-product-flash on-new">New</span></div>
     <div class="position-absolute d-flex z-index-2 product-actions  vertical"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Quick View">
@@ -1030,7 +1054,7 @@
     <div class="card card-product grid-2 bg-transparent border-0">
     <figure class="card-img-top position-relative mb-7 overflow-hidden">
     <a href="product-details-v1.html" class="hover-zoom-in d-block" title="Shield Shampoo">
-    <img src="#" data-src="{% static '../assets/images/products/product-04-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Shield Shampoo" width="330" height="440">
+    <img src="#" data-src="{% static 'assets/images/products/product-04-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Shield Shampoo" width="330" height="440">
     </a>
     <div class="position-absolute product-flash z-index-2 "><span class="badge badge-product-flash on-sale bg-primary">-24%</span></div>
     <div class="position-absolute d-flex z-index-2 product-actions  vertical"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Quick View">
@@ -1121,7 +1145,7 @@
     <div class="card card-product grid-2 bg-transparent border-0">
     <figure class="card-img-top position-relative mb-7 overflow-hidden">
     <a href="product-details-v1.html" class="hover-zoom-in d-block" title="Enriched Hand Wash">
-    <img src="#" data-src="{% static '../assets/images/products/product-05-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Hand Wash" width="330" height="440">
+    <img src="#" data-src="{% static 'assets/images/products/product-05-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Hand Wash" width="330" height="440">
     </a>
     <div class="position-absolute product-flash z-index-2 "><span class="badge badge-product-flash on-sale bg-primary">-26%</span></div>
     <div class="position-absolute d-flex z-index-2 product-actions  vertical"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Quick View">
@@ -1212,7 +1236,7 @@
     <div class="card card-product grid-2 bg-transparent border-0">
     <figure class="card-img-top position-relative mb-7 overflow-hidden">
     <a href="product-details-v1.html" class="hover-zoom-in d-block" title="Enriched Duo">
-    <img src="#" data-src="{% static '../assets/images/products/product-06-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Duo" width="330" height="440">
+    <img src="#" data-src="{% static 'assets/images/products/product-06-330x440.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Duo" width="330" height="440">
     </a>
     <div class="position-absolute d-flex z-index-2 product-actions  vertical"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Quick View">
     <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">

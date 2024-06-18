@@ -17,7 +17,9 @@
     </section>
     <section class="container">
     <div class="shopping-cart">
-    <h2 class="text-center fs-2 mt-12 mb-13">Shopping Cart</h2><form class="table-responsive-md pb-8 pb-lg-10">
+    <h2 class="text-center fs-2 mt-12 mb-13">Shopping Cart</h2>
+    <p>You Have <b>{{totalcartitems}}</b>  Products in your cart</p>
+    <form class="table-responsive-md pb-8 pb-lg-10">
     <table class="table border">
     <thead class="bg-body-secondary">
     <tr class="fs-15px letter-spacing-01 fw-semibold text-uppercase text-body-emphasis">
@@ -27,6 +29,8 @@
     </tr>
     </thead>
     <tbody>
+        {% if cart_data.items %}
+        {% for product_id, item in cart_data.items  %}
     <tr class="position-relative">
     <th scope="row" class="pe-5 ps-8 py-7 shop-product">
     <div class="d-flex align-items-center">
@@ -34,157 +38,41 @@
     <input class="form-check-input rounded-0" type="checkbox" name="check-product" value="checkbox">
     </div>
     <div class="ms-6 me-7">
-    <img src="#" data-src="{% static 'assets/images/products/product-03-75x100.jpg' %}" class="lazy-image" width="75" height="100" alt="Natural Coconut Cleansing Oil">
+    <img src="#" data-src="{{item.image}}" class="lazy-image" width="75" height="100" alt="Natural Coconut Cleansing Oil">
     </div>
     <div class>
-    <p class="fw-500 mb-1 text-body-emphasis">Natural Coconut Cleansing Oil</p>
+    <p class="fw-500 mb-1 text-body-emphasis">{{item.title}}</p>
     <p class="card-text">
-    <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span>
-    <span class="fs-15px fw-bold text-body-emphasis">$29.00</span>
+    <!-- <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span> -->
+    <span class="fs-15px fw-light text-body-emphasis">{{item.sku}}</span>
     </p>
     </div>
     </div>
     </th>
     <td class="align-middle">
     <div class="input-group position-relative shop-quantity">
-    <a href="#" class="shop-down position-absolute z-index-2"><i class="far fa-minus"></i></a>
-    <input name="number[]" type="number" class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0" value="1" required>
-    <a href="#" class="shop-up position-absolute z-index-2"><i class="far fa-plus"></i>
+    <a href="#" class="shop-down position-absolute z-index-2 update-product" data-product="{{product_id}}">
+        <i class="far fa-minus"></i>
+    </a>
+    <input name="number" type="number" class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0 update-product product-qty-{{product_id}}" value="{{item.qty}}" data-product="{{product_id}}" required>
+    <a href="#" class="shop-up position-absolute z-index-2 update-product" data-product="{{product_id}}">
+        <i class="far fa-plus"></i>
     </a>
     </div>
     </td>
     <td class="align-middle">
-    <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">$48.00</p>
+    <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {{item.price|floatformat:2}}</p>
     </td>
     <td class="align-middle text-end pe-8">
-    <a href="#" class="d-block text-secondary">
+    <a href="#" class="d-block text-secondary delete-product" data-product="{{product_id}}">
     <i class="fa fa-times"></i>
     </a>
     </td>
     </tr>
-    <tr class="position-relative">
-    <th scope="row" class="pe-5 ps-8 py-7 shop-product">
-    <div class="d-flex align-items-center">
-    <div class="form-check">
-    <input class="form-check-input rounded-0" type="checkbox" name="check-product" value="checkbox">
-    </div>
-    <div class="ms-6 me-7">
-    <img src="#" data-src="{% static 'assets/images/products/product-06-75x100.jpg' %}" class="lazy-image" width="75" height="100" alt="Natural Coconut Cleansing Oil">
-    </div>
-    <div class>
-    <p class="fw-500 mb-1 text-body-emphasis">Super Pure</p>
-    <p class="card-text">
-    <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span>
-    <span class="fs-15px fw-bold text-body-emphasis">$29.00</span>
-    </p>
-    </div>
-    </div>
-    </th>
-    <td class="align-middle">
-    <div class="input-group position-relative shop-quantity">
-    <a href="#" class="shop-down position-absolute z-index-2"><i class="far fa-minus"></i></a>
-    <input name="number[]" type="number" class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0" value="1" required>
-    <a href="#" class="shop-up position-absolute z-index-2"><i class="far fa-plus"></i>
-    </a>
-    </div>
-    </td>
-    <td class="align-middle">
-    <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">$48.00</p>
-    </td>
-    <td class="align-middle text-end pe-8">
-    <a href="#" class="d-block text-secondary">
-    <i class="fa fa-times"></i>
-    </a>
-    </td>
-    </tr>
-    <tr class="position-relative opacity-50">
-    <th scope="row" class="pe-5 ps-8 py-7 shop-product">
-    <div class="d-flex align-items-center">
-    <div class="form-check">
-    <input class="form-check-input rounded-0" type="checkbox" name="check-product" value="checkbox" disabled>
-    </div>
-    <div class="ms-6 me-7">
-    <img src="#" data-src="{% static 'assets/images/products/product-04-75x100.jpg' %}" class="lazy-image" width="75" height="100" alt="Natural Coconut Cleansing Oil">
-    </div>
-    <div class>
-    <p class="fw-500 mb-1 text-body-emphasis">Cleansing Balm</p>
-    <p class="card-text">
-    <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span>
-    <span class="fs-15px fw-bold text-body-emphasis">$29.00</span>
-    </p>
-    </div>
-    </div>
-    <div class="position-absolute top-0 start-0">
-    <span class="badge rounded-0 text-uppercase fs-14px px-5 py-4 product-stock ls-1 fw-semibold p-0">out of stock</span>
-    </div>
-    </th>
-    <td class="align-middle">
-    <div class="input-group position-relative shop-quantity">
-    <a href="#" class="shop-down position-absolute z-index-2"><i class="far fa-minus"></i></a>
-    <input name="number[]" type="number" class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0" value="1" required disabled>
-    <a href="#" class="shop-up position-absolute z-index-2"><i class="far fa-plus"></i>
-    </a>
-    </div>
-    </td>
-    <td class="align-middle">
-    <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">$48.00</p>
-    </td>
-    <td class="align-middle text-end pe-8">
-    <a href="#" class="d-block text-secondary">
-    <i class="fa fa-times"></i>
-    </a>
-    </td>
-    </tr>
-    <tr class="position-relative">
-    <th scope="row" class="pe-5 ps-8 py-7 shop-product">
-    <div class="d-flex align-items-center">
-    <div class="form-check">
-    <input class="form-check-input rounded-0" type="checkbox" name="check-product" value="checkbox">
-    </div>
-    <div class="ms-6 me-7">
-    <img src="#" data-src="{% static 'assets/images/products/product-09-75x100.jpg' %}" class="lazy-image" width="75" height="100" alt="Natural Coconut Cleansing Oil">
-    </div>
-    <div class>
-    <p class="fw-500 mb-1 text-body-emphasis">Cleansing Balm</p>
-    <p class="card-text">
-    <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span>
-    <span class="fs-15px fw-bold text-body-emphasis">$29.00</span>
-    </p>
-    </div>
-    </div>
-    </th>
-    <td class="align-middle">
-    <div class="input-group position-relative shop-quantity">
-    <a href="#" class="shop-down position-absolute z-index-2"><i class="far fa-minus"></i></a>
-    <input name="number[]" type="number" class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0" value="1" required>
-    <a href="#" class="shop-up position-absolute z-index-2"><i class="far fa-plus"></i>
-    </a>
-    </div>
-    </td>
-    <td class="align-middle">
-    <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">$48.00</p>
-    </td>
-    <td class="align-middle text-end pe-8">
-    <a href="#" class="d-block text-secondary">
-    <i class="fa fa-times"></i>
-    </a>
-    </td>
-    </tr>
-    <tr>
-    <td class="pt-5 pb-10 position-relative bg-body ps-0 left">
-    <a href="shop-layout-v1.html" title="Countinue Shopping" class="btn btn-outline-dark me-8 text-nowrap my-5">
-    Countinue Shopping
-    </a>
-    <button type="submit" value="Clear Shopping Cart" class="btn btn-link p-0 border-0 border-bottom border-secondary text-decoration-none rounded-0 my-5 fw-semibold ">
-    <i class="fa fa-times me-3"></i>
-    Clear Shopping Cart
-    </button>
-    </td>
-    <td colspan="3" class="text-end pt-5 pb-10 position-relative bg-body right pe-0">
-    <button type="submit" value="Update Cart" class="btn btn-outline-dark my-5">Update Cart
-    </button>
-    </td>
-    </tr>
+        {% endfor %}
+        {% else %}
+        <p>no product found</p>
+            {% endif %}
     </tbody>
     </table>
     </form>

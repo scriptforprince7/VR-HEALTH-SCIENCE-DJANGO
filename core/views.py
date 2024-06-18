@@ -194,6 +194,72 @@ def main_category(request, category_slug):
 
     return render(request, "core/main_category.html", context)
 
+def expert_series(request):
+    main_categories = Main_category.objects.filter(mid="main_cat5323f35gfd54af15aba54g")
+    products = Product.objects.filter(main_category__in=main_categories)
+    product_images = ProductImages.objects.filter(product__in=products)
+
+    product_variants = ProductVarient.objects.filter(product__in=products)
+    variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants)
+
+    prices = products.values_list('price', flat=True)
+    min_price = min(prices) if prices else 0
+    max_price = max(prices) if prices else 0
+
+    price_range = request.GET.get('price_range')
+    if price_range:
+        min_price, max_price = map(float, price_range.split(','))
+        products = products.filter(price__range=(min_price, max_price))
+
+    gst_rate = None  # Initialize gst_rate here
+
+    # Fetching variant details for products
+    for product in products:
+        # Check if the product has variants
+        product_has_variants = product.productvarient_set.exists()
+
+        if product_has_variants:
+            # Get the first variant
+            first_variant = product.productvarient_set.first()
+            first_variant_type = first_variant.productvarianttypes_set.first() if first_variant.productvarianttypes_set.exists() else None
+
+            product.first_variant_type_title = first_variant_type.variant_title if first_variant_type else None
+            product.first_variant_type_id = first_variant_type.id if first_variant_type else None  # Add this line
+            
+            # Calculate default price without GST
+            price_wo_gst = first_variant_type.varient_price if first_variant_type else product.price
+            # Fetching GST rate
+            gst_rate = first_variant_type.gst_rate if first_variant_type else product.gst_rate
+            # Calculate default price including GST
+            base_price = first_variant_type.varient_price if first_variant_type else product.price
+            # Calculate GST amount
+            gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
+            # Calculate total price including GST and round off to two decimal places
+            product.gst_inclusive_price = round(base_price + gst_amount, 2)
+            # Include original variant price in the context
+            product.variant_price = price_wo_gst
+        else:
+            # Use the existing GST-inclusive price for the product
+            product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
+            gst_rate = product.gst_rate
+            # If the product doesn't have variants, set variant_price to None
+            product.variant_price = None
+            product.first_variant_type_title = None  # Add this line
+            product.first_variant_type_id = None  # Add this line
+
+    context = {
+        "main_categories":main_categories,
+        "products": products,
+        "product_images": product_images,
+        "min_price": min_price,
+        "max_price": max_price,
+        "product_variants": product_variants,
+        "variant_types": variant_types,
+        "gst_rate": gst_rate,  # Include gst_rate in the context
+    }
+
+    return render(request, "core/expert-series.html", context)
+
 
 
 from django.http import JsonResponse
@@ -248,8 +314,7 @@ def add_to_cart(request):
     
     product_id = request.GET.get('id')
     variant_id = request.GET.get('variant_id', '')  # Optional parameter
-    variation_id = request.GET.get('variation_id', '')  # Optional parameter
-    unique_key = f"{product_id}_{variant_id}_{variation_id}"  # Create a unique key
+    unique_key = f"{product_id}_{variant_id}"  # Create a unique key
 
     try:
         qty = request.GET['qty']  # Ensure qty is an integer
@@ -262,7 +327,6 @@ def add_to_cart(request):
     cart_product = {
         'product_id': product_id,
         'variant_id': variant_id,
-        'variation_id': variation_id,
         'title': request.GET.get('title'),
         'qty': qty,
         'price': price,
@@ -289,8 +353,6 @@ def add_to_cart(request):
         'totalcartitems': len(request.session['cart_data_obj']), 
         "already_in_cart": False
     })
-
-
 
 def cart_view(request):
     cart_total_amount = 0
