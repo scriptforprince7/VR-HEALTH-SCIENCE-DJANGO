@@ -186,6 +186,7 @@ class Product(models.Model):
     in_stock = models.BooleanField(default=True)
     summer_sale= models.BooleanField(default=False)
     new_arrival= models.BooleanField(default=False)
+    yellow_peel= models.BooleanField(default=False)
     sku = ShortUUIDField(unique=True, max_length=25, prefix="sku", alphabet="12345678900")
     date = models.DateTimeField(auto_now_add=True)
     youtube_link = models.CharField(max_length=12000, default="youtube video link..")

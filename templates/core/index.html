@@ -6,7 +6,6 @@
     class="slick-slider hero hero-header-02 slick-slider-dots-inside"
     data-slick-options="{&#34;arrows&#34;:false,&#34;autoplay&#34;:true,&#34;autoplaySpeed&#34;:9000,&#34;cssEase&#34;:&#34;ease-in-out&#34;,&#34;dots&#34;:false,&#34;fade&#34;:true,&#34;infinite&#34;:true,&#34;slidesToShow&#34;:1,&#34;speed&#34;:600}"
   >
-
     {% for bh in home_banner %}
     <div class="vh-100 d-flex align-items-center">
       <div
@@ -250,6 +249,7 @@
       </div>
       <div class="col-lg-7">
         <div class="row gy-11">
+          {% for new_arrivals in new_arrival %}
           <div class="col-md-4 col-sm-6 col-12">
             <div
               class="card card-product grid-2 bg-transparent border-0"
@@ -259,15 +259,15 @@
                 class="card-img-top position-relative mb-7 overflow-hidden"
               >
                 <a
-                  href="assets/images/products-new/Foot Guard Gel no logo.jpg"
+                  href="{% url 'core:product_new' new_arrivals.product_slug %}"
                   class="hover-zoom-in d-block"
-                  title="Enriched Duo"
+                  title="{{new_arrivals.title}}"
                 >
                   <img
-                    src="{% static '#' %}"
-                    data-src="{% static 'assets/images/prod/1.jpg' %}"
+                    src="{{new_arrivals.image.url}}"
+                    data-src="{{new_arrivals.image.url}}"
                     class="img-fluid lazy-image w-100"
-                    alt="Enriched Duo"
+                    alt="{{new_arrivals.title}}"
                     width="330"
                     height="440"
                   />
@@ -292,49 +292,56 @@
                       </svg>
                     </span>
                   </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="shop/compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  >
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use
-                        xlink:href="#icon-arrows-left-right-light"
-                      ></use>
-                    </svg>
-                  </a>
                 </div>
+                <input type="hidden" value="{{new_arrivals.pid}}" class="product-id">
+
+                <input type="hidden" value="{{new_arrivals.pid}}" id="product-quantity-{{products.pid}}" class="product-id-{{new_arrivals.pid}}">
+
+                <input type="hidden" value="1" class="product-quantity-{{new_arrivals.pid}}">
+
+                <input type="hidden" value="{{new_arrivals.title}}{% if product.first_variant_type_title %} - ({{ new_arrivals.first_variant_type_title }}){% endif %}" class="product-title-{{new_arrivals.pid}}">
+
+                <input type="hidden" value="{{new_arrivals.gst_inclusive_price}}" class="product-price-{{new_arrivals.pid}}">
+
+               
+                {% with price_wo_gst=new_arrivals.variant_price|default:new_arrivals.price %}
+                <input type="hidden" value="{{ price_wo_gst }}" class="product-price-wo-gst-{{ new_arrivals.pid }}">
+                {% endwith %}
+               
+
+                {% if new_arrivals.productvarient_set.exists %}
+                {% with first_variant=new_arrivals.productvarient_set.first %}
+                <input type="hidden" value="{{ first_variant.productvarianttypes_set.first.gst_rate }}" class="gst_rate-{{ new_arrivals.pid }}">
+                {% endwith %}
+                {% else %}
+                <input type="hidden" value="{{ new_arrivals.gst_rate }}" class="gst_rate-{{ new_arrivals.pid }}">
+                {% endif %}
+
+                <input type="hidden" value="{{new_arrivals.sku}}" class="product-sku-{{new_arrivals.pid}}">
+
+                <input type="hidden" value="{{new_arrivals.image.url}}" class="product-image-{{new_arrivals.pid}}">
+
+                <input type="hidden" id="variant-id-hidden-{{ new_arrivals.pid }}" value="{{ new_arrivals.first_variant_type_id }}">
                 <a
                   href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
+                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2 add-to-cart-btn"
+                  id="add-to-cart-btn"
+                  data-index="{{new_arrivals.pid}}"
                   >Add To Cart</a
                 >
               </figure>
               <div class="card-body text-center p-0">
                 <span
                   class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                  >₹29.00</span
+                  >₹ {{new_arrivals.gst_inclusive_price}}</span
                 >
                 <h4
                   class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
                 >
                   <a
                     class="text-decoration-none text-reset"
-                    href="assets/images/products-new/Hair Growth Serum No logo.jpg"
-                    >Enriched Duo</a
+                    href="{% url 'core:product_new' new_arrivals.product_slug %}"
+                    >{{new_arrivals.title}}<span class="modif">{% if new_arrivals.first_variant_type_title %} - ({{ new_arrivals.first_variant_type_title }}){% endif %}</span></a
                   >
                 </h4>
                 <div
@@ -397,793 +404,13 @@
                     </div>
                   </div>
                   <span class="reviews ms-4 pt-3 fs-14px"
-                    >2947 reviews</span
+                    >0 reviews</span
                   >
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-4 col-sm-6 col-12">
-            <div
-              class="card card-product grid-2 bg-transparent border-0"
-              data-animate="fadeInUp"
-            >
-              <figure
-                class="card-img-top position-relative mb-7 overflow-hidden"
-              >
-                <a
-                  href="assets/images/products-new/New Acne Creanser_b.jpg"
-                  class="hover-zoom-in d-block"
-                  title="Shield Spray"
-                >
-                  <img
-                    src="{% static '#' %}"
-                    data-src="{% static 'assets/images/prod/2.jpg' %}"
-                    class="img-fluid lazy-image w-100"
-                    alt="Shield Spray"
-                    width="330"
-                    height="440"
-                  />
-                </a>
-                <div
-                  class="position-absolute d-flex z-index-2 product-actions vertical"
-                >
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Quick View"
-                  >
-                    <span
-                      data-bs-toggle="modal"
-                      data-bs-target="#quickViewModal"
-                      class="d-flex align-items-center justify-content-center"
-                    >
-                      <svg class="icon icon-eye-light">
-                        <use xlink:href="#icon-eye-light"></use>
-                      </svg>
-                    </span>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="shop/compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  >
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use
-                        xlink:href="#icon-arrows-left-right-light"
-                      ></use>
-                    </svg>
-                  </a>
-                </div>
-                <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
-                  >Add To Cart</a
-                >
-              </figure>
-              <div class="card-body text-center p-0">
-                <span
-                  class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                  >₹29.00</span
-                >
-                <h4
-                  class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
-                >
-                  <a
-                    class="text-decoration-none text-reset"
-                    href="assets/images/products-new/Hairfall Control Shampoo no logo.jpg"
-                    >Shield Spray</a
-                  >
-                </h4>
-                <div
-                  class="d-flex align-items-center fs-12px justify-content-center"
-                >
-                  <div class="rating">
-                    <div class="empty-stars">
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <div class="filled-stars" style="width: 100%">
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                  <span class="reviews ms-4 pt-3 fs-14px"
-                    >2947 reviews</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 col-12">
-            <div
-              class="card card-product grid-2 bg-transparent border-0"
-              data-animate="fadeInUp"
-            >
-              <figure
-                class="card-img-top position-relative mb-7 overflow-hidden"
-              >
-                <a
-                  href="assets/images/products-new/Vitamin C Serum-15 no logo.jpg"
-                  class="hover-zoom-in d-block"
-                  title="Vital Eye Cream"
-                >
-                  <img
-                    src="{% static '#' %}"
-                    data-src="{% static 'assets/images/prod/9.jpg' %}"
-                    class="img-fluid lazy-image w-100"
-                    alt="Vital Eye Cream"
-                    width="330"
-                    height="440"
-                  />
-                </a>
-                <div class="position-absolute product-flash z-index-2">
-                  <!-- <span
-                    class="badge badge-product-flash on-sale bg-primary"
-                    >-26%</span
-                  > -->
-                </div>
-                <div
-                  class="position-absolute d-flex z-index-2 product-actions vertical"
-                >
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Quick View"
-                  >
-                    <span
-                      data-bs-toggle="modal"
-                      data-bs-target="#quickViewModal"
-                      class="d-flex align-items-center justify-content-center"
-                    >
-                      <svg class="icon icon-eye-light">
-                        <use xlink:href="#icon-eye-light"></use>
-                      </svg>
-                    </span>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="shop/compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  >
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use
-                        xlink:href="#icon-arrows-left-right-light"
-                      ></use>
-                    </svg>
-                  </a>
-                </div>
-                <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
-                  >Add To Cart</a
-                >
-              </figure>
-              <div class="card-body text-center p-0">
-                <span
-                  class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                >
-                  <del class="text-body fw-500 me-4 fs-13px">₹39.00</del>
-                  <ins class="text-decoration-none">₹29.00</ins></span
-                >
-                <h4
-                  class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
-                >
-                  <a
-                    class="text-decoration-none text-reset"
-                    href="assets/images/products-new/Hairfall Control Shampoo no logo.jpg"
-                    >Vital Eye Cream</a
-                  >
-                </h4>
-                <div
-                  class="d-flex align-items-center fs-12px justify-content-center"
-                >
-                  <div class="rating">
-                    <div class="empty-stars">
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <div class="filled-stars" style="width: 80%">
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                  <span class="reviews ms-4 pt-3 fs-14px"
-                    >2947 reviews</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 col-12">
-            <div
-              class="card card-product grid-2 bg-transparent border-0"
-              data-animate="fadeInUp"
-            >
-              <figure
-                class="card-img-top position-relative mb-7 overflow-hidden"
-              >
-                <a
-                  href="shop/product-details-v1.html"
-                  class="hover-zoom-in d-block"
-                  title="Supreme Moisture Mask"
-                >
-                  <img
-                    src="{% static '#' %}"
-                    data-src="{% static 'assets/images/prod/4.jpg' %}"
-                    class="img-fluid lazy-image w-100"
-                    alt="Supreme Moisture Mask"
-                    width="330"
-                    height="440"
-                  />
-                </a>
-                <div class="position-absolute product-flash z-index-2">
-                  <!-- <span
-                    class="badge badge-product-flash on-sale bg-primary"
-                    >-26%</span
-                  > -->
-                </div>
-                <div
-                  class="position-absolute d-flex z-index-2 product-actions vertical"
-                >
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Quick View"
-                  >
-                    <span
-                      data-bs-toggle="modal"
-                      data-bs-target="#quickViewModal"
-                      class="d-flex align-items-center justify-content-center"
-                    >
-                      <svg class="icon icon-eye-light">
-                        <use xlink:href="#icon-eye-light"></use>
-                      </svg>
-                    </span>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="shop/compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  >
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use
-                        xlink:href="#icon-arrows-left-right-light"
-                      ></use>
-                    </svg>
-                  </a>
-                </div>
-                <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
-                  >Add To Cart</a
-                >
-              </figure>
-              <div class="card-body text-center p-0">
-                <span
-                  class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                >
-                  <del class="text-body fw-500 me-4 fs-13px">₹39.00</del>
-                  <ins class="text-decoration-none">₹29.00</ins></span
-                >
-                <h4
-                  class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
-                >
-                  <a
-                    class="text-decoration-none text-reset"
-                    href="shop/product-details-v1.html"
-                    >Supreme Moisture Mask</a
-                  >
-                </h4>
-                <div
-                  class="d-flex align-items-center fs-12px justify-content-center"
-                >
-                  <div class="rating">
-                    <div class="empty-stars">
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <div class="filled-stars" style="width: 80%">
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                  <span class="reviews ms-4 pt-3 fs-14px"
-                    >2947 reviews</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 col-12">
-            <div
-              class="card card-product grid-2 bg-transparent border-0"
-              data-animate="fadeInUp"
-            >
-              <figure
-                class="card-img-top position-relative mb-7 overflow-hidden"
-              >
-                <a
-                  href="shop/product-details-v1.html"
-                  class="hover-zoom-in d-block"
-                  title="Supreme Polishing Treatment"
-                >
-                  <img
-                    src="{% static '#' %}"
-                    data-src="{% static 'assets/images/prod/5.jpg' %}"
-                    class="img-fluid lazy-image w-100"
-                    alt="Supreme Polishing Treatment"
-                    width="330"
-                    height="440"
-                  />
-                </a>
-                <div
-                  class="position-absolute d-flex z-index-2 product-actions vertical"
-                >
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Quick View"
-                  >
-                    <span
-                      data-bs-toggle="modal"
-                      data-bs-target="#quickViewModal"
-                      class="d-flex align-items-center justify-content-center"
-                    >
-                      <svg class="icon icon-eye-light">
-                        <use xlink:href="#icon-eye-light"></use>
-                      </svg>
-                    </span>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="shop/compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  >
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use
-                        xlink:href="#icon-arrows-left-right-light"
-                      ></use>
-                    </svg>
-                  </a>
-                </div>
-                <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
-                  >Add To Cart</a
-                >
-              </figure>
-              <div class="card-body text-center p-0">
-                <span
-                  class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                  >₹29.00</span
-                >
-                <h4
-                  class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
-                >
-                  <a
-                    class="text-decoration-none text-reset"
-                    href="shop/product-details-v1.html"
-                    >Supreme Polishing Treatment</a
-                  >
-                </h4>
-                <div
-                  class="d-flex align-items-center fs-12px justify-content-center"
-                >
-                  <div class="rating">
-                    <div class="empty-stars">
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <div class="filled-stars" style="width: 100%">
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                  <span class="reviews ms-4 pt-3 fs-14px"
-                    >2947 reviews</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6 col-12">
-            <div
-              class="card card-product grid-2 bg-transparent border-0"
-              data-animate="fadeInUp"
-            >
-              <figure
-                class="card-img-top position-relative mb-7 overflow-hidden"
-              >
-                <a
-                  href="shop/product-details-v1.html"
-                  class="hover-zoom-in d-block"
-                  title="Scalp Moisturizing Cream"
-                >
-                  <img
-                    src="{% static '#' %}"
-                    data-src="{% static 'assets/images/prod/6.jpg' %}"
-                    class="img-fluid lazy-image w-100"
-                    alt="Scalp Moisturizing Cream"
-                    width="330"
-                    height="440"
-                  />
-                </a>
-                <div
-                  class="position-absolute d-flex z-index-2 product-actions vertical"
-                >
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Quick View"
-                  >
-                    <span
-                      data-bs-toggle="modal"
-                      data-bs-target="#quickViewModal"
-                      class="d-flex align-items-center justify-content-center"
-                    >
-                      <svg class="icon icon-eye-light">
-                        <use xlink:href="#icon-eye-light"></use>
-                      </svg>
-                    </span>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="shop/compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  >
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use
-                        xlink:href="#icon-arrows-left-right-light"
-                      ></use>
-                    </svg>
-                  </a>
-                </div>
-                <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
-                  >Add To Cart</a
-                >
-              </figure>
-              <div class="card-body text-center p-0">
-                <span
-                  class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                  >₹29.00</span
-                >
-                <h4
-                  class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
-                >
-                  <a
-                    class="text-decoration-none text-reset"
-                    href="shop/product-details-v1.html"
-                    >Scalp Moisturizing Cream</a
-                  >
-                </h4>
-                <div
-                  class="d-flex align-items-center fs-12px justify-content-center"
-                >
-                  <div class="rating">
-                    <div class="empty-stars">
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star-o">
-                          <use xlink:href="#star-o"></use>
-                        </svg>
-                      </span>
-                    </div>
-                    <div class="filled-stars" style="width: 100%">
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                      <span class="star">
-                        <svg class="icon star text-primary">
-                          <use xlink:href="#star"></use>
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                  <span class="reviews ms-4 pt-3 fs-14px"
-                    >2947 reviews</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -5576,38 +4803,63 @@
   </div>
   </div>
   <div class="col-lg-7">
-  <div class="row gy-11"><div class="col-md-4 col-sm-6 col-12">
+  <div class="row gy-11">
+    {% for yellow in yellow_peel %}
+    <div class="col-md-4 col-sm-6 col-12">
   <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
   <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="shop/product-details-v1.html" class="hover-zoom-in d-block" title="Enriched Duo">
-  <img src="{% static '#' %}" data-src="{% static 'assets/images/prod/1.jpg' %}" class="img-fluid lazy-image w-100" alt="Enriched Duo" width="330" height="440">
+  <a href="{% url 'core:product_new' yellow.product_slug %}" class="hover-zoom-in d-block" title="{{yellow.title}}">
+  <img src="{{yellow.image.url}}" data-src="{{yellow.image.url}}" class="img-fluid lazy-image w-100" alt="{{yellow.title}}" width="330" height="440">
   </a>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+  <div class="position-absolute d-flex z-index-2 product-actions  horizontal">
+    <input type="hidden" value="{{yellow.pid}}" class="product-id">
+
+    <input type="hidden" value="{{yellow.pid}}" id="product-quantity-{{products.pid}}" class="product-id-{{yellow.pid}}">
+
+    <input type="hidden" value="1" class="product-quantity-{{yellow.pid}}">
+
+    <input type="hidden" value="{{yellow.title}}{% if product.first_variant_type_title %} - ({{ yellow.first_variant_type_title }}){% endif %}" class="product-title-{{yellow.pid}}">
+
+    <input type="hidden" value="{{yellow.gst_inclusive_price}}" class="product-price-{{yellow.pid}}">
+
+   
+    {% with price_wo_gst=yellow.variant_price|default:yellow.price %}
+    <input type="hidden" value="{{ price_wo_gst }}" class="product-price-wo-gst-{{ yellow.pid }}">
+    {% endwith %}
+   
+
+    {% if yellow.productvarient_set.exists %}
+    {% with first_variant=yellow.productvarient_set.first %}
+    <input type="hidden" value="{{ first_variant.productvarianttypes_set.first.gst_rate }}" class="gst_rate-{{ yellow.pid }}">
+    {% endwith %}
+    {% else %}
+    <input type="hidden" value="{{ yellow.gst_rate }}" class="gst_rate-{{ yellow.pid }}">
+    {% endif %}
+
+    <input type="hidden" value="{{yellow.sku}}" class="product-sku-{{yellow.pid}}">
+
+    <input type="hidden" value="{{yellow.image.url}}" class="product-image-{{yellow.pid}}">
+
+    <input type="hidden" id="variant-id-hidden-{{ yellow.pid }}" value="{{ yellow.first_variant_type_id }}">
+
+    <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart add-to-cart-btn" href="#" id="add-to-cart-btn" data-index="{{yellow.pid}}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
   <svg class="icon icon-shopping-bag-open-light">
   <use xlink:href="#icon-shopping-bag-open-light"></use>
   </svg>
-  </a><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
+  </a>
+
+  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
   <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
   <svg class="icon icon-eye-light">
   <use xlink:href="#icon-eye-light"></use>
   </svg>
   </span>
   </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Wishlist">
-  <svg class="icon icon-star-light">
-  <use xlink:href="#icon-star-light"></use>
-  </svg>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare" href="shop/compare.html" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Compare">
-  <svg class="icon icon-arrows-left-right-light">
-  <use xlink:href="#icon-arrows-left-right-light"></use>
-  </svg>
-  </a>
   </div>
   </figure>
   <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹29.00</span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="shop/product-details-v1.html">Enriched Duo</a></h4>
+  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹ {{yellow.gst_inclusive_price}}</span>
+  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="{% url 'core:product_new' yellow.product_slug %}">{{yellow.title}}<span class="modif">{% if yellow.first_variant_type_title %} - ({{ yellow.first_variant_type_title }}){% endif %}</span></a></h4>
   <div class="d-flex align-items-center fs-12px justify-content-center">
   <div class="rating">
   <div class="empty-stars">
@@ -5664,475 +4916,12 @@
   </svg>
   </span>
   </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">2947 reviews</span></div>
+  </div><span class="reviews ms-4 pt-3 fs-14px">0 reviews</span></div>
   </div>
   </div>
-  </div><div class="col-md-4 col-sm-6 col-12">
-  <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
-  <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="shop/product-details-v1.html" class="hover-zoom-in d-block" title="Shield Spray">
-  <img src="{% static '#' %}" data-src="{% static 'assets/images/prod/2.jpg' %}" class="img-fluid lazy-image w-100" alt="Shield Spray" width="330" height="440">
-  </a>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-  <svg class="icon icon-shopping-bag-open-light">
-  <use xlink:href="#icon-shopping-bag-open-light"></use>
-  </svg>
-  </a><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
-  <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
-  <svg class="icon icon-eye-light">
-  <use xlink:href="#icon-eye-light"></use>
-  </svg>
-  </span>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Wishlist">
-  <svg class="icon icon-star-light">
-  <use xlink:href="#icon-star-light"></use>
-  </svg>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare" href="shop/compare.html" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Compare">
-  <svg class="icon icon-arrows-left-right-light">
-  <use xlink:href="#icon-arrows-left-right-light"></use>
-  </svg>
-  </a>
-  </div>
-  </figure>
-  <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹29.00</span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="shop/product-details-v1.html">Shield Spray</a></h4>
-  <div class="d-flex align-items-center fs-12px justify-content-center">
-  <div class="rating">
-  <div class="empty-stars">
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  </div>
-  <div class="filled-stars" style="width: 100%">
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">2947 reviews</span></div>
-  </div>
-  </div>
-  </div><div class="col-md-4 col-sm-6 col-12">
-  <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
-  <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="shop/product-details-v1.html" class="hover-zoom-in d-block" title="Vital Eye Cream">
-  <img src="{% static '#' %}" data-src="{% static 'assets/images/prod/3.jpg' %}" class="img-fluid lazy-image w-100" alt="Vital Eye Cream" width="330" height="440">
-  </a>
-  <div class="position-absolute product-flash z-index-2 ">
-    {% comment %} <span class="badge badge-product-flash on-sale bg-primary">-26%</span> {% endcomment %}
-  </div>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-  <svg class="icon icon-shopping-bag-open-light">
-  <use xlink:href="#icon-shopping-bag-open-light"></use>
-  </svg>
-  </a><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
-  <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
-  <svg class="icon icon-eye-light">
-  <use xlink:href="#icon-eye-light"></use>
-  </svg>
-  </span>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Wishlist">
-  <svg class="icon icon-star-light">
-  <use xlink:href="#icon-star-light"></use>
-  </svg>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare" href="shop/compare.html" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Compare">
-  <svg class="icon icon-arrows-left-right-light">
-  <use xlink:href="#icon-arrows-left-right-light"></use>
-  </svg>
-  </a>
-  </div>
-  </figure>
-  <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">
-  <del class=" text-body fw-500 me-4 fs-13px">₹39.00</del>
-  <ins class="text-decoration-none">₹29.00</ins></span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="shop/product-details-v1.html">Vital Eye Cream</a></h4>
-  <div class="d-flex align-items-center fs-12px justify-content-center">
-  <div class="rating">
-  <div class="empty-stars">
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  </div>
-  <div class="filled-stars" style="width: 80%">
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">2947 reviews</span></div>
-  </div>
-  </div>
-  </div><div class="col-md-4 col-sm-6 col-12">
-  <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
-  <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="shop/product-details-v1.html" class="hover-zoom-in d-block" title="Supreme Moisture Mask">
-  <img src="{% static '#' %}" data-src="{% static 'assets/images/prod/4.jpg' %}" class="img-fluid lazy-image w-100" alt="Supreme Moisture Mask" width="330" height="440">
-  </a>
-  <div class="position-absolute product-flash z-index-2 ">
-    {% comment %} <span class="badge badge-product-flash on-sale bg-primary">-26%</span> {% endcomment %}
-  </div>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-  <svg class="icon icon-shopping-bag-open-light">
-  <use xlink:href="#icon-shopping-bag-open-light"></use>
-  </svg>
-  </a><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
-  <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
-  <svg class="icon icon-eye-light">
-  <use xlink:href="#icon-eye-light"></use>
-  </svg>
-  </span>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Wishlist">
-  <svg class="icon icon-star-light">
-  <use xlink:href="#icon-star-light"></use>
-  </svg>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare" href="shop/compare.html" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Compare">
-  <svg class="icon icon-arrows-left-right-light">
-  <use xlink:href="#icon-arrows-left-right-light"></use>
-  </svg>
-  </a>
-  </div>
-  </figure>
-  <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">
-  <del class=" text-body fw-500 me-4 fs-13px">₹39.00</del>
-  <ins class="text-decoration-none">₹29.00</ins></span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="shop/product-details-v1.html">Supreme Moisture Mask</a></h4>
-  <div class="d-flex align-items-center fs-12px justify-content-center">
-  <div class="rating">
-  <div class="empty-stars">
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  </div>
-  <div class="filled-stars" style="width: 80%">
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">2947 reviews</span></div>
-  </div>
-  </div>
-  </div><div class="col-md-4 col-sm-6 col-12">
-  <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
-  <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="shop/product-details-v1.html" class="hover-zoom-in d-block" title="Supreme Polishing Treatment">
-  <img src="{% static '#' %}" data-src="{% static 'assets/images/prod/5.jpg' %}" class="img-fluid lazy-image w-100" alt="Supreme Polishing Treatment" width="330" height="440">
-  </a>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-  <svg class="icon icon-shopping-bag-open-light">
-  <use xlink:href="#icon-shopping-bag-open-light"></use>
-  </svg>
-  </a><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
-  <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
-  <svg class="icon icon-eye-light">
-  <use xlink:href="#icon-eye-light"></use>
-  </svg>
-  </span>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Wishlist">
-  <svg class="icon icon-star-light">
-  <use xlink:href="#icon-star-light"></use>
-  </svg>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare" href="shop/compare.html" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Compare">
-  <svg class="icon icon-arrows-left-right-light">
-  <use xlink:href="#icon-arrows-left-right-light"></use>
-  </svg>
-  </a>
-  </div>
-  </figure>
-  <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹29.00</span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="shop/product-details-v1.html">Supreme Polishing Treatment</a></h4>
-  <div class="d-flex align-items-center fs-12px justify-content-center">
-  <div class="rating">
-  <div class="empty-stars">
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  </div>
-  <div class="filled-stars" style="width: 100%">
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">2947 reviews</span></div>
-  </div>
-  </div>
-  </div><div class="col-md-4 col-sm-6 col-12">
-  <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
-  <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="shop/product-details-v1.html" class="hover-zoom-in d-block" title="Scalp Moisturizing Cream">
-  <img src="{% static '#' %}" data-src="{% static 'assets/images/prod/6.jpg' %}" class="img-fluid lazy-image w-100" alt="Scalp Moisturizing Cream" width="330" height="440">
-  </a>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal"><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-  <svg class="icon icon-shopping-bag-open-light">
-  <use xlink:href="#icon-shopping-bag-open-light"></use>
-  </svg>
-  </a><a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
-  <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
-  <svg class="icon icon-eye-light">
-  <use xlink:href="#icon-eye-light"></use>
-  </svg>
-  </span>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Wishlist">
-  <svg class="icon icon-star-light">
-  <use xlink:href="#icon-star-light"></use>
-  </svg>
-  </a>
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare" href="shop/compare.html" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Compare">
-  <svg class="icon icon-arrows-left-right-light">
-  <use xlink:href="#icon-arrows-left-right-light"></use>
-  </svg>
-  </a>
-  </div>
-  </figure>
-  <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹29.00</span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="shop/product-details-v1.html">Scalp Moisturizing Cream</a></h4>
-  <div class="d-flex align-items-center fs-12px justify-content-center">
-  <div class="rating">
-  <div class="empty-stars">
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  </div>
-  <div class="filled-stars" style="width: 100%">
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">2947 reviews</span></div>
-  </div>
-  </div>
-  </div></div>
+    </div>
+    {% endfor %}
+</div>
   </div>
   </div>
   </section>

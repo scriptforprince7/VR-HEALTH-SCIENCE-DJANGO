@@ -30598,3 +30598,24 @@ ul.single-product-meta li span:first-child {
 [data-bs-theme="dark"] .landing-blog-post-background:hover {
   background-color: var(--bs-section-color-8);
 }
+
+.newsletter-popup {
+  width: 56.25rem;
+  max-width: calc(100% - 1rem);
+}
+.newsletter-popup .modal-content {
+  overflow: hidden;
+}
+.newsletter-popup .modal-content .btn-close {
+  position: absolute;
+  right: 0.75rem;
+  top: 1rem;
+}
+.newsletter-popup .block-newsletter {
+  padding: 1.875rem 1.25rem;
+}
+@media (min-width: 768px) {
+  .newsletter-popup .block-newsletter {
+    padding: 3.5rem 2.5rem;
+  }
+}

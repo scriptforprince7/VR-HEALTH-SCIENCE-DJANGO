@@ -67,16 +67,6 @@
               </svg>
             </a>
           </li>
-          <li class="list-inline-item me-0">
-            <a
-              class="fs-32px text-body-emphasis-hover text-muted"
-              href="shop-layout-v5.html"
-            >
-              <svg class="icon icon-list">
-                <use xlink:href="#icon-list"></use>
-              </svg>
-            </a>
-          </li>
         </ul>
         <ul
           class="list-unstyled d-flex align-items-center list-inline mb-0 ms-auto"
@@ -148,32 +138,35 @@
                       </svg>
                     </span>
                   </a>
-                  <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                    href="#"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Add To Wishlist"
-                  >
-                    <svg class="icon icon-star-light">
-                      <use xlink:href="#icon-star-light"></use>
-                    </svg>
-                  </a>
-                  {% comment %} <a
-                    class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                    href="compare.html"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="left"
-                    data-bs-title="Compare"
-                  > {% endcomment %}
-                    <svg class="icon icon-arrows-left-right-light">
-                      <use xlink:href="#icon-arrows-left-right-light"></use>
-                    </svg>
-                  </a>
                 </div>
+                <input type="hidden" value="1" id="product-quantity" class="product-quantity-{{product.pid}}">
+
+                <input type="hidden" value="{{product.pid}}" class="product-id-{{product.pid}}">
+          
+                <input type="hidden" value="{{product.title}}{% if product.first_variant_type_title %} - ({{ product.first_variant_type_title }}){% endif %}" class="product-title-{{product.pid}}">
+          
+                {% with price_wo_gst=product.variant_price|default:product.price %}
+                <input type="hidden" value="{{ price_wo_gst }}" class="product-price-wo-gst-{{ product.pid }}">
+                {% endwith %}
+          
+                {% if product.productvarient_set.exists %}
+                          {% with first_variant=product.productvarient_set.first %}
+                          <input type="hidden" value="{{ first_variant.productvarianttypes_set.first.gst_rate }}" class="gst_rate-{{ product.pid }}">
+                          {% endwith %}
+                      {% else %}
+                      <input type="hidden" value="{{ product.gst_rate }}" class="gst_rate-{{ product.pid }}">
+                      {% endif %}
+                      
+                <input type="hidden" value="{{ product.gst_inclusive_price }}" class="product-price-{{ product.pid }}">
+          
+                <input type="hidden" value="{{product.sku}}" class="product-sku-{{product.pid}}">
+                <input type="hidden" value="{{product.image.url}}" class="product-image-{{product.pid}}">
+                <input type="hidden" id="variant-id-hidden-{{ product.pid }}" value="{{ product.first_variant_type_id }}">
                 <a
                   href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
+                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2 add-to-cart-btn"
+                  id="add-to-cart-btn"
+                  data-index="{{product.pid}}"
                   >Add To Cart</a
                 >
               </figure>

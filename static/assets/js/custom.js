@@ -221,3 +221,31 @@ $(document).ready(function () {
     });
   });
 });
+
+$(document).ready(function () {
+  setTimeout(function () {
+    if ($("#newsletterPopup").length > 0) {
+      $("#newsletterPopup").modal("show");
+    }
+  }, 5000); // 5000 milliseconds = 5 seconds
+
+  $(".btn-video-player").each(function () {
+    $(this).on("click", function () {
+      const video = $($(this).data("video")).get(0);
+      if ($(this).hasClass("playing")) {
+        $(this).removeClass("playing");
+        video.pause();
+      } else {
+        $(this).addClass("playing");
+        video.play();
+      }
+    });
+
+    const btn_player = $(this);
+
+    $($(this).data("video")).on("ended", function () {
+      $(btn_player).removeClass("playing");
+      this.currentTime = 0;
+    });
+  });
+});

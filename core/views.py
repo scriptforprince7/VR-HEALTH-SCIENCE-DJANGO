@@ -33,6 +33,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from xhtml2pdf import pisa
 from io import BytesIO
+from instamojo_wrapper import Instamojo
 from core.forms import *
 
 
@@ -40,6 +41,7 @@ def index(request):
     categories = Category.objects.filter(home_page_display='approved')
     home_banner = BannerHome.objects.filter(active_status='published')
     new_arrival = Product.objects.filter(new_arrival=True)
+    yellow_peel = Product.objects.filter(new_arrival=True)
     summer_sale = Product.objects.filter(summer_sale=True)
     testimonials = Testimonials.objects.all()
 
@@ -112,10 +114,43 @@ def index(request):
             product.first_variant_type_title = None
             product.first_variant_type_id = None
 
+         # Iterate over products in new arrival to determine prices
+    for product in yellow_peel:
+    # Check if the product has variants
+        product_has_variants = product.productvarient_set.exists()
+
+        if product_has_variants:
+        # Get the first variant
+            first_variant = product.productvarient_set.first()
+            first_variant_type = first_variant.productvarianttypes_set.first()
+
+            product.first_variant_type_title = first_variant_type.variant_title if first_variant_type else None
+            product.first_variant_type_id = first_variant_type.id if first_variant_type else None
+
+            # Calculate default price without GST
+            price_wo_gst = first_variant_type.varient_price if first_variant_type else product.price
+            # Fetching GST rate
+            gst_rate = first_variant_type.gst_rate if first_variant_type else product.gst_rate
+            # Calculate default price including GST
+            base_price = first_variant_type.varient_price if first_variant_type else product.price
+            # Calculate GST amount
+            gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
+        # Calculate total price including GST and round off to two decimal places
+            product.gst_inclusive_price = round(base_price + gst_amount, 2)
+        # Include original variant price in the context
+            product.variant_price = price_wo_gst
+        else:
+        # Use the existing price for the product if it doesn't have variants
+            product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
+            product.variant_price = None
+            product.first_variant_type_title = None
+            product.first_variant_type_id = None
+
 
     context = {
         "category": categories,
         "new_arrival": new_arrival,
+        "yellow_peel": yellow_peel,
         "summer_sale": summer_sale,
         "home_banner": home_banner,
         # "product": product,
