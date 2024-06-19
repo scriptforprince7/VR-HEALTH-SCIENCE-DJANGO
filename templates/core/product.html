@@ -138,10 +138,11 @@
       </div>
       <div class="col-md-6 pt-md-0 pt-10">
         <p class="d-flex align-items-center mb-6">
-          <span class="text-decoration-line-through">₹ 39.00</span>
+          {% comment %} <span class="text-decoration-line-through">₹ 39.00</span> {% endcomment %}
           <span class="fs-18px text-body-emphasis ps-6 fw-bold"
-            >₹ 29.00</span
+            >₹ {{products.price}}</span
           >
+          <p>(Includes {{products.gst_rate}} gst)</p>
           <!-- <span
             class="badge text-bg-primary fs-6 fw-semibold ms-7 px-6 py-3"
             >20%</span
@@ -483,80 +484,6 @@
                         Makeaholic!)
                       </li>
                     </ul>
-                    <div class="row">
-                      <div class="col-6 col-md-3 text-center mb-9 pb-2">
-                        <img
-                          class="lazy-image light-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                        <img
-                          class="lazy-image dark-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                      </div>
-                      <div class="col-6 col-md-3 text-center mb-9 pb-2">
-                        <img
-                          class="lazy-image light-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                        <img
-                          class="lazy-image dark-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                      </div>
-                      <div class="col-6 col-md-3 text-center mb-9 pb-2">
-                        <img
-                          class="lazy-image light-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                        <img
-                          class="lazy-image dark-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                      </div>
-                      <div class="col-6 col-md-3 text-center mb-9 pb-2">
-                        <img
-                          class="lazy-image light-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                        <img
-                          class="lazy-image dark-mode-img"
-                          src="#"
-                          data-src=""
-                          width="66"
-                          height="77"
-                          alt
-                        />
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

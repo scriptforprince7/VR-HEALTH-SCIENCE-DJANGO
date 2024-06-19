@@ -36,6 +36,9 @@ from io import BytesIO
 from instamojo_wrapper import Instamojo
 from core.forms import *
 
+api = Instamojo(api_key=settings.API_KEY,
+                auth_token=settings.AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
+
 
 def index(request):
     categories = Category.objects.filter(home_page_display='approved')
@@ -848,17 +851,19 @@ def checkout_view(request):
                 cart_total_amount += int(item['qty']) * float(item['price'])
                 product_id = item['product_id']
                 product = Product.objects.get(pid=product_id)
-                client = razorpay.Client(auth=(settings.KEY, settings.SECRET))
-                payment = client.order.create(
-                    {'amount': int(item['qty']) * float(item['price']) * 100, 'currency': 'INR', 'payment_capture': 1})
-                product.razor_pay_order_id = payment['id']
+                response = api.payment_request_create(
+                    amount= cart_total_amount,
+                    purpose= 'Order Processing',
+                    buyer_name= 'Prince Sachdeva',
+                    email= 'scriptforprince@gmail.com',
+                    redirect_url= 'http://192.168.0.109:8000/payment-success/'
+                )
+                print(response)
                 product.save()
 
-    client = razorpay.Client(auth=(settings.KEY, settings.SECRET))
-    payment = client.order.create({'amount': cart_total_amount * 100, 'currency': 'INR', 'payment_capture': 1})
+    # payment = client.order.create({'amount': cart_total_amount * 100, 'currency': 'INR', 'payment_capture': 1})
 
     context = {
-        "payment": payment,
         "price_wo_gst_total": price_wo_gst_total,
         "total_gst": total_gst,
         "user_zipcode": user_zipcode,

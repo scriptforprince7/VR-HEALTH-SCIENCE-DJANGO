@@ -22,7 +22,7 @@ class ProductImagesAdmin(admin.TabularInline):
     model = ProductImages
     extra = 0
 
-class ProductDescriptionAdmin(admin.TabularInline):
+class ProductDescriptionAdmin(admin.StackedInline):
     model = ProductDescription
     extra = 0
 

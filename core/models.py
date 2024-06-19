@@ -17,10 +17,7 @@ STATUS_CHOICE = (
 )
 
 STATUS = (
-    ("draft", "Draft"),
     ("disabled", "Disabled"),
-    ("rejected", "Rejected"),
-    ("in_review", "In Review"),
     ("published", "Published"),
 )
 
@@ -173,21 +170,22 @@ class Product(models.Model):
     main_category = models.ForeignKey(Main_category, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    title = models.CharField(max_length=500, default="Mobile & Laptop")
+    title = models.CharField(max_length=500, default="Treseme..")
     packing_size = models.CharField(max_length=500, default="Box 100 Pcs")
+    form = models.CharField(max_length=500, default="Liquid")
+    type = models.CharField(max_length=500, default="Dandruff Control...")
     minimum_order_qty = models.CharField(max_length=500, default="1")
     hsn_code = models.CharField(max_length=100, default="5305")
     gst_rate = models.CharField(max_length=100, default="18%")
     product_slug = models.SlugField(unique=True, max_length=150, blank=True, null=True)
     price = models.DecimalField(max_digits=9999, decimal_places=2, default="1")
     old_price = models.DecimalField(max_digits=9999, decimal_places=2, default="2")
-    product_status = models.CharField(choices=STATUS, max_length=10, default="in_review")
-    status = models.BooleanField(default=True)
+    product_status = models.CharField(choices=STATUS, max_length=10, default="published")
     in_stock = models.BooleanField(default=True)
     summer_sale= models.BooleanField(default=False)
     new_arrival= models.BooleanField(default=False)
     yellow_peel= models.BooleanField(default=False)
-    sku = ShortUUIDField(unique=True, max_length=25, prefix="sku", alphabet="12345678900")
+    sku = ShortUUIDField(unique=True, max_length=7, prefix="sku", alphabet="12345678900")
     date = models.DateTimeField(auto_now_add=True)
     youtube_link = models.CharField(max_length=12000, default="youtube video link..")
     youtube_content = models.CharField(max_length=12000, default="100percent free from..")
@@ -224,7 +222,14 @@ class ProductImages(models.Model):
 
 class ProductDescription(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    product_description = HTMLField()
+    product_description = HTMLField(blank=True)
+    reasons_to_love = HTMLField(blank=True)
+    key_active_ingredients = HTMLField(blank=True)
+    safety_warnings = HTMLField(blank=True)
+    infusion_of_ingredients = HTMLField(blank=True)
+    direction_for_use = HTMLField(blank=True)
+    for_your_ease = HTMLField(blank=True)
+    more_reasons_to_love = HTMLField(blank=True)
 
     class Meta:
         verbose_name_plural = "Product Description"
@@ -254,8 +259,6 @@ class ProductVarient(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=500, default="Product Varient")
     status = models.BooleanField(default=True)
-    in_stock = models.BooleanField(default=True)
-    have_variation = models.BooleanField(default=False)
     sku = ShortUUIDField(unique=True, max_length=50, prefix="sku", alphabet="12345678900")
 
     class Meta:
