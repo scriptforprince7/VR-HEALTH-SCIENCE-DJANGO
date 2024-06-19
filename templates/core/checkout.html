@@ -18,28 +18,25 @@
     <div class="text-center">
         <h2 class="mb-6">Check out</h2>
     </div>
-    <form class="pt-12">
+    <form class="pt-12" method="POST" action="/checkout/">
+        {% csrf_token %}
         <div class="row">
             <div class="col-lg-4 pb-lg-0 pb-14 order-lg-last">
                 <div class="card border-0 rounded-0 shadow">
                     <div class="card-header px-0 mx-10 bg-transparent py-8">
                         <h4 class="fs-4 mb-8">Order Summary</h4>
-                        {% for product_id, item in cart_data.items  %}
+                        {% for product_id, item in cart_data.items %}
                         <div class="d-flex w-100 mb-7">
                             <div class="me-6">
-                                <img src="{{item.image}}" data-src="{{item.image}}"
-                                    class="lazy-image" width="60" height="80" alt="{{item.title}}">
+                                <img src="{{ item.image }}" data-src="{{ item.image }}" class="lazy-image" width="60" height="80" alt="{{ item.title }}">
                             </div>
                             <div class="d-flex flex-grow-1">
                                 <div class="pe-6">
-                                    <a href="" class>{{item.title}}<span class="text-body">
-                                            x{{item.qty}}</span></a>
-                                    <p class="fs-14px text-body-emphasis mb-0 mt-1">Size:
-                                        <span class="text-body">Fullsize</span>
-                                    </p>
+                                    <a href="">{{ item.title }}<span class="text-body"> x{{ item.qty }}</span></a>
+                                    <p class="fs-14px text-body-emphasis mb-0 mt-1">Size: <span class="text-body">Fullsize</span></p>
                                 </div>
                                 <div class="ms-auto">
-                                    <p class="fs-14px text-body-emphasis mb-0 fw-bold">₹ {% widthratio item.price_wo_gst 1 item.qty%}.00</p>
+                                    <p class="fs-14px text-body-emphasis mb-0 fw-bold">₹ {% widthratio item.price_wo_gst 1 item.qty %}.00</p>
                                 </div>
                             </div>
                         </div>
@@ -52,64 +49,51 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <span>Shipping:</span>
-                            <span class="d-block ms-auto text-body-emphasis fw-bold">$0</span>
+                            <span class="d-block ms-auto text-body-emphasis fw-bold">₹0</span>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent py-5 px-0 mx-10">
                         <div class="d-flex align-items-center fw-bold mb-6">
                             <span class="text-body-emphasis p-0">Total price:</span>
-                            <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold">₹ {{cart_total_amount|floatformat:"2"}}</span>
+                            <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold">₹ {{ cart_total_amount|floatformat:"2" }}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-8 order-lg-first pe-xl-20 pe-lg-6">
                 <div class="checkout">
-                    <p class="mb-5">Returning customer?
-                        <a href="/user/sign-in">Click here to login</a>
-                    </p>
+                    <p class="mb-5">Returning customer? <a href="/user/sign-in">Click here to login</a></p>
                     <div class="collapse" id="collapsecoupon">
                         <div class="card mw-60 border-0">
                             <div class="card-body py-10 px-8 my-10 border">
-                                <p class="card-text text-body-emphasis mb-8">
-                                    If you have a coupon code, please apply it below.</p>
+                                <p class="card-text text-body-emphasis mb-8">If you have a coupon code, please apply it below.</p>
                                 <div class="input-group position-relative">
-                                    <input type="email" class="form-control bg-body rounded-end"
-                                        placeholder="Your Email*">
-                                    <button type="submit"
-                                        class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">
-                                        Apply Coupon
-                                    </button>
+                                    <input type="email" class="form-control bg-body rounded-end" placeholder="Your Email*">
+                                    <button type="submit" class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">Apply Coupon</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <h4 class="fs-4 pt-4 mb-7">Shipping Information</h4>
                     <div class="mb-7">
-                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">name</label>
+                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Name</label>
                         <div class="row">
                             <div class="col-md-6 mb-md-0 mb-7">
-                                <input type="text" class="form-control" id="first-name" name="firstname"
-                                    placeholder="First Name" required>
+                                <input type="text" class="form-control" id="first-name" name="firstname" placeholder="First Name" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" id="last-name" name="lasttname"
-                                    placeholder="Last Name" required>
+                                <input type="text" class="form-control" id="last-name" name="lastname" placeholder="Last Name" required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-7">
                         <div class="row">
                             <div class="col-md-8 mb-md-0 mb-7">
-                                <label for="street-address"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Street
-                                    Address</label>
-                                <input type="text" class="form-control" id="street-address" name="streetaddress"
-                                    required>
+                                <label for="street-address" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Street Address</label>
+                                <input type="text" class="form-control" id="street-address" name="streetaddress" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="apt"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">APT/Suite</label>
+                                <label for="apt" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">APT/Suite</label>
                                 <input type="text" class="form-control" id="apt" name="apt" required>
                             </div>
                         </div>
@@ -117,18 +101,15 @@
                     <div class="mb-7">
                         <div class="row">
                             <div class="col-md-4 mb-md-0 mb-7">
-                                <label for="city"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">City</label>
+                                <label for="city" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">City</label>
                                 <input type="text" class="form-control" id="city" name="city" required>
                             </div>
                             <div class="col-md-4 mb-md-0 mb-7">
-                                <label for="state"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
+                                <label for="state" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
                                 <input type="text" class="form-control" id="state" name="state" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="zip" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">zip
-                                    code</label>
+                                <label for="zip" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Zip Code</label>
                                 <input type="text" class="form-control" id="zip" name="zip" required>
                             </div>
                         </div>
@@ -136,10 +117,8 @@
                     <div class="mb-7">
                         <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Country</label>
                         <div class="dropdown bg-body-secondary rounded">
-                            <a href="#"
-                                class="form-select dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none text-secondary p-5 position-relative d-block"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Viet Nam
+                            <a href="#" class="form-select dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none text-secondary p-5 position-relative d-block" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                India
                             </a>
                             <div class="dropdown-menu w-100 px-0 py-4">
                                 <a class="dropdown-item px-6 py-4" href="#">Andorra</a>
@@ -152,34 +131,31 @@
                         </div>
                     </div>
                     <div class="mb-7">
-                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">info</label>
+                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Info</label>
                         <div class="row">
                             <div class="col-md-6 mb-md-0 mb-7">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                    required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="number" class="form-control" id="phone" name="phone"
-                                    placeholder="Phone number" required>
+                                <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone number" required>
                             </div>
                         </div>
                     </div>
                     <div class="mt-6 mb-5 form-check">
-                        <input type="checkbox" class="form-check-input rounded-0 me-4" name="customCheck6"
-                            id="customCheck5">
-                        <label class="text-body-emphasis" for="customCheck5">
+                        <input type="checkbox" class="form-check-input rounded-0 me-4" name="billing_same_as_shipping" id="billing_same_as_shipping">
+                        <label class="text-body-emphasis" for="billing_same_as_shipping">
                             <span class="text-body-emphasis">Billing address is the same as shipping</span>
                         </label>
                     </div>
                 </div>
                 <div class="checkout mb-7">
-                    <button type="submit"
-                        class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4">Place
-                        Order</button>
+                    <button type="submit" class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4">Place Order</button>
                 </div>
             </div>
         </div>
     </form>
+    
+    
 </section>
 </main>
 {% endblock main %}

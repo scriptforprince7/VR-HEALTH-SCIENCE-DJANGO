@@ -159,9 +159,9 @@ EMAIL_HOST_USER = 'princesachdeva@nationalmarketingprojects.com'
 EMAIL_HOST_PASSWORD = 'Prince_django_autuh_admin_panel_49494'
 DEFAULT_FROM_EMAIL = 'princesachdeva@nationalmarketingprojects.com'  # Use the same email as HOST_USER
 
-API_KEY = "test_61fda246dbdbe4ab5bed3cd7c99"
-AUTH_TOKEN = "test_c531b434563202a5978b2d0672e"
-SALT = "8a3291f25a874b19a8a2b255b1e340ec"
+API_KEY = "b6ef0020e4328e1d59453b11db4610f4"
+AUTH_TOKEN = "25f70c405c2f1bbde205cbf155dd48c1"
+SALT = "5176424723e546a291c5520a06a4668c"
 
 
 

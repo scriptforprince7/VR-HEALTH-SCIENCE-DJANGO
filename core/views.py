@@ -35,9 +35,10 @@ from xhtml2pdf import pisa
 from io import BytesIO
 from instamojo_wrapper import Instamojo
 from core.forms import *
+from django.http import HttpResponseBadRequest
 
 api = Instamojo(api_key=settings.API_KEY,
-                auth_token=settings.AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
+                auth_token=settings.AUTH_TOKEN, endpoint='https://www.instamojo.com/api/1.1/')
 
 
 def index(request):
@@ -771,111 +772,129 @@ def checkout_view(request):
         messages.info(request, 'Please shop first before checkout')
         return redirect('/cart')
     
-    cart_total_amount = 0
-    total_amount = 0
-    price_wo_gst_total = 0
-    total_gst = 0
-    user_zipcode = request.POST.get("checkout_zipcode")  # Get user's zipcode from the form
+    if request.method == 'POST':
+        # Get form data
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get('lastname')
+        street_address = request.POST.get('streetaddress')
+        apt = request.POST.get('apt')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip')
+        country = request.POST.get('country', 'India')  # Default to India if not specified
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        billing_same_as_shipping = request.POST.get('billing_same_as_shipping', False)
+        cart_total_amount = 0  # Initialize cart_total_amount here
 
-    with open('maharashtra_zipcodes.json', 'r') as f:
-        maharashtra_zipcodes = json.load(f)
+        cart_total_amount = 0
+        total_amount = 0
+        price_wo_gst_total = 0
+        total_gst = 0
+        user_zipcode = zip_code  # Get user's zipcode from the form
 
-    # Check if user's zipcode is in Maharashtra
-    if user_zipcode in maharashtra_zipcodes:
-        # Maharashtra zipcode logic
-        cgst_factor = Decimal('0.025')  # CGST rate for Maharashtra (2.5%)
-        sgst_factor = Decimal('0.025')  # SGST rate for Maharashtra (2.5%)
-        igst_factor = Decimal('0')      # IGST will be 0%
-    else:
-        # Non-Maharashtra zipcode logic
-        cgst_factor = Decimal('0.09')   # CGST rate for other states (9%)
-        sgst_factor = Decimal('0.09')   # SGST rate for other states (9%)
-        igst_factor = Decimal('1')      # IGST will be 100%
+        with open('maharashtra_zipcodes.json', 'r') as f:
+            maharashtra_zipcodes = json.load(f)
 
-    # Check if the user is authenticated
-    if request.user.is_authenticated:
-        # If the user is logged in, associate the order with the logged-in user
-        order = CartOrder.objects.create(
-            user=request.user,  # Use the logged-in user
-            price=total_amount
-        )
-    else:
-        # If the user is not logged in, create the order without associating it with any user
-        order = CartOrder.objects.create(
-            price=total_amount
-        )
+        # Check if user's zipcode is in Maharashtra
+        if user_zipcode in maharashtra_zipcodes:
+            # Maharashtra zipcode logic
+            cgst_factor = Decimal('0.025')  # CGST rate for Maharashtra (2.5%)
+            sgst_factor = Decimal('0.025')  # SGST rate for Maharashtra (2.5%)
+            igst_factor = Decimal('0')      # IGST will be 0%
+        else:
+            # Non-Maharashtra zipcode logic
+            cgst_factor = Decimal('0.09')   # CGST rate for other states (9%)
+            sgst_factor = Decimal('0.09')   # SGST rate for other states (9%)
+            igst_factor = Decimal('1')      # IGST will be 100%
 
-    if 'cart_data_obj' in request.session:
-        # Calculate total amount, price without GST, and total GST
-        for unique_key, item in request.session['cart_data_obj'].items():
-            total_amount += int(item['qty']) * float(item['price'])
-            price_wo_gst_total += int(item['qty']) * float(item.get('price_wo_gst', item['price']))
-            item_gst = (Decimal(item['price']) - Decimal(item.get('price_wo_gst', item['price']))) * int(item['qty'])  # Calculate GST for this item
+        # Check if the user is authenticated
+        if request.user.is_authenticated:
+            # If the user is logged in, associate the order with the logged-in user
+            order = CartOrder.objects.create(
+                user=request.user,  # Use the logged-in user
+                price=total_amount
+            )
+        else:
+            # If the user is not logged in, create the order without associating it with any user
+            order = CartOrder.objects.create(
+                price=total_amount
+            )
 
-            # Calculate CGST and SGST for each product based on the user's zipcode
-            cgst = item_gst * cgst_factor
-            sgst = item_gst * sgst_factor
-            igst = item_gst * igst_factor
-
-            total_gst += item_gst  # Add item's GST to total GST
-
-            # Do whatever you want with CGST, SGST, and IGST here
-
-    for unique_key, item in request.session['cart_data_obj'].items():
-        cart_total_amount += int(item['qty']) * float(item['price'])
-
-        # Retrieve the correct product ID from the item data
-        product_id = item['product_id']
-
-        # Ensure the product exists in the database
-        try:
-            product = Product.objects.get(pid=product_id)
-        except Product.DoesNotExist:
-            messages.error(request, f"Product with ID {product_id} does not exist.")
-            return redirect('/cart')  # Redirect the user to the cart page
-
-        cart_order_products = CartOrderItems.objects.create(
-            order=order,
-            invoice_no="order_id-" + str(order.id),
-            item=item['title'],
-            image=item['image'],
-            qty=item['qty'],
-            price=item['price'],
-            total=float(item['qty']) * float(item['price'])
-        )
-
-    cart_total_amount = 0
-    if 'cart_data_obj' in request.session:
-        with transaction.atomic():
+        if 'cart_data_obj' in request.session:
+            # Calculate total amount, price without GST, and total GST
             for unique_key, item in request.session['cart_data_obj'].items():
-                cart_total_amount += int(item['qty']) * float(item['price'])
-                product_id = item['product_id']
+                total_amount += int(item['qty']) * float(item['price'])
+                price_wo_gst_total += int(item['qty']) * float(item.get('price_wo_gst', item['price']))
+                item_gst = (Decimal(item['price']) - Decimal(item.get('price_wo_gst', item['price']))) * int(item['qty'])  # Calculate GST for this item
+
+                # Calculate CGST and SGST for each product based on the user's zipcode
+                cgst = item_gst * cgst_factor
+                sgst = item_gst * sgst_factor
+                igst = item_gst * igst_factor
+
+                total_gst += item_gst  # Add item's GST to total GST
+
+                # Do whatever you want with CGST, SGST, and IGST here
+
+        for unique_key, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+            # Retrieve the correct product ID from the item data
+            product_id = item['product_id']
+
+            # Ensure the product exists in the database
+            try:
                 product = Product.objects.get(pid=product_id)
+            except Product.DoesNotExist:
+                messages.error(request, f"Product with ID {product_id} does not exist.")
+                return redirect('/cart')  # Redirect the user to the cart page
+
+            cart_order_products = CartOrderItems.objects.create(
+                order=order,
+                invoice_no="order_id-" + str(order.id),
+                item=item['title'],
+                image=item['image'],
+                qty=item['qty'],
+                price=item['price'],
+                total=float(item['qty']) * float(item['price'])
+            )
+
+        if 'cart_data_obj' in request.session:
+            try:
                 response = api.payment_request_create(
-                    amount= cart_total_amount,
-                    purpose= 'Order Processing',
-                    buyer_name= 'Prince Sachdeva',
-                    email= 'scriptforprince@gmail.com',
-                    redirect_url= 'http://192.168.0.109:8000/payment-success/'
+                    amount=str(total_amount),
+                    purpose='Order Processing',
+                    buyer_name=f'{first_name} {last_name}',
+                    email=email,
+                    phone=phone,
+                    redirect_url='http://127.0.0.1:8000/payment-success/'
                 )
-                print(response)
-                product.save()
+                payment_url = response['payment_request']['longurl']
+                return redirect(payment_url)
+            except Exception as e:
+                messages.error(request, f"Payment initiation failed: {str(e)}")
+                return HttpResponseBadRequest("Error processing payment request")
 
-    # payment = client.order.create({'amount': cart_total_amount * 100, 'currency': 'INR', 'payment_capture': 1})
+        context = {
+            "price_wo_gst_total": price_wo_gst_total,
+            "total_gst": total_gst,
+            "user_zipcode": user_zipcode,
+            "maharashtra_zipcodes": maharashtra_zipcodes,
+        }
 
-    context = {
-        "price_wo_gst_total": price_wo_gst_total,
-        "total_gst": total_gst,
-        "user_zipcode": user_zipcode,
-        "maharashtra_zipcodes": maharashtra_zipcodes,
-    }
+        return render(request, "core/checkout.html",
+                      {'cart_data': request.session.get('cart_data_obj', {}),
+                       'totalcartitems': len(request.session.get('cart_data_obj', {})),
+                       'cart_total_amount': cart_total_amount,
+                       **context})
 
-    return render(request, "core/checkout.html",
-                  {'cart_data': request.session.get('cart_data_obj', {}),
-                   'totalcartitems': len(request.session.get('cart_data_obj', {})),
-                   'cart_total_amount': cart_total_amount,
-                   **context})
-
+    # If not POST, render the checkout page with default context
+    return render(request, "core/checkout.html", {
+        'cart_data': request.session.get('cart_data_obj', {}),
+        'totalcartitems': len(request.session.get('cart_data_obj', {})),
+        
+    })
 
 
 
