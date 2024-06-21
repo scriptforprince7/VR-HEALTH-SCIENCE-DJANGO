@@ -23,7 +23,6 @@ urlpatterns = [
     path("termsandconditions/", tnc, name="tnc"),
     path("blog/", blogs, name="blogs"),
     path('newsletter/', subscribe_newsletter, name='subscribe_newsletter'),
-    path("grow-method/", grow_method, name="grow_method"),
     path('fetch-pin-details/', fetch_pin_details, name='fetch_pin_details'),
     path("blog/<blog_slug>/", blog_details, name="blog_details"),
     path("privacy-policy/", privacypolicy, name="privacypolicy"),
@@ -37,4 +36,5 @@ urlpatterns = [
     path("dashboard/myaddress", address, name="address"),
     path("dashboard/myorders/<int:id>", order_detail, name="order_detail"),
     path("payment-invoice/", payment_invoice, name="payment_invoice"),
+    path("invoice/", invoice, name="invoice"),
 ]

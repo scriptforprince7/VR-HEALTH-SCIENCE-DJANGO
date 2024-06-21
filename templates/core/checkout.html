@@ -33,7 +33,7 @@
                             <div class="d-flex flex-grow-1">
                                 <div class="pe-6">
                                     <a href="">{{ item.title }}<span class="text-body"> x{{ item.qty }}</span></a>
-                                    <p class="fs-14px text-body-emphasis mb-0 mt-1">Size: <span class="text-body">Fullsize</span></p>
+                                    <p class="fs-14px text-body-emphasis mb-0 mt-1">Size: <span class="text-body">{{ item.sku }}</span></p>
                                 </div>
                                 <div class="ms-auto">
                                     <p class="fs-14px text-body-emphasis mb-0 fw-bold">₹ {% widthratio item.price_wo_gst 1 item.qty %}.00</p>

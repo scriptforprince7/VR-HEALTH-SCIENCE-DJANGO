@@ -36,6 +36,7 @@ from io import BytesIO
 from instamojo_wrapper import Instamojo
 from core.forms import *
 from django.http import HttpResponseBadRequest
+from decimal import Decimal, ROUND_HALF_UP
 
 api = Instamojo(api_key=settings.API_KEY,
                 auth_token=settings.AUTH_TOKEN, endpoint='https://www.instamojo.com/api/1.1/')
@@ -346,7 +347,7 @@ def payment_failed_view(request):
 
 def add_to_cart(request):
     # Ensure all required parameters are present
-    required_params = ['id', 'title', 'qty', 'price', 'image', 'sku', 'price_wo_gst', 'gst_rate']
+    required_params = ['id', 'title', 'qty', 'price', 'image', 'sku', 'price_wo_gst', 'gst_applied', 'gst_rate']
     for param in required_params:
         if param not in request.GET:
             return JsonResponse({"error": f"Missing parameter: {param}"}, status=400)
@@ -359,6 +360,7 @@ def add_to_cart(request):
         qty = request.GET['qty']  # Ensure qty is an integer
         price = request.GET['price']  # Ensure price is a float
         price_wo_gst = request.GET['price_wo_gst']  # Ensure price_wo_gst is a float
+        gst_applied = request.GET['gst_applied']  # Ensure price_wo_gst is a float
         gst_rate = request.GET['gst_rate']  # Ensure gst_rate is a float
     except ValueError:
         return JsonResponse({"error": "Invalid numeric value"}, status=400)
@@ -372,6 +374,7 @@ def add_to_cart(request):
         'image': request.GET.get('image'),
         'sku': request.GET.get('sku'),
         'price_wo_gst': price_wo_gst,
+        'gst_applied':gst_applied,
         'gst_rate': gst_rate,
     }
 
@@ -534,8 +537,8 @@ def blog_details(request, blog_slug):
 
     return render(request, "core/blog-details.html", context)
 
-def grow_method(request):
-    return render(request, "core/grow-method.html")
+def invoice(request):
+    return render(request, "core/payment_invoice.html")
 
 def payment_invoice(request):
     razorpay_payment_id = request.GET.get('razorpay_payment_id')
@@ -659,22 +662,6 @@ def payment_invoice(request):
                 total=float(item['qty']) * float(item['price'])
             )
 
-        cart_total_amount = 0
-        if 'cart_data_obj' in request.session:
-            with transaction.atomic():
-                for unique_key, item in request.session['cart_data_obj'].items():
-                    cart_total_amount += int(item['qty']) * float(item['price'])
-                    product_id = item['product_id']
-                    product = Product.objects.get(pid=product_id)
-                    client = razorpay.Client(auth=(settings.KEY, settings.SECRET))
-                    payment = client.order.create(
-                        {'amount': int(item['qty']) * float(item['price']) * 100, 'currency': 'INR',
-                         'payment_capture': 1})
-                    product.razor_pay_order_id = payment['id']
-                    product.save()
-
-        client = razorpay.Client(auth=(settings.KEY, settings.SECRET))
-        payment = client.order.create({'amount': cart_total_amount * 100, 'currency': 'INR', 'payment_capture': 1})
         cart_total_amount_rounded = round(cart_total_amount, 2)
         cart_total_amount_words = num2words(cart_total_amount_rounded, lang='en_IN')
 
@@ -689,7 +676,6 @@ def payment_invoice(request):
         half_total_gst_amount = total_gst / Decimal(2)
 
         context = {
-            "payment": payment,
             "price_wo_gst_total": price_wo_gst_total,
             "total_gst": total_gst,
             "cgst_amounts": cgst_amounts,
@@ -860,6 +846,7 @@ def checkout_view(request):
                 total=float(item['qty']) * float(item['price'])
             )
 
+        cart_total_amount = 0
         if 'cart_data_obj' in request.session:
             try:
                 response = api.payment_request_create(
@@ -895,8 +882,6 @@ def checkout_view(request):
         'totalcartitems': len(request.session.get('cart_data_obj', {})),
         
     })
-
-
 
 @login_required
 def dashboard(request):
@@ -962,9 +947,6 @@ def product_new(request, product_slug):
     # Check if variants and variations exist
     has_variants = product_variants.exists()
 
-    # Fetching rate without GST
-    price_wo_gst = product_variant_types.first().varient_price if product_variant_types.exists() else product.price
-
     # Fetching GST rate
     gst_rate = product_variant_types.first().gst_rate if product_variant_types.exists() else product.gst_rate
 
@@ -972,12 +954,15 @@ def product_new(request, product_slug):
     base_price = product_variant_types.first().varient_price if product_variant_types.exists() else product.price
 
     # Calculate GST amount
-    gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
+    gst_amount_applied = base_price * Decimal(gst_rate.strip('%')) / (100 + Decimal(gst_rate.strip('%')))
 
-    # Calculate total price including GST and round off to two decimal places
-    total_price = round(base_price + gst_amount, 2)
+    # Fetching rate without GST
+    price_wo_gst = base_price - gst_amount_applied
 
-    default_packaging_size = product_variant_types.first().packaging_size if product_variant_types.exists() else product.packing_size
+    price_wo_gst = price_wo_gst.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+    # Round the GST amount to 2 decimal places
+    gst_amount_applied = gst_amount_applied.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
     product_images = ProductImages.objects.filter(product=product)
 
@@ -986,9 +971,8 @@ def product_new(request, product_slug):
         "product_variants": product_variants,
         "product_variant_types": product_variant_types,
         "product_images": product_images,
-        "default_price": total_price,
         "price_wo_gst": price_wo_gst,
-        "default_packaging_size": default_packaging_size,
+        "gst_amount_applied": gst_amount_applied,
         "gst_rate": gst_rate,
         "has_variants": has_variants,
         "related_products": related_products,
