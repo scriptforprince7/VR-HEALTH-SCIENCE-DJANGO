@@ -399,13 +399,24 @@ def add_to_cart(request):
 def cart_view(request):
     cart_total_amount = 0
     if 'cart_data_obj' in request.session:
+        cart_data = request.session['cart_data_obj']
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount += int(item['qty']) * float(item['price'])
+
+        num_products = len(cart_data)
+        if num_products == 1:
+            shipping_rate = 40
+        else:
+            shipping_rate = 65 * num_products
+
+        cart_total_amount_shipping = cart_total_amount + shipping_rate
 
         return render(request, "core/cart.html", {
             "cart_data": request.session['cart_data_obj'], 
             'totalcartitems': len(request.session['cart_data_obj']), 
-            'cart_total_amount': cart_total_amount
+            'cart_total_amount': cart_total_amount,
+            'shipping_rate': shipping_rate,
+            'cart_total_amount_shipping': cart_total_amount_shipping
         })
     else:
         messages.warning(request, "Your cart is empty")
@@ -564,7 +575,7 @@ def payment_invoice(request):
 
     current_datetime = datetime.now()
 
-    with open('maharashtra_zipcodes.json', 'r') as f:
+    with open('new_delhi_zipcodes.json', 'r') as f:
         maharashtra_zipcodes = json.load(f)
 
         print('payment', maharashtra_zipcodes)
@@ -752,7 +763,6 @@ def load_maharashtra_zipcodes():
     except FileNotFoundError:
         return []
 
-
 def checkout_view(request):
     if 'cart_data_obj' not in request.session or not request.session['cart_data_obj']:
         messages.info(request, 'Please shop first before checkout')
@@ -771,15 +781,24 @@ def checkout_view(request):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         billing_same_as_shipping = request.POST.get('billing_same_as_shipping', False)
+        
         cart_total_amount = 0  # Initialize cart_total_amount here
+        shipping_charge = 0
+        
+        # Calculate shipping charge based on number of products
+        if 'cart_data_obj' in request.session:
+            num_products = len(request.session['cart_data_obj'])
+            if num_products == 1:
+                shipping_charge = Decimal('40.00')
+            elif num_products > 1:
+                shipping_charge = Decimal('65.00')
 
-        cart_total_amount = 0
         total_amount = 0
         price_wo_gst_total = 0
         total_gst = 0
         user_zipcode = zip_code  # Get user's zipcode from the form
 
-        with open('maharashtra_zipcodes.json', 'r') as f:
+        with open('new_delhi_zipcodes.json', 'r') as f:
             maharashtra_zipcodes = json.load(f)
 
         # Check if user's zipcode is in Maharashtra
@@ -823,9 +842,9 @@ def checkout_view(request):
 
                 # Do whatever you want with CGST, SGST, and IGST here
 
-        for unique_key, item in request.session['cart_data_obj'].items():
-            cart_total_amount += int(item['qty']) * float(item['price'])
+        cart_total_amount = total_amount + shipping_charge  # Include shipping charge in total amount
 
+        for unique_key, item in request.session['cart_data_obj'].items():
             # Retrieve the correct product ID from the item data
             product_id = item['product_id']
 
@@ -850,7 +869,7 @@ def checkout_view(request):
         if 'cart_data_obj' in request.session:
             try:
                 response = api.payment_request_create(
-                    amount=str(total_amount),
+                    amount=str(cart_total_amount),
                     purpose='Order Processing',
                     buyer_name=f'{first_name} {last_name}',
                     email=email,
@@ -868,6 +887,7 @@ def checkout_view(request):
             "total_gst": total_gst,
             "user_zipcode": user_zipcode,
             "maharashtra_zipcodes": maharashtra_zipcodes,
+            "shipping_charge": shipping_charge,
         }
 
         return render(request, "core/checkout.html",

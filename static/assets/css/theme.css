@@ -11654,7 +11654,7 @@ fieldset:disabled .btn {
   border-radius: var(--bs-border-radius-2xl) !important;
 }
 .rounded-circle {
-  border-radius: 50% !important;
+  border-radius: 17% !important;
 }
 .rounded-pill {
   border-radius: var(--bs-border-radius-pill) !important;
@@ -27980,7 +27980,7 @@ svg.icon {
   left: 0;
 }
 .image-box-1 {
-  max-width: 160px;
+  max-width: 190px;
 }
 .image-box-4 {
   position: relative;

@@ -121,13 +121,13 @@
                 <div
                   class="position-absolute d-flex z-index-2 product-actions vertical"
                 >
-                  <a
+                  {% comment %} <a
                     class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
                     href="#"
                     data-bs-toggle="tooltip"
                     data-bs-placement="left"
                     data-bs-title="Quick View"
-                  >
+                  > {% endcomment %}
                     <span
                       data-bs-toggle="modal"
                       data-bs-target="#quickViewModal"
@@ -163,11 +163,9 @@
                 <input type="hidden" value="{{product.image.url}}" class="product-image-{{product.pid}}">
                 <input type="hidden" id="variant-id-hidden-{{ product.pid }}" value="{{ product.first_variant_type_id }}">
                 <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2 add-to-cart-btn"
-                  id="add-to-cart-btn"
-                  data-index="{{product.pid}}"
-                  >Add To Cart</a
+                  href="{% url 'core:product_new' product.product_slug %}"
+                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
+                  >View Product</a
                 >
               </figure>
               <div class="card-body text-center p-0">
@@ -259,7 +257,7 @@
           <h6 class="pc__title">No Products Found</h6>
           {% endif %}
         </div>
-        <nav
+        <!-- <nav
           class="d-flex mt-13 pt-3 justify-content-center"
           aria-label="pagination"
           data-animate="fadeInUp"
@@ -295,7 +293,7 @@
               </a>
             </li>
           </ul>
-        </nav>
+        </nav> -->
       </div>
       <div class="col-lg-3 d-lg-block d-none">
         <div class="position-sticky top-0">

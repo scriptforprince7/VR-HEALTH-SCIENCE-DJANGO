@@ -62,7 +62,7 @@
       <div class="card border-0 fw-semibold">
         <a
           href="{% url 'core:main_category' cat.category_slug %}"
-          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1"
+          class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1 custom-circle"
         >
           <img
             class="lazy-image img-fluid card-img light-mode-img"
@@ -275,7 +275,7 @@
                 <div
                   class="position-absolute d-flex z-index-2 product-actions vertical"
                 >
-                  <a
+                  <!-- <a
                     class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
                     href="#"
                     data-bs-toggle="tooltip"
@@ -291,7 +291,7 @@
                         <use xlink:href="#icon-eye-light"></use>
                       </svg>
                     </span>
-                  </a>
+                  </a> -->
                 </div>
                 <input type="hidden" value="{{new_arrivals.pid}}" class="product-id">
 
@@ -323,11 +323,9 @@
 
                 <input type="hidden" id="variant-id-hidden-{{ new_arrivals.pid }}" value="{{ new_arrivals.first_variant_type_id }}">
                 <a
-                  href="#"
-                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2 add-to-cart-btn"
-                  id="add-to-cart-btn"
-                  data-index="{{new_arrivals.pid}}"
-                  >Add To Cart</a
+                  href="{% url 'core:product_new' new_arrivals.product_slug %}"
+                  class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2"
+                  >View Product</a
                 >
               </figure>
               <div class="card-body text-center p-0">
@@ -417,7 +415,7 @@
   </div>
 </section>
 
-<section>
+<!-- <section>
   <div class="container pt-12 pb-lg-16 pb-16">
   <div class="text-center position-relative pt-12 pt-lg-17 pb-11 pb-lg-14 mx-auto" style="max-width:700px" data-animate="fadeInUp">
   <p class="fs-80px fw-normal fs-sm-90px fs-md-142px text-custom-1 font-primary lh-1 top-0 position-absolute w-100 z-index-1">Glowing Beauty</p>
@@ -1158,7 +1156,7 @@
   </a>
   </div>
   </div>
-  </section>
+  </section> -->
   
 {% comment %} <section id="product_tabs">
   <div
@@ -4714,7 +4712,7 @@
     </div>
   </div>
 </section> {% endcomment %}
-<section>
+<!-- <section>
   <div class="container container-xxl">
     <div class="row gx-30px gy-30px">
       <div class="col-12 col-lg-8 col-md-7" data-animate="fadeInUp">
@@ -4789,7 +4787,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <section class="container container-xxl pt-lg-18 pt-15">
   <div class="mb-12 pb-3 text-center" data-animate="fadeInUp"><h2 class="mb-5">Get the Glow<br>
   Introducing Yellow Peel</h2>
@@ -4842,14 +4840,14 @@
 
     <input type="hidden" id="variant-id-hidden-{{ yellow.pid }}" value="{{ yellow.first_variant_type_id }}">
 
-    <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart add-to-cart-btn" href="#" id="add-to-cart-btn" data-index="{{yellow.pid}}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+    <!-- <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart add-to-cart-btn" href="#" id="add-to-cart-btn" data-index="{{yellow.pid}}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
   <svg class="icon icon-shopping-bag-open-light">
   <use xlink:href="#icon-shopping-bag-open-light"></use>
   </svg>
-  </a>
+  </a> -->
 
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Quick View">
-  <span data-bs-toggle="modal" data-bs-target="#quickViewModal" class="d-flex align-items-center justify-content-center">
+  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm" href="{% url 'core:product_new' yellow.product_slug %}">
+  
   <svg class="icon icon-eye-light">
   <use xlink:href="#icon-eye-light"></use>
   </svg>
@@ -5039,63 +5037,6 @@
   </div>
   </div>
   </section>
-<section class="bg-section-2 pt-lg-17 pb-lg-17 pt-15 pb-15">
-  <div class="container text-center">
-    <div
-      class="mx-auto mb-11 text-center"
-      style="max-width: 500px"
-      data-animate="fadeInUp"
-    >
-      <h3 class="mb-6">
-        Stay Up to Date with All News and Exclusive Offers
-      </h3>
-    </div>
-    <form
-      class="mx-auto"
-      style="max-width: 546px"
-      data-animate="fadeInUp"
-    >
-      <div class="text-center">
-        <div
-          class="input-group position-relative mb-11 form-border-transparent"
-        >
-          <input
-            type="email"
-            class="form-control bg-body rounded-left"
-            placeholder="Enter your email address"
-          />
-          <button
-            type="submit"
-            class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary rounded ms-0"
-          >
-            Subscribe
-          </button>
-        </div>
-        <div class="form-check d-flex justify-content-center">
-          <input
-            class="form-check-input me-4 rounded"
-            type="checkbox"
-            value
-            id="flexCheckDefault"
-          />
-          <label
-            class="form-check-label text-body fs-14px"
-            for="flexCheckDefault"
-          >
-            I accept the
-            <a href="#" class="text-decoration-none text border-bottom"
-              >terms & conditions</a
-            >
-            and
-            <a href="#" class="text-decoration-none border-bottom"
-              >the data protection</a
-            >
-          </label>
-        </div>
-      </div>
-    </form>
-  </div>
-</section>
 <section class="pt-12 pb-lg-13 pb-13">
   <div class="container container-xxl">
     <div class="row">
@@ -5169,21 +5110,30 @@
                 <div class="row p-0 m-0">
                     <div class="col-md-6 p-0 d-none d-md-block">
                         <div class="newsletter-popup__bg h-100 w-100">
-                            <img loading="lazy" src="{% static 'assets/images/newsletter-popup.jpg' %}"
+                            <img loading="lazy" src="{% static 'assets/images/pop-up.jpg' %}"
                                 class="h-100 w-100 object-fit-cover d-block" alt="">
                         </div>
                     </div>
                     <div class="col-md-6 p-0 d-flex align-items-center">
                         <div class="block-newsletter w-100">
-                            <h3 class="block__title">Sign Up to Our Newsletter</h3>
-                            <p>Be the first to get the latest news about trends, promotions, and much more!</p>
+                            <h3 class="block__title">Free Expert Consultation</h3>
+                            <p>Be the first to get the free consultation</p>
                             <form action=""
-                                class="footer-newsletter__form position-relative bg-body">
-                                <input class="form-control border-2" type="email" name="email"
-                                    placeholder="Your email address">
-                                <input class="btn-link fw-medium bg-transparent position-absolute top-0 end-0 h-100"
-                                    type="submit" value="JOIN">
-                            </form>
+      class="footer-newsletter__form position-relative bg-body">
+    <input class="form-control border-2" type="text" name="first_name" placeholder="First Name" required>
+    <input class="form-control border-2" type="text" name="last_name" placeholder="Last Name" required>
+    <input class="form-control border-2" type="email" name="email" placeholder="Your email address" required>
+    <input class="form-control border-2" type="tel" name="phone" placeholder="Phone Number" required>
+    <select class="form-control border-2" name="category" required>
+        <option value="" disabled selected>Select Category</option>
+        <option value="general">General Inquiry</option>
+        <option value="support">Support</option>
+        <option value="feedback">Feedback</option>
+    </select>
+    <textarea class="form-control border-2" name="message" placeholder="Your message" rows="4" required></textarea>
+    <input class="btn-link fw-medium bg-transparent position-absolute top-0 end-0 h-100" type="submit" value="JOIN">
+</form>
+
                         </div>
                     </div>
                 </div>

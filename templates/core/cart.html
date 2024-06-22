@@ -25,7 +25,8 @@
                     <tr class="fs-15px letter-spacing-01 fw-semibold text-uppercase text-body-emphasis">
                         <th scope="col" class="fw-semibold border-1 ps-11">products</th>
                         <th scope="col" class="fw-semibold border-1">quantity</th>
-                        <th colspan="2" class="fw-semibold border-1">Price</th>
+                        <th colspan="1" class="fw-semibold border-1">Price</th>
+                        <th colspan="1" class="fw-semibold border-1">Subtotal</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,11 +36,11 @@
                         <th scope="row" class="pe-5 ps-8 py-7 shop-product">
                             <div class="d-flex align-items-center">
                                 <div class="ms-6 me-7">
-                                    <img src="#" data-src="{{item.image}}" class="lazy-image" width="75" height="100"
+                                    <img src="{% url 'core:product_new' item.title %}" data-src="{{item.image}}" class="lazy-image" width="75" height="100"
                                         alt="{{item.title}}">
                                 </div>
                                 <div class>
-                                    <p class="fw-500 mb-1 text-body-emphasis">{{item.title}}</p>
+                                 <a href="{% url 'core:product_new' item.title %}"><p class="fw-500 mb-1 text-body-emphasis">{{item.title}}</p></a>   
                                     <p class="card-text">
                                         <!-- <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span> -->
                                         <span class="fs-15px fw-light text-body-emphasis">Sku ID: {{item.sku}}</span>
@@ -64,6 +65,12 @@
                         </td>
                         <td class="align-middle">
                             <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {{item.price|floatformat:2}}</p>
+                            <p>
+                                (Includes {{item.gst_rate}} gst)
+                            </p>
+                        </td>
+                        <td class="align-middle">
+                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {% widthratio item.price 1 item.qty%}.00</p>
                         </td>
                         <td class="align-middle text-end pe-8">
                             <a href="#" class="d-block text-secondary delete-product" data-product="{{product_id}}">
@@ -140,13 +147,13 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span>Shipping:</span>
-                            <span class="d-block ml-auto text-body-emphasis fw-bold">₹ 40</span>
+                            <span class="d-block ml-auto text-body-emphasis fw-bold">₹ {{shipping_rate}}</span>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent px-0 pt-5 pb-7 mx-9">
                         <div class="d-flex align-items-center justify-content-between fw-bold mb-7">
                             <span class="text-secondary text-body-emphasis">Total price:</span>
-                            <span class="d-block ml-auto text-body-emphasis fs-4 fw-bold">₹ {{cart_total_amount|floatformat:"2"}}</span>
+                            <span class="d-block ml-auto text-body-emphasis fs-4 fw-bold">₹ {{cart_total_amount_shipping|floatformat:"2"}}</span>
                         </div>
                         <a href="/checkout" class="btn w-100 btn-dark btn-hover-bg-primary btn-hover-border-primary"
                             title="Check Out">Check Out</a>
