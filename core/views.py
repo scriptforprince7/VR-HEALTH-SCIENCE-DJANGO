@@ -767,16 +767,17 @@ def load_maharashtra_zipcodes():
         return []
 
 def checkout_view(request):
-    total_shipping_rate_with_gst = 0
-    cart_total_amount_shipping = 0
-    cart_total_amount = 0
-    shipping_rate = 0
-    price_wo_gst_total = 0
+    total_shipping_rate_with_gst = Decimal('0')
+    cart_total_amount_shipping = Decimal('0')
+    cart_total_amount = Decimal('0')
+    shipping_rate = Decimal('0')
+    price_wo_gst_total = Decimal('0')
+    total_gst = Decimal('0')  # Initialize total_gst as Decimal
 
     if 'cart_data_obj' not in request.session or not request.session['cart_data_obj']:
         messages.info(request, 'Please shop first before checkout')
         return redirect('/cart')
-    
+
     if request.method == 'POST':
         # Get form data
         first_name = request.POST.get('firstname')
@@ -784,32 +785,33 @@ def checkout_view(request):
         zip_code = request.POST.get('zip')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
-    
+
         # Calculate shipping charge based on number of products
         if 'cart_data_obj' in request.session:
             cart_data = request.session['cart_data_obj']
             num_products = len(cart_data)
             if num_products == 1:
-                shipping_rate = 40
+                shipping_rate = Decimal('40')
             elif num_products > 1:
-                shipping_rate = 65 * num_products
+                shipping_rate = Decimal('65') * num_products
 
-            gst_amount = shipping_rate * 0.18
+            gst_amount = shipping_rate * Decimal('0.18')
             total_shipping_rate_with_gst = shipping_rate + gst_amount
 
             # Calculate total amount including shipping
             for unique_key, item in cart_data.items():
-                qty = int(item['qty'])
-                price = float(item['price'])
-                price_wo_gst = float(item.get('price_wo_gst', price))
+                qty = Decimal(item['qty'])
+                price = Decimal(item['price'])
+                price_wo_gst = Decimal(item.get('price_wo_gst', price))
+                gst_applied = Decimal(item['gst_applied'])  # Extract the gst_applied
 
                 cart_total_amount += qty * price
                 price_wo_gst_total += qty * price_wo_gst
+                total_gst += gst_applied  # Sum up the gst_applied
 
             cart_total_amount_shipping = cart_total_amount + total_shipping_rate_with_gst
 
-        total_amount = 0
-        total_gst = 0
+        total_amount = Decimal('0')
         user_zipcode = zip_code  # Get user's zipcode from the form
 
         with open('new_delhi_zipcodes.json', 'r') as f:
@@ -843,13 +845,13 @@ def checkout_view(request):
         if 'cart_data_obj' in request.session:
             # Calculate total amount, price without GST, and total GST
             for unique_key, item in cart_data.items():
-                qty = int(item['qty'])
-                price = float(item['price'])
-                price_wo_gst = float(item.get('price_wo_gst', price))
+                qty = Decimal(item['qty'])
+                price = Decimal(item['price'])
+                price_wo_gst = Decimal(item.get('price_wo_gst', price))
 
                 total_amount += qty * price
                 price_wo_gst_total += qty * price_wo_gst
-                item_gst = (Decimal(price) - Decimal(price_wo_gst)) * qty  # Calculate GST for this item
+                item_gst = (price - price_wo_gst) * qty  # Calculate GST for this item
 
                 # Calculate CGST and SGST for each product based on the user's zipcode
                 cgst = item_gst * cgst_factor
@@ -913,34 +915,45 @@ def checkout_view(request):
             **context
         })
 
-    # If not POST, render the checkout page with default context
-    cart_data = request.session.get('cart_data_obj', {})
-    num_products = len(cart_data)
-    if num_products == 1:
-        shipping_rate = 40
-    elif num_products > 1:
-        shipping_rate = 65 * num_products
+    else:
+        if 'cart_data_obj' in request.session:
+            cart_data = request.session['cart_data_obj']
+            cart_total_amount = Decimal('0')  # Initialize cart_total_amount
 
-    gst_amount = shipping_rate * 0.18
-    total_shipping_rate_with_gst = shipping_rate + gst_amount
+            for unique_key, item in cart_data.items():
+                qty = Decimal(item['qty'])
+                price = Decimal(item['price'])
+                price_wo_gst = Decimal(item.get('price_wo_gst', price))
+                gst_applied = Decimal(item['gst_applied'])  # Extract the gst_applied
 
-    for unique_key, item in cart_data.items():
-        qty = int(item['qty'])
-        price = float(item['price'])
-        price_wo_gst = float(item.get('price_wo_gst', price))
+                cart_total_amount += qty * price
+                price_wo_gst_total += qty * price_wo_gst
+                total_gst += gst_applied  # Sum up the gst_applied
 
-        cart_total_amount += qty * price
-        price_wo_gst_total += qty * price_wo_gst
+            num_products = len(cart_data)
+            if num_products == 1:
+                shipping_rate = Decimal('40')
+            elif num_products > 1:
+                shipping_rate = Decimal('65') * num_products
 
-    cart_total_amount_shipping = cart_total_amount + total_shipping_rate_with_gst
+            gst_amount = shipping_rate * Decimal('0.18')
+            total_shipping_rate_with_gst = shipping_rate + gst_amount
+            cart_total_amount_shipping = cart_total_amount + total_shipping_rate_with_gst
 
-    return render(request, "core/checkout.html", {
-        'cart_data': request.session.get('cart_data_obj', {}),
-        'totalcartitems': len(request.session.get('cart_data_obj', {})),
-        "shipping_rate": total_shipping_rate_with_gst,
-        'cart_total_amount_shipping': cart_total_amount_shipping,
-        'price_wo_gst_total': price_wo_gst_total
-    })
+        context = {
+            "price_wo_gst_total": price_wo_gst_total,
+            "total_gst": total_gst,
+            "shipping_rate": total_shipping_rate_with_gst,
+            'cart_total_amount_shipping': cart_total_amount_shipping
+        }
+
+        return render(request, "core/checkout.html", {
+            'cart_data': request.session.get('cart_data_obj', {}),
+            'totalcartitems': len(request.session.get('cart_data_obj', {})),
+            'cart_total_amount': cart_total_amount,
+            **context
+        })
+
 
 
 

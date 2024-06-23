@@ -53,13 +53,14 @@
                             <span class="d-block ms-auto text-body-emphasis fw-bold">₹ {{ price_wo_gst_total|floatformat:"2" }}</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span>Shipping:</span>
-                            <span class="d-block ms-auto text-body-emphasis fw-bold">₹ {{ shipping_rate }}</span>
-                        </div>
-                        <div class="d-flex align-items-center">
                             <span>GST:</span>
                             <span class="d-block ms-auto text-body-emphasis fw-bold">₹ {{total_gst|floatformat:"2"}}</span>
                         </div>
+                        <div class="d-flex align-items-center">
+                            <span>Shipping:</span>
+                            <span class="d-block ms-auto text-body-emphasis fw-bold">₹ {{ shipping_rate }}</span>
+                        </div>
+                        
                     </div>
                     <div class="card-footer bg-transparent py-5 px-0 mx-10">
                         <div class="d-flex align-items-center fw-bold mb-6">
@@ -85,86 +86,163 @@
                     </div>
                     <h4 class="fs-4 pt-4 mb-7">Shipping Information</h4>
                     <div class="mb-7">
-                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Name</label>
                         <div class="row">
                             <div class="col-md-6 mb-md-0 mb-7">
+                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">First Name</label>
                                 <input type="text" class="form-control" id="first-name" name="firstname" placeholder="First Name" required>
                             </div>
                             <div class="col-md-6">
+                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Last Name</label>
                                 <input type="text" class="form-control" id="last-name" name="lastname" placeholder="Last Name" required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-7">
                         <div class="row">
-                            <div class="col-md-8 mb-md-0 mb-7">
-                                <label for="street-address" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Street Address</label>
-                                <input type="text" class="form-control" id="street-address" name="streetaddress" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="apt" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">APT/Suite</label>
-                                <input type="text" class="form-control" id="apt" name="apt" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-7">
-                        <div class="row">
                             <div class="col-md-4 mb-md-0 mb-7">
-                                <label for="city" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">City</label>
-                                <input type="text" class="form-control" id="city" name="city" required>
+                                <label for="checkout_zipcode" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Postcode/Zip</label>
+                                <input type="text" class="form-control" id="checkout_zipcode" name="zipcode" required>
                             </div>
                             <div class="col-md-4 mb-md-0 mb-7">
-                                <label for="state" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
-                                <input type="text" class="form-control" id="state" name="state" required>
+                                <label for="pin_details_dropdown" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Select Area</label>
+                                <select class="form-select" id="pin_details_dropdown" name="pin_details">
+                                    <option value="">Select your area</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="zip" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Zip Code</label>
-                                <input type="text" class="form-control" id="zip" name="zip" required>
+                                <label for="checkout_city" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">City</label>
+                                <input type="text" class="form-control" id="checkout_city" name="city" required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-7">
-                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Country</label>
-                        <div class="dropdown bg-body-secondary rounded">
-                            <a href="#" class="form-select dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none text-secondary p-5 position-relative d-block" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                India
-                            </a>
-                            <div class="dropdown-menu w-100 px-0 py-4">
-                                <a class="dropdown-item px-6 py-4" href="#">Andorra</a>
-                                <a class="dropdown-item px-6 py-4" href="#">San Marino</a>
-                                <a class="dropdown-item px-6 py-4" href="#">Tunisia</a>
-                                <a class="dropdown-item px-6 py-4" href="#">Micronesia</a>
-                                <a class="dropdown-item px-6 py-4" href="#">Solomon Islands</a>
-                                <a class="dropdown-item px-6 py-4" href="#">Macedonia</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-7">
-                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Info</label>
                         <div class="row">
                             <div class="col-md-6 mb-md-0 mb-7">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                <label for="checkout_district" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">District</label>
+                                <input type="text" class="form-control" id="checkout_district" name="district" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone number" required>
+                                <label for="checkout_division" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Division</label>
+                                <input type="text" class="form-control" id="checkout_division" name="division" required>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-6 mb-5 form-check">
-                        <input type="checkbox" class="form-check-input rounded-0 me-4" name="billing_same_as_shipping" id="billing_same_as_shipping">
-                        <label class="text-body-emphasis" for="billing_same_as_shipping">
-                            <span class="text-body-emphasis">Billing address is the same as shipping</span>
-                        </label>
+                    <div class="mb-7">
+                        <label for="checkout_state" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
+                        <input type="text" class="form-control" id="checkout_state" name="state" required>
+                    </div>
+                    <div class="mb-7">
+                        <div class="row">
+                            <div class="col-md-6 mb-md-0 mb-7">
+                                <label for="billing-address" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Billing Address</label>
+                                <input type="text" class="form-control" id="billing-address" name="billingaddress" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="shipping-address" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Shipping Address</label>
+                                <input type="text" class="form-control" id="shipping-address" name="shippingaddress" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        <div class="row">
+                            <div class="col-md-6 mb-md-0 mb-7">
+                                <label for="phone" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Phone</label>
+                                <input type="number" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-7 form-check">
+                        <input type="checkbox" class="form-check-input" id="have-gst" onclick="toggleGstFields()">
+                        <label for="have-gst" class="form-check-label">Have GST?</label>
+                    </div>
+                    <div id="gst-fields" style="display: none;">
+                        <div class="mb-7">
+                            <label for="company-name" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Company Name</label>
+                            <input type="text" class="form-control" id="company-name" name="companyname">
+                        </div>
+                        <div class="mb-7">
+                            <label for="gst-number" class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">GST Number</label>
+                            <input type="text" class="form-control" id="gst-number" name="gstnumber">
+                        </div>
                     </div>
                 </div>
                 <div class="checkout mb-7">
                     <button type="submit" class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4">Place Order</button>
                 </div>
             </div>
+            
         </div>
     </form>
-    
-    
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var pinDetailsList = [];
+
+function fetchAddressDetails(zipcode) {
+    $.ajax({
+        url: '/fetch-pin-details', // Replace with your actual endpoint URL
+        type: 'GET',
+        data: { 'zipcode': zipcode },
+        success: function(response) {
+            if (response.success) {
+                pinDetailsList = response.data;
+                var dropdown = $('#pin_details_dropdown');
+                dropdown.empty();
+                dropdown.append('<option value="">Select your area</option>');
+
+                pinDetailsList.forEach(function(pinDetails, index) {
+                    dropdown.append('<option value="' + index + '">' + pinDetails.Name + '</option>');
+                });
+            } else {
+                console.error('Error: Unable to fetch address details');
+                // Handle error case here
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching address details:', error);
+            // Handle error case here
+        }
+    });
+}
+
+$('#pin_details_dropdown').change(function() {
+    updatePinDetails();
+});
+
+function updatePinDetails() {
+    var selectedIndex = $('#pin_details_dropdown').val();
+    if (selectedIndex !== "") {
+        var selectedPinDetails = pinDetailsList[selectedIndex];
+        $('#checkout_city').val(selectedPinDetails.Name);
+        $('#checkout_district').val(selectedPinDetails.District);
+        $('#checkout_division').val(selectedPinDetails.Division);
+        $('#checkout_state').val(selectedPinDetails.State);
+    } else {
+        // Clear fields if no option is selected
+        $('#checkout_city').val('');
+        $('#checkout_district').val('');
+        $('#checkout_division').val('');
+        $('#checkout_state').val('');
+    }
+}
+
+function toggleGstFields() {
+    var gstFields = $('#gst-fields');
+    var isChecked = $('#have-gst').prop('checked');
+    gstFields.toggle(isChecked);
+}
+
+$('#checkout_zipcode').on('input', function() {
+    var zipcode = $(this).val().trim();
+    if (zipcode !== '') {
+        fetchAddressDetails(zipcode);
+    }
+});
+
+</script>
 </main>
 {% endblock main %}
