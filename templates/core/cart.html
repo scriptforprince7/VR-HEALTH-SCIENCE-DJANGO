@@ -24,8 +24,8 @@
                 <thead class="bg-body-secondary">
                     <tr class="fs-15px letter-spacing-01 fw-semibold text-uppercase text-body-emphasis">
                         <th scope="col" class="fw-semibold border-1 ps-11">products</th>
-                        <th scope="col" class="fw-semibold border-1">quantity</th>
                         <th colspan="1" class="fw-semibold border-1">Price</th>
+                        <th scope="col" class="fw-semibold border-1">quantity</th>
                         <th colspan="1" class="fw-semibold border-1">Subtotal</th>
                     </tr>
                 </thead>
@@ -49,6 +49,13 @@
                             </div>
                         </th>
                         <td class="align-middle">
+                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {{item.price|floatformat:2}}</p>
+                            <p>
+                                (Includes {{item.gst_rate}} gst)
+                            </p>
+                        </td>
+
+                        <td class="align-middle">
                             <div class="input-group position-relative shop-quantity">
                                 <a href="#" class="shop-down position-absolute z-index-2 update-product"
                                     data-product="{{product_id}}">
@@ -62,12 +69,6 @@
                                     <i class="far fa-plus"></i>
                                 </a>
                             </div>
-                        </td>
-                        <td class="align-middle">
-                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {{item.price|floatformat:2}}</p>
-                            <p>
-                                (Includes {{item.gst_rate}} gst)
-                            </p>
                         </td>
                         <td class="align-middle">
                             <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {% widthratio item.price 1 item.qty%}.00</p>
