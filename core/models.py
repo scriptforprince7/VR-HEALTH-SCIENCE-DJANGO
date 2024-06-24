@@ -26,6 +26,11 @@ ACTIVE_STATUS = (
     ("published", "Published"),
 )
 
+COURIER_PARTNER = (
+    ("dtdc", "DTDC"),
+    ("trackon", "Trackon"),
+)
+
 RATING = (
     ("1", "★"),
     ("2", "★★"),
@@ -292,6 +297,8 @@ class ProductVariantTypes(models.Model):
 class CartOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     price = models.DecimalField(max_digits=99999, decimal_places=2, default="1")
+    courier_partner = models.CharField(choices=COURIER_PARTNER, max_length=30, default="trackon")
+    tracking_id = models.CharField(max_length=100, default="145855..")
     paid_status = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default="processing")
