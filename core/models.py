@@ -254,7 +254,6 @@ class ProductSeo(models.Model):
     twitter_description = models.CharField(max_length=500, default="N/A")
     twitter_description = models.CharField(max_length=500, default="N/A")
 
-
     class Meta:
         verbose_name_plural = "Product Seo"
 

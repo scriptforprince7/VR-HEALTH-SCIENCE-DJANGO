@@ -9,9 +9,6 @@
             <li class="breadcrumb-item">
               <a title="Home" href="/">Home</a>
             </li>
-            <li class="breadcrumb-item">
-              <a title="Shop" href="shop-layout-v2.html">Shop</a>
-            </li>
             <li class="breadcrumb-item active" aria-current="page">
               {{products.title}}
             </li>
@@ -57,7 +54,7 @@
                   class="position-absolute z-index-2 w-100 d-flex justify-content-end"
                 >
                   <div class="p-6">
-                    <a
+                    <!-- <a
                       href="#"
                       class="d-flex align-items-center justify-content-center product-gallery-action rounded-circle"
                       data-bs-toggle="tooltip"
@@ -67,9 +64,9 @@
                       <svg class="icon fs-4">
                         <use xlink:href="#icon-star-light"></use>
                       </svg>
-                    </a>
+                    </a> -->
                     <a
-                      href="https://www.youtube.com/watch?v=6v2L2UGZJAM"
+                      href="{{products.youtube_link}}"
                       class="view-video d-flex align-items-center justify-content-center mt-5 product-gallery-action rounded-circle"
                       data-bs-toggle="tooltip"
                       data-bs-placement="left"
@@ -219,21 +216,6 @@
           Niacinamide and Vitamin C are two anti-aging superstars but not
           usually formulated together because of their different pH levels.
         </p>
-        <p class="mb-4 pb-2 text-body-emphasis">
-          <svg class="icon fs-5 me-4 pe-2 align-text-bottom">
-            <use xlink:href="#icon-Timer"></use>
-          </svg>
-          Only 9 left in stock
-        </p>
-        <div class="progress mb-7" style="height: 4px">
-          <div
-            class="progress-bar w-25"
-            role="progressbar"
-            aria-valuenow="25"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          ></div>
-        </div>
         <style>
           .selected-swatch {
             background-color: greenyellow;
@@ -379,7 +361,7 @@
             aria-controls="product-details"
             aria-selected="true"
           >
-            Product Details
+          Reasons to Love
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -393,7 +375,21 @@
             aria-controls="how-to-use"
             aria-selected="false"
           >
-            How To Use
+            Safety Warning
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis"
+            id="ingredients-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#ingredients"
+            type="button"
+            role="tab"
+            aria-controls="ingredients"
+            aria-selected="false"
+          >
+            Direction for Use
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -410,6 +406,7 @@
             Ingredients
           </button>
         </li>
+        
       </ul>
       <div class="tab-content">
         <div class="tab-inner">
