@@ -1,0 +1,97 @@
+{% extends "partials/base.html" %}
+{% load static %}
+{% block main %}
+<style>
+    .back-img {
+        background-image: url("{% static 'assets/images/career.jpg' %}");
+        /* Additional styles can be added here */
+    }
+</style>
+<div class="back-img">
+    <section>
+      <div class="bg-body-secondary py-5">
+        <nav aria-label="breadcrumb">
+          <ol
+            class="breadcrumb breadcrumb-site py-0 d-flex justify-content-center"
+          >
+            <li class="breadcrumb-item">
+              <a class="text-decoration-none text-body" href="/">Home</a>
+            </li>
+            <li
+              class="breadcrumb-item active pl-0 d-flex align-items-center"
+              aria-current="page"
+            >
+              Work with Us
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <div>
+      <div class="container pt-13">
+        <div class="text-center">
+          <div class="text-center">
+            <h2 class="fs-36px mb-5">Work with VRH</h2>
+            <p class="fs-18px mb-1 w-lg-60 w-xl-50 mx-md-12 mx-lg-auto">
+                We currently do not have any open positions, but we are always on the lookout for talented individuals to join our team. If you are interested in future opportunities, please submit your CV using the form below:
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      class="pt-15 pb-16 pt-lg-17 pb-lg-18 mx-auto"
+      style="max-width: 750px"
+    >
+      <div class="container text-center">
+        <form class="contact-form" method="post" action="#">
+            <div class="row mb-8 mb-md-10">
+              <div class="col-md-6 col-12 mb-8 mb-md-0">
+                <input
+                  type="text"
+                  class="form-control input-focus"
+                  placeholder="Full Name"
+                  name="fullName"
+                  required
+                />
+              </div>
+              <div class="col-md-6 col-12 mb-8 mb-md-0">
+                <input
+                  type="text"
+                  class="form-control input-focus"
+                  placeholder="Contact Number"
+                  name="contactNumber"
+                  required
+                />
+              </div>
+              <div class="col-md-6 col-12 mb-8 mb-md-0">
+                <input
+                  type="email"
+                  class="form-control input-focus"
+                  placeholder="Email ID"
+                  name="email"
+                  required
+                />
+              </div>
+              <div class="col-md-6 col-12 mb-8 mb-md-0">
+                <input
+                  type="file"
+                  class="form-control input-focus"
+                  name="file"
+                  required
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11"
+            >
+              Submit
+            </button>
+          </form>
+          
+          
+      </div>
+    </section>
+</div>
+  </main>
+    {% endblock main %}

@@ -46,7 +46,7 @@ def index(request):
     categories = Category.objects.filter(home_page_display='approved')
     home_banner = BannerHome.objects.filter(active_status='published')
     new_arrival = Product.objects.filter(new_arrival=True)
-    yellow_peel = Product.objects.filter(new_arrival=True)
+    yellow_peel = Product.objects.filter(yellow_peel=True)
     summer_sale = Product.objects.filter(summer_sale=True)
     testimonials = Testimonials.objects.all()
 

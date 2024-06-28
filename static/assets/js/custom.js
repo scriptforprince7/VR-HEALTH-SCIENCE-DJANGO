@@ -88,44 +88,86 @@ function generateProductUrl(baseUrl, title) {
 }
 
 function updateCartItemsList(cartData) {
-  var cartItemsList = $(".cart-drawer-items-list");
+  var cartItemsList = $("table tbody"); // Target the correct element
   cartItemsList.empty(); // Clear existing items
 
   var subtotalAmount = 0; // Initialize subtotal amount
 
   var baseUrl = "https://beta.urbanfarm.store/product/"; // Change to your actual base URL
 
-  // Iterate over cart items and append them to the list
-  $.each(cartData, function (productId, item) {
-    var productUrl = generateProductUrl(baseUrl, item.title);
-    var itemHtml = `
-                <div class="cart-drawer-item d-flex position-relative">
-                    <div class="position-relative">
-                        <img loading="lazy" class="cart-drawer-item__img" src="${item.image}" alt="${item.title}" />
-                    </div>
-                    <div class="cart-drawer-item__info flex-grow-1">
-                        <a href="${productUrl}">
-                            <h6 class="cart-drawer-item__title fw-normal">${item.title}</h6>
-                        </a>
-                        <p class="cart-drawer-item__option text-secondary">Sku ID: ${item.sku}</p>
-                        <div class="d-flex align-items-center justify-content-between mt-1">
-                            <div class="position-relative">
-                                <span>Qty:</span> <span class="cart-drawer-item__price money price" style="font-size: 1em;">${item.qty}</span>
-                            </div>
-                            <span class="cart-drawer-item__price money price">₹ ${item.price}</span>
-                        </div>
-                    </div>
-                    <button class="btn-close-xs position-absolute top-0 end-0 remove-cart delete-product" data-product="${productId}"></button>
-                </div>
-                <hr class="cart-drawer-divider" />`; // Add HR after each item
-    cartItemsList.append(itemHtml);
+  // Check if the cart is empty
+  if ($.isEmptyObject(cartData)) {
+    var noProductsHtml = `
+      <tr>
+        <td colspan="3" style="text-align: center;">
+          <div style="text-align: center;">
+            <img src="{% static 'images/no-product.png' %}" alt="Empty Cart Image" width="70%">
+            <style>
+              .explore:hover {
+                background-color: #9fcfb5;
+              }
+            </style>
+            <a href="/shop-category" style="text-align: center;">
+              <button class="btn btn-success mt-3 d-block explore">Explore Categories</button>
+            </a>
+          </div>
+        </td>
+      </tr>`;
+    cartItemsList.append(noProductsHtml);
+  } else {
+    // Iterate over cart items and append them to the list
+    $.each(cartData, function (productId, item) {
+      var productUrl = generateProductUrl(baseUrl, item.title);
+      var itemHtml = `
+        <tr class="position-relative">
+          <td class="align-middle text-center">
+            <a href="#" class="d-block clear-product remove-cart delete-product js-cart-item-remove" data-product="${productId}">
+              <i class="far fa-times"></i>
+            </a>
+          </td>
+          <td class="shop-product">
+            <div class="d-flex align-items-center">
+              <div class="me-6">
+                <img src="${item.image}" width="60" height="80" alt="${
+        item.title
+      }" />
+              </div>
+              <div>
+                <p class="card-text mb-1">
+                  <span class="fs-15px fw-bold text-body-emphasis">₹ ${parseFloat(
+                    item.price
+                  ).toFixed(2)}</span>
+                </p>
+                <p class="fw-500 text-body-emphasis">
+                  <a href="${productUrl}">${item.title} x ${item.qty}</a><br>
+                  ${item.sku}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td class="align-middle p-0">
+            <div class="input-group position-relative shop-quantity">
+              <a href="#" class="shop-down position-absolute z-index-2">
+                <i class="far fa-minus"></i>
+              </a>
+              <input name="number[]" type="number" class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0" value="${
+                item.qty
+              }" required />
+              <a href="#" class="shop-up position-absolute z-index-2">
+                <i class="far fa-plus"></i>
+              </a>
+            </div>
+          </td>
+        </tr>`;
+      cartItemsList.append(itemHtml);
 
-    // Add item price to subtotal
-    subtotalAmount += parseFloat(item.price);
-  });
+      // Add item price to subtotal
+      subtotalAmount += parseFloat(item.price);
+    });
 
-  // Update subtotal amount
-  $(".cart-subtotal").text(`₹ ${subtotalAmount.toFixed(2)}`);
+    // Update subtotal amount
+    $(".cart-subtotal").text(`₹ ${subtotalAmount.toFixed(2)}`);
+  }
 }
 
 $(document).ready(function () {

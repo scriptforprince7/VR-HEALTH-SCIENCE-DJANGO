@@ -52,7 +52,7 @@
 <section class="container container-xxl pt-14 pt-lg-17">
   <div class="mb-lg-13 mb-7">
     <div class="text-center">
-      <h2 class="mb-6" style="font-family: Dancing Script; font-size: 3.5rem; color: #004818;">Shop by Categories</h2>
+      <h2 class="mb-2" style="font-family: Fira Sans; font-size: 2.4rem; color: #004818;">Shop by Categories</h2>
       <p class="fs-18px mb-0">Our products are designed for everyone.</p>
     </div>
   </div>
@@ -82,16 +82,16 @@
           />
         </a>
         <div
-          class="card-body pt-9 pb-0 d-flex justify-content-center px-0"
+          class="card-body pt-5 pb-0 d-flex justify-content-center px-0"
         >
-          <h4 class="fs-5 text-center position-relative">
+          <h5 class="fs-5 text-center position-relative" style="font-family: sans-serif; font-weight: 600; color: #004818;" >
             <a href="{% url 'core:main_category' cat.category_slug %}" class="text-decoration-none">{{cat.cat_title}}</a>
             <!-- <span
               class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
             >
               12
             </span> -->
-          </h4>
+          </h5>
         </div>
       </div>
     </div>
@@ -154,9 +154,9 @@
             </h3>
             <div>
               <a
-                href="#"
+                href="http://127.0.0.1:8000/product/vitamin-c-15-skin-serum/"
                 class="btn btn-link p-0 fw-semibold text-white text-decoration-none"
-                >Buy 1 get 1
+                >Shop Now
                 <svg class="icon">
                   <use xlink:href="#icon-arrow-right"></use></svg
               ></a>
@@ -168,8 +168,8 @@
         <div class="card border-0 rounded-0 hover-zoom-in hover-shine">
           <img
             class="lazy-image card-img object-fit-cover lazy-image light-mode-img"
-            src="{% static 'assets/images/yellow-peel-banner2.jpg' %}"
-            data-src="{% static 'assets/images/yellow-peel-banner2.jpg' %}"
+            src="{% static 'assets/images/yellow-peel-banner3.jpg' %}"
+            data-src="{% static 'assets/images/yellow-peel-banner3.jpg' %}"
             width="450"
             height="600"
             alt="Sale Up To 40% Off"
@@ -177,7 +177,7 @@
           <img
             class="lazy-image dark-mode-img card-img object-fit-cover lazy-image"
             src="{% static '#' %}"
-            data-src="{% static 'assets/images/yellow-peel-banner2.jpg' %}"
+            data-src="{% static 'assets/images/yellow-peel-banner3.jpg' %}"
             width="450"
             height="600"
             alt="Sale Up To 40% Off"
@@ -185,9 +185,9 @@
           <div
             class="card-img-overlay d-inline-flex flex-column p-8 justify-content-end text-center"
           >
-            <h3 class="card-title text-white lh-45px">
+            <!-- <h3 class="card-title text-white lh-45px">
               Shop the Yellow Peel
-            </h3>
+            </h3> -->
             <div>
               <a
                 href="#"
@@ -207,7 +207,9 @@
 <section style="box-shadow: 0px 25px 40px burlywood; background-color:floralwhite;">
   <div class="container container-xxl pt-14 mb-2">
     <div class="mb-11 mt-2 pt-1 pb-3 text-center" data-animate="fadeInUp">
-      <h2 class="mb-5">Shop the <span style="font-family: Dancing Script; color:darkgoldenrod;">NEW ARRIVALS</span> </h2>
+      <h3 class="mb-5">Shop the <span style="font-family: Fira Sans; background: linear-gradient(135deg, #1c1c1c, #4a4a4a); -webkit-background-clip: text; color: transparent; font-size:2.5rem;">NEW ARRIVALS</span>
+
+      </h3>
       <p class="fs-18px mb-0 mw-xl-30 mw-lg-50 mw-md-75 ms-auto me-auto">
         Made using clean, non-toxic ingredients, our products are designed
         for everyone.
@@ -242,7 +244,7 @@
               Get the skin you want to feel
             </p>
             <div class="mt-10 pt-2">
-              <a href="#" class="btn btn-white">Explore More</a>
+              <a href="http://127.0.0.1:8000/product/hydronomics-forte-hq4-serum/" class="btn btn-white">Explore More</a>
             </div>
           </div>
         </div>
@@ -4790,7 +4792,9 @@
 </section> -->
 <section class="container container-xxl pt-lg-18 pt-15" style="box-shadow: 0px 25px 40px lightgoldenrodyellow;">
   <div class="mb-12 pb-3 text-center" data-animate="fadeInUp"><h2 class="mb-5">Get the Glow<br>
-  <span style="font-family: Dancing Script; color:yellowgreen; font-size:4rem;">Introducing Yellow Peel</span> </h2>
+    <span style="font-family: Fira Sans; color: #A9A9A9; font-size:2.5rem;">Introducing Yellow Peel</span>
+
+  </h2>
   <p class="fs-18px mb-0 mw-xl-30 mw-lg-50 mw-md-75 ms-auto me-auto">Made using clean, non-toxic ingredients, our products are designed for everyone.</p></div>
   <div class="row">
   <div class="col-lg-5 mb-12 mb-xl-0 order-lg-1" data-animate="fadeInUp">
@@ -5019,7 +5023,7 @@
   <div class="col-lg-6 offset-lg-3">
   <div class="slick-slider custom-arrow dot-lg-0" data-slick-options="{&quot;slidesToShow&quot;: 1,&quot;infinite&quot;:true,&quot;autoplay&quot;:true,&quot;dots&quot;:false,&quot;arrows&quot;:true,&quot;fade&quot;:false,&quot;cssEase&quot;:&quot;ease-in-out&quot;,&quot;speed&quot;:600, &quot;responsive&quot;:[{&quot;breakpoint&quot;: 992,&quot;settings&quot;: {&quot;slidesToShow&quot;:1,&quot;dots&quot;:true, &quot;arrows&quot;:false }}]}">
   <div class="px-6 text-center">
-  <img src="#" data-src="{% static './assets/images/testimonial/testimonial-10.png' %}" alt="Amazing product. The results are so transformative in texture." class="lazy-image mx-auto mb-11" style="width: 80px; height: 80px">
+
   <p class="text-primary fs-3 mb-12 pb-2">“Amazing product. The results are so transformative in texture and my face feels plump and healthy.“</p>
   <h4 class="fs-15px fw-bold text-uppercase mb-4">Kathleen C.</h4>
   </div>
@@ -5037,100 +5041,27 @@
   </div>
   </div>
   </section>
-<section class="pt-12 pb-lg-13 pb-13">
-  <div class="container container-xxl">
-    <div class="row">
-      <div class="col-xl-3 col-md-6" data-animate="fadeInUp">
-        <div class="icon-box icon-box-style-1 card border-0 text-center">
-          <div class="icon-box-icon card-img fs-70px text-primary">
-            <svg class="icon"><use xlink:href="#icon-box-01"></use></svg>
-          </div>
-          <div class="icon-box-content card-body pt-4">
-            <h3 class="icon-box-title card-title fs-5 mb-4 pb-2">
-              Free Shipping
-            </h3>
-            <p class="icon-box-desc card-text fs-18px mb-0">
-              Free Shipping for orders over ₹130
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-md-6" data-animate="fadeInUp">
-        <div class="icon-box icon-box-style-1 card border-0 text-center">
-          <div class="icon-box-icon card-img fs-70px text-primary">
-            <svg class="icon"><use xlink:href="#icon-box-02"></use></svg>
-          </div>
-          <div class="icon-box-content card-body pt-4">
-            <h3 class="icon-box-title card-title fs-5 mb-4 pb-2">
-              Returns
-            </h3>
-            <p class="icon-box-desc card-text fs-18px mb-0">
-              Within 30 days for an exchange.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-md-6" data-animate="fadeInUp">
-        <div class="icon-box icon-box-style-1 card border-0 text-center">
-          <div class="icon-box-icon card-img fs-70px text-primary">
-            <svg class="icon"><use xlink:href="#icon-box-03"></use></svg>
-          </div>
-          <div class="icon-box-content card-body pt-4">
-            <h3 class="icon-box-title card-title fs-5 mb-4 pb-2">
-              Online Support
-            </h3>
-            <p class="icon-box-desc card-text fs-18px mb-0">
-              24 hours a day, 7 days a week
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-md-6" data-animate="fadeInUp">
-        <div class="icon-box icon-box-style-1 card border-0 text-center">
-          <div class="icon-box-icon card-img fs-70px text-primary">
-            <svg class="icon"><use xlink:href="#icon-box-04"></use></svg>
-          </div>
-          <div class="icon-box-content card-body pt-4">
-            <h3 class="icon-box-title card-title fs-5 mb-4 pb-2">
-              Flexible Payment
-            </h3>
-            <p class="icon-box-desc card-text fs-18px mb-0">
-              Pay with Multiple Credit Cards
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
- <div class="modal fade" id="newsletterPopup" tabindex="-1" aria-hidden="true">
+<style>
+  .back-img {
+      background-image: url("{% static 'assets/images/back.jpg' %}");
+      /* Additional styles can be added here */
+  }
+</style>
+ <!-- <div class="modal fade" id="newsletterPopup" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog newsletter-popup modal-dialog-centered">
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="row p-0 m-0">
-                    <div class="col-md-6 p-0 d-none d-md-block">
-                        <div class="newsletter-popup__bg h-100 w-100">
-                            <img loading="lazy" src="{% static 'assets/images/pop-up.jpg' %}"
-                                class="h-100 w-100 object-fit-cover d-block" alt="">
-                        </div>
-                    </div>
-                    <div class="col-md-6 p-0 d-flex align-items-center">
+                    <div class="col-md-12 p-0 d-flex align-items-center  back-img">
                         <div class="block-newsletter w-100">
-                            <h3 class="block__title">Free Expert Consultation</h3>
+                            <h3 class="block__title" style="font-family: Fira Sans;">Free Expert Consultation</h3>
                             <p>Be the first to get the free consultation</p>
                             <form action=""
       class="footer-newsletter__form position-relative bg-body">
-    <input class="form-control border-2" type="text" name="first_name" placeholder="First Name" required>
-    <input class="form-control border-2" type="text" name="last_name" placeholder="Last Name" required>
+    <input class="form-control border-2" type="text" name="full_name" placeholder="Full Name" required>
     <input class="form-control border-2" type="email" name="email" placeholder="Your email address" required>
     <input class="form-control border-2" type="tel" name="phone" placeholder="Phone Number" required>
-    <select class="form-control border-2" name="category" required>
-        <option value="" disabled selected>Select Category</option>
-        <option value="general">General Inquiry</option>
-        <option value="support">Support</option>
-        <option value="feedback">Feedback</option>
-    </select>
-    <textarea class="form-control border-2" name="message" placeholder="Your message" rows="4" required></textarea>
+    <input class="form-control border-2" type="text" name="location" placeholder="Location" required>
     <input class="btn-link fw-medium bg-transparent position-absolute top-0 end-0 h-100" type="submit" value="JOIN">
 </form>
 
@@ -5139,6 +5070,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </main>
     {% endblock main %}
