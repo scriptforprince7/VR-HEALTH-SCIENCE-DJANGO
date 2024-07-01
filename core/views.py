@@ -962,7 +962,7 @@ def dashboard(request):
     return render(request, "core/account_dashboard.html")
 
 def faq(request):
-    return render(request, "core/faq.html")
+    return render(request, "core/faqs.html")
 
 def thankyouorder(request):
     return render(request, "core/thankyou-order.html")

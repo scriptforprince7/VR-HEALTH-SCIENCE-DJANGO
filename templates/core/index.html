@@ -49,7 +49,11 @@
     {% endfor %}
   </div>
 </section>
-<section class="container container-xxl pt-14 pt-lg-17">
+
+
+
+<section class="container container-xxl pt-14 pt-lg-17 position-relative">
+  <div class="overlay"></div>
   <div class="mb-lg-13 mb-7">
     <div class="text-center">
       <h2 class="mb-2" style="font-family: Fira Sans; font-size: 2.4rem; color: #004818;">Shop by Categories</h2>
@@ -86,11 +90,6 @@
         >
           <h5 class="fs-5 text-center position-relative" style="font-family: sans-serif; font-weight: 600; color: #004818;" >
             <a href="{% url 'core:main_category' cat.category_slug %}" class="text-decoration-none">{{cat.cat_title}}</a>
-            <!-- <span
-              class="fw-bold fs-14px position-absolute top-0 me-n6 mt-n3 end-0 top-50 translate-middle-y"
-            >
-              12
-            </span> -->
           </h5>
         </div>
       </div>
@@ -98,6 +97,7 @@
     {% endfor %}
   </div>
 </section>
+
 
 <section class="pt-lg-16 pt-14">
   <div class="container container-xxl">
@@ -126,7 +126,7 @@
             <h3 class="card-title text-white lh-45px">Autumn Skincare</h3>
             <div>
               <a
-                href="#"
+                href="http://127.0.0.1:8000/shop-category/acnenomics/"
                 class="btn btn-link p-0 fw-semibold text-white text-decoration-none"
                 >Disvover Now
                 <svg class="icon">
@@ -190,7 +190,7 @@
             </h3> -->
             <div>
               <a
-                href="#"
+                href="http://127.0.0.1:8000/shop-category/expert-series/"
                 class="btn btn-link p-0 fw-semibold text-white text-decoration-none"
                 >Shop Now
                 <svg class="icon">
@@ -333,7 +333,7 @@
               <div class="card-body text-center p-0">
                 <span
                   class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
-                  >₹ {{new_arrivals.gst_inclusive_price}}</span
+                  >₹ {{new_arrivals.gst_inclusive_price|floatformat:"2"}}</span
                 >
                 <h4
                   class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"
@@ -4860,7 +4860,7 @@
   </div>
   </figure>
   <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹ {{yellow.gst_inclusive_price}}</span>
+  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹ {{yellow.gst_inclusive_price|floatformat:"2"}}</span>
   <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="{% url 'core:product_new' yellow.product_slug %}">{{yellow.title}}<span class="modif">{% if yellow.first_variant_type_title %} - ({{ yellow.first_variant_type_title }}){% endif %}</span></a></h4>
   <div class="d-flex align-items-center fs-12px justify-content-center">
   <div class="rating">

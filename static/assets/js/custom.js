@@ -235,7 +235,6 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $(".update-product").on("click", function () {
-    event.preventDefault();
     let product_id = $(this).attr("data-product");
     let this_val = $(this);
     let product_quantity = $(".product-qty-" + product_id).val();

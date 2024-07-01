@@ -37,6 +37,7 @@
 <link rel="stylesheet" href="{% static 'assets/vendors/mapbox-gl/mapbox-gl.min.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" integrity="sha512-5PV92qsds/16vyYIJo3T/As4m2d8b6oWYfoqV+vtizRB6KhF1F9kYzWzQmsO6T3z3QG2Xdhrx7FQ+5R1LiQdUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="{% static 'assets/vendors/fonts/a-antara-distance/stylesheet.min.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lg-autoplay.min.css" integrity="sha512-LlHSkMTvyRwh1YjzXwk6bxjdt3huGhCyK1vlCC6f7Db/g+2sYXz2YNasyZHnMUgykqPksmD/44DIINhqpWBjig==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'assets/css/theme-violet.css' %}">
         <link
@@ -76,7 +77,7 @@
     </head>
     <body>
         <div class="whatsapp-float">
-            <a class="" href="https://wa.me/918879658654" target="_blank">
+            <a class="" href="https://wa.me/918448796010" target="_blank">
               <i class="fab fa-whatsapp" aria-hidden="true"></i>
             </a>
             </div>
@@ -554,7 +555,7 @@
       <li>
         <a
           class="dropdown-item pe-6 border-hover"
-          href="faqs.html"
+          href=""
         >
           <span class="border-hover-target">
             {{ cat.main_title }}
@@ -571,7 +572,7 @@
                       <li>
                         <a
                           class="dropdown-item pe-6 border-hover"
-                          href="faqs.html"
+                          href=""
                         >
                           <span class="border-hover-target">
                             Hygiene (Sanitizers)
@@ -619,8 +620,8 @@
                   <img
                     class="light-mode-img"
                     src="{% static 'assets/images/VRH-LOGO-black.png' %}"
-                    width="25%"
-                    height="25%"
+                    width="35%"
+                    height="35%"
                     alt="VRH" />
                   <img
                     class="dark-mode-img"
@@ -636,7 +637,7 @@
                     class="nav-item transition-all-xl-1 py-xl-11 py-0 px-xxl-8 px-xl-6"
                   >
                     <a
-                      class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px"
+                      class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px dropdown-toggle"
                       href="#"
                       id="menu-item-blocks"
                       >Shop by Concern</a
@@ -646,7 +647,7 @@
                     class="nav-item transition-all-xl-1 py-xl-11 py-0 px-xxl-8 px-xl-6 dropdown dropdown-hover dropdown-fullwidth"
                   >
                     <a
-                      class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px"
+                      class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px dropdown-toggle"
                       href="http://127.0.0.1:8000/shop-category/expert-series/"
                       id="menu-item-docs"
                       >Expert Series +</a
@@ -719,7 +720,7 @@
                         <li>
                             <a
                               class="dropdown-item border-hover"
-                              href=""
+                              href="/faq"
                             >
                               <span class="border-hover-target"
                                 >FAQ's</span
@@ -1051,13 +1052,13 @@ integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2i
 crossorigin="anonymous"
 referrerpolicy="no-referrer"
 ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.5.0-beta.5/lightgallery.min.js" integrity="sha512-+cRLP8t0rsqPalRf//6kfVwRVPzxvwtgLOm8XoSw+M/ND6/0aODP3WFs8m4EPtqsJ9aurqbYq4q/0u8lRJSldA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'assets/vendors/bootstrap/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'assets/js/custom.js' %}"></script>
 <script src="{% static 'assets/vendors/clipboard/clipboard.min.js' %}"></script>
 <script src="{% static 'assets/vendors/vanilla-lazyload/lazyload.min.js' %}"></script>
 <script src="{% static 'assets/vendors/waypoints/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'assets/vendors/lightgallery/lightgallery.min.js' %}"></script>
 <script src="{% static 'assets/vendors/lightgallery/plugins/zoom/lg-zoom.min.js' %}"></script>
 <script src="{% static 'assets/vendors/lightgallery/plugins/thumbnail/lg-thumbnail.min.js' %}"></script>
 <script src="{% static 'assets/vendors/lightgallery/plugins/video/lg-video.min.js' %}"></script>
@@ -2549,19 +2550,20 @@ referrerpolicy="no-referrer"
                             >
                                 <a
                                     href="#"
-                                    class="shop-down position-absolute z-index-2"
+                                    class="shop-down position-absolute z-index-2 update-product" data-product="{{product_id}}"
                                     ><i class="far fa-minus"></i
                                 ></a>
                                 <input
-                                    name="number[]"
+                                    name=""
+                                    value="{{item.qty}}"
                                     type="number"
-                                    class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0"
-                                    value="1"
-                                    required
+                                    class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0 update-product product-qty-{{product_id}}"
+                                    data-product="{{product_id}}"
                                 />
                                 <a
                                     href="#"
-                                    class="shop-up position-absolute z-index-2"
+                                    class="shop-up position-absolute z-index-2 update-product"
+                                    data-product="{{product_id}}"
                                     ><i class="far fa-plus"></i>
                                 </a>
                             </div>
@@ -3301,7 +3303,7 @@ referrerpolicy="no-referrer"
     >
         <div class="offcanvas-header bg-body-tertiary">
          <a href="/">
-            <img src="{% static 'assets/images/VRH-LOGO-black.png' %}" alt="" height="50%" width="50%"></a>   
+            <img src="{% static 'assets/images/VRH-LOGO-black.png' %}" alt="" height="80%" width="80%"></a>   
             <button
                 type="button"
                 class="btn-close"

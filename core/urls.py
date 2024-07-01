@@ -21,6 +21,7 @@ urlpatterns = [
     path("shipping-policy/", shipping_policy, name="shipping_policy"),
     path("termsandconditions/", tnc, name="tnc"),
     path("blog/", blogs, name="blogs"),
+    path("faq/", faq, name="faq"),
     path('newsletter/', subscribe_newsletter, name='subscribe_newsletter'),
     path('fetch-pin-details/', fetch_pin_details, name='fetch_pin_details'),
     path("blog/<blog_slug>/", blog_details, name="blog_details"),
