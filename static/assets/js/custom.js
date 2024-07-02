@@ -272,12 +272,33 @@ $(document).ready(function () {
         $("#cart-list").html(response.data);
 
         if (response.refresh_page) {
+          // Store the state before refreshing
+          sessionStorage.setItem("offcanvasOpen", "true");
           // Refresh the page
           window.location.reload();
         }
       },
     });
   });
+
+  // Check the state on page load and only open if not on the cart page
+  if (
+    sessionStorage.getItem("offcanvasOpen") === "true" &&
+    window.location.pathname !== "/cart/"
+  ) {
+    sessionStorage.removeItem("offcanvasOpen"); // Clear the state
+    var offcanvas = new bootstrap.Offcanvas(
+      document.getElementById("shoppingCart")
+    );
+    offcanvas.show();
+  }
+
+  // Clear the state when the offcanvas is closed manually
+  document
+    .getElementById("shoppingCart")
+    .addEventListener("hidden.bs.offcanvas", function () {
+      sessionStorage.removeItem("offcanvasOpen");
+    });
 });
 
 $(document).ready(function () {
