@@ -479,24 +479,35 @@ def delete_item_from_cart(request):
 
 
 def update_cart(request):
-    product_id = str(request.GET['id'])
-    product_qty = request.GET['qty']
+    product_id = str(request.GET.get('id'))
+    product_qty = int(request.GET.get('qty'))
     refresh_page = request.GET.get('refresh_page', False)
-    if 'cart_data_obj' in request.session:
-        if product_id in request.session['cart_data_obj']:
-           cart_data = request.session['cart_data_obj']
-           cart_data[str(request.GET['id'])]['qty'] = product_qty
-           request.session['cart_data_obj'] = cart_data
+    
+    if 'cart_data_obj' not in request.session:
+        request.session['cart_data_obj'] = {}
+
+    cart_data = request.session['cart_data_obj']
+    
+    if product_id in cart_data:
+        cart_data[product_id]['qty'] = product_qty
+        request.session['cart_data_obj'] = cart_data
+        request.session.modified = True
 
     cart_total_amount = 0
-    if 'cart_data_obj' in request.session:
-        for p_id, item in request.session['cart_data_obj'].items():
-            cart_total_amount += int(item['qty']) * float(item['price'])
+    for p_id, item in cart_data.items():
+        cart_total_amount += int(item['qty']) * float(item['price'])
 
-
-    context = render_to_string("core/cart.html", {"cart_data": request.session['cart_data_obj'], 'totalcartitems': len(request.session['cart_data_obj']), 'cart_total_amount': cart_total_amount})
-    return JsonResponse({"data": context, 'totalcartitems': len(request.session['cart_data_obj']), 'refresh_page': refresh_page}) 
-
+    context = render_to_string("core/cart.html", {
+        "cart_data": cart_data, 
+        'totalcartitems': len(cart_data), 
+        'cart_total_amount': cart_total_amount
+    })
+    
+    return JsonResponse({
+        "data": context, 
+        'totalcartitems': len(cart_data), 
+        'refresh_page': refresh_page
+    })
 
 
 def payment_failed_view(request):

@@ -30,58 +30,51 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if cart_data.items %}
+                    {% if cart_data %}
                     {% for product_id, item in cart_data.items %}
                     <tr class="position-relative">
                         <th scope="row" class="pe-5 ps-8 py-7 shop-product">
                             <div class="d-flex align-items-center">
                                 <div class="ms-6 me-7">
-                                    <img src="{% url 'core:product_new' item.title %}" data-src="{{item.image}}" class="lazy-image" width="75" height="100"
-                                        alt="{{item.title}}">
+                                    <img src="{{ item.image }}" class="lazy-image" width="75" height="100" alt="{{ item.title }}">
                                 </div>
-                                <div class>
-                                 <a href="{% url 'core:product_new' item.title %}"><p class="fw-500 mb-1 text-body-emphasis">{{item.title}}</p></a>   
+                                <div>
+                                    <a href="#"><p class="fw-500 mb-1 text-body-emphasis">{{ item.title }}</p></a>   
                                     <p class="card-text">
-                                        <!-- <span class="fs-13px fw-500 text-decoration-line-through pe-3">$39.00</span> -->
-                                        <span class="fs-15px fw-light text-body-emphasis">Sku ID: {{item.sku}}</span>
+                                        <span class="fs-15px fw-light text-body-emphasis">Sku ID: {{ item.sku }}</span>
                                     </p>
                                 </div>
                             </div>
                         </th>
                         <td class="align-middle">
-                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {{item.price|floatformat:2}}</p>
-                            <p>
-                                (Includes {{item.gst_rate}} gst)
-                            </p>
+                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {{ item.price|floatformat:2 }}</p>
+                            <p>(Includes {{ item.gst_rate }} gst)</p>
                         </td>
-
                         <td class="align-middle">
                             <div class="input-group position-relative shop-quantity">
-                                <a href="#" class="shop-down position-absolute z-index-2 update-product"
-                                    data-product="{{product_id}}">
+                                <a href="#" class="shop-down position-absolute z-index-2 update-product" data-product="{{ product_id }}">
                                     <i class="far fa-minus"></i>
                                 </a>
                                 <input name="number" type="number"
-                                    class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0 update-product product-qty-{{product_id}}"
-                                    value="{{item.qty}}" data-product="{{product_id}}" required>
-                                <a href="#" class="shop-up position-absolute z-index-2 update-product"
-                                    data-product="{{product_id}}">
+                                    class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0 update-product product-qty-{{ product_id }}"
+                                    value="{{ item.qty }}" data-product="{{ product_id }}" required>
+                                <a href="#" class="shop-up position-absolute z-index-2 update-product" data-product="{{ product_id }}">
                                     <i class="far fa-plus"></i>
                                 </a>
                             </div>
                         </td>
                         <td class="align-middle">
-                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {% widthratio item.price 1 item.qty%}.00</p>
+                            <p class="mb-0 text-body-emphasis fw-bold mr-xl-11">₹ {% widthratio item.price 1 item.qty %}.00</p>
                         </td>
                         <td class="align-middle text-end pe-8">
-                            <a href="#" class="d-block text-secondary delete-product" data-product="{{product_id}}">
+                            <a href="#" class="d-block text-secondary delete-product" data-product="{{ product_id }}">
                                 <i class="fa fa-times"></i>
                             </a>
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
-                    <p>no product found</p>
+                    <p>No product found</p>
                     {% endif %}
                 </tbody>
             </table>

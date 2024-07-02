@@ -234,19 +234,33 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $(".update-product").on("click", function () {
+  $(".update-product").on("click", function (event) {
+    event.preventDefault();
     let product_id = $(this).attr("data-product");
     let this_val = $(this);
-    let product_quantity = $(".product-qty-" + product_id).val();
+
+    // Determine if this is a plus or minus button click
+    if ($(this).hasClass("shop-down")) {
+      var product_quantity = Math.max(
+        1,
+        parseInt($(".product-qty-" + product_id).val()) - 1
+      );
+    } else if ($(this).hasClass("shop-up")) {
+      var product_quantity =
+        parseInt($(".product-qty-" + product_id).val()) + 1;
+    } else {
+      var product_quantity = parseInt($(".product-qty-" + product_id).val());
+    }
 
     console.log("Product ID:", product_id);
     console.log("Product Qty:", product_quantity);
 
     $.ajax({
-      url: "/update-cart",
+      url: "/update-cart/",
       data: {
         id: product_id,
         qty: product_quantity,
+        refresh_page: true,
       },
       dataType: "json",
       beforeSend: function () {
