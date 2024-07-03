@@ -50,7 +50,37 @@
   </div>
 </section>
 
+<style>
 
+  @media (max-width: 768px) {
+    .row-custom {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-left: 10px; /* Added to reduce the starting space */
+    }
+  
+    .col-lg-2, .col-md-4, .col-sm-6 {
+      flex: 0 0 auto;
+      margin-right: 10px;
+    }
+  
+    .col-lg-2:last-child, .col-md-4:last-child, .col-sm-6:last-child {
+      margin-right: 0;
+    }
+  
+    .card {
+      margin-top: 0;
+      margin-right: 5px; /* Reduced margin to decrease space between cards */
+    }
+  
+    .card a {
+      margin-bottom: 5px; /* Optional: adjust the bottom margin if needed */
+    }
+  }
+
+</style>
 
 <section class="container container-xxl pt-14 pt-lg-17 position-relative">
   <div class="overlay"></div>
@@ -60,7 +90,7 @@
       <p class="fs-18px mb-0">Our products are designed for everyone.</p>
     </div>
   </div>
-  <div class="row">
+  <div class="row row-custom">
     {% for cat in category %}
     <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
       <div class="card border-0 fw-semibold">

@@ -180,59 +180,54 @@ def main_category(request, category_slug):
     min_price = min(prices) if prices else 0
     max_price = max(prices) if prices else 0
 
-    price_range = request.GET.get('price_range')
-    if price_range:
-        min_price, max_price = map(float, price_range.split(','))
-        products = products.filter(price__range=(min_price, max_price))
+    min_price_filter = float(request.GET.get('min_price', min_price))
+    max_price_filter = float(request.GET.get('max_price', max_price))
 
-    gst_rate = None  # Initialize gst_rate here
+    if min_price_filter and max_price_filter:
+        products = products.filter(price__range=(min_price_filter, max_price_filter))
 
-    # Fetching variant details for products
+    gst_rate = None
+
     for product in products:
-        # Check if the product has variants
         product_has_variants = product.productvarient_set.exists()
 
         if product_has_variants:
-            # Get the first variant
             first_variant = product.productvarient_set.first()
             first_variant_type = first_variant.productvarianttypes_set.first() if first_variant.productvarianttypes_set.exists() else None
 
             product.first_variant_type_title = first_variant_type.variant_title if first_variant_type else None
-            product.first_variant_type_id = first_variant_type.id if first_variant_type else None  # Add this line
+            product.first_variant_type_id = first_variant_type.id if first_variant_type else None
             
-            # Calculate default price without GST
             price_wo_gst = first_variant_type.varient_price if first_variant_type else product.price
-            # Fetching GST rate
             gst_rate = first_variant_type.gst_rate if first_variant_type else product.gst_rate
-            # Calculate default price including GST
             base_price = first_variant_type.varient_price if first_variant_type else product.price
-            # Calculate GST amount
             gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
-            # Calculate total price including GST and round off to two decimal places
             product.gst_inclusive_price = round(base_price + gst_amount, 2)
-            # Include original variant price in the context
             product.variant_price = price_wo_gst
         else:
-            # Use the existing GST-inclusive price for the product
             product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
             gst_rate = product.gst_rate
-            # If the product doesn't have variants, set variant_price to None
             product.variant_price = None
-            product.first_variant_type_title = None  # Add this line
-            product.first_variant_type_id = None  # Add this line
+            product.first_variant_type_title = None
+            product.first_variant_type_id = None
 
     context = {
-        "categories": categories,  # Keep the filtered categories
+        "categories": categories,
         "products": products,
         "product_images": product_images,
         "min_price": min_price,
         "max_price": max_price,
+        "min_price_filter": min_price_filter,
+        "max_price_filter": max_price_filter,
         "product_variants": product_variants,
         "variant_types": variant_types,
-        "gst_rate": gst_rate,  # Include gst_rate in the context
+        "gst_rate": gst_rate,
     }
 
     return render(request, "core/main_category.html", context)
+
+
+
 
 def expert_series(request):
     main_categories = Main_category.objects.filter(mid="main_cat5323f35gfd54af15aba54g")

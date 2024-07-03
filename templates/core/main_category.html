@@ -257,43 +257,6 @@
           <h6 class="pc__title">No Products Found</h6>
           {% endif %}
         </div>
-        <!-- <nav
-          class="d-flex mt-13 pt-3 justify-content-center"
-          aria-label="pagination"
-          data-animate="fadeInUp"
-        >
-          <ul class="pagination m-0">
-            <li class="page-item">
-              <a
-                class="page-link rounded-circle d-flex align-items-center justify-content-center"
-                href="#"
-                aria-label="Previous"
-              >
-                <svg class="icon">
-                  <use xlink:href="#icon-angle-double-left"></use>
-                </svg>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active">
-              <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item">
-              <a
-                class="page-link rounded-circle d-flex align-items-center justify-content-center"
-                href="#"
-                aria-label="Next"
-              >
-                <svg class="icon">
-                  <use xlink:href="#icon-angle-double-right"></use>
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </nav> -->
       </div>
       <div class="col-lg-3 d-lg-block d-none">
         <div class="position-sticky top-0">
@@ -347,83 +310,19 @@
                 {% endfor %}
               </ul>
             </div>
-            {% comment %} <div class="widget widget-product-hightlight">
-              <h4 class="widget-title fs-5 mb-6">Hightlight</h4>
-              <ul
-                class="navbar-nav navbar-nav-cate"
-                id="widget_product_hightlight"
-              >
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="Best Seller"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">Best Seller</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="New Arrivals"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">New Arrivals</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="Sale"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">Sale</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="Hot Items"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">Hot Items</span></a
-                  >
-                </li>
-              </ul>
-            </div> {% endcomment %}
             <div class="widget widget-product-price">
               <h4 class="widget-title fs-5 mb-6">Price</h4>
-              <ul class="navbar-nav navbar-nav-cate" id="widget_product_price">
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="All"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">All</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="$10 - $50"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">$10 - $50</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="$50 - $100"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">$50 - $100</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="$100 - $200"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">$100 - $200</span></a
-                  >
-                </li>
-              </ul>
-            </div>
+              <form action="" method="get">
+                  <div id="price-slider"></div>
+                  <input type="hidden" id="min_price" name="min_price" value="{{ min_price_filter }}">
+                  <input type="hidden" id="max_price" name="max_price" value="{{ max_price_filter }}">
+                  <div>
+                      <span>Min: <output id="min-price-output">₹ {{ min_price_filter }}</output></span>
+                      <span>Max: <output id="max-price-output">₹ {{ max_price_filter }}</output></span>
+                  </div>
+                  <input type="submit" value="Filter">
+              </form>
+          </div>
             <div class="widget widget-product-size">
               <h4 class="widget-title fs-5 mb-6">Size</h4>
               <ul class="navbar-nav navbar-nav-cate" id="widget_product_size">
@@ -435,30 +334,6 @@
                     ><span class="text-hover-underline">Single</span></a
                   >
                 </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="5 Pack"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">5 Pack</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="Full size"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">Full size</span></a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    href="#"
-                    title="Mini size"
-                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                    ><span class="text-hover-underline">Mini size</span></a
-                  >
-                </li>
               </ul>
             </div>
           </aside>
@@ -466,5 +341,47 @@
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var priceSlider = document.getElementById('price-slider');
+        var minPrice = {{ min_price }};
+        var maxPrice = {{ max_price }};
+        var minPriceFilter = {{ min_price_filter }};
+        var maxPriceFilter = {{ max_price_filter }};
+        
+        noUiSlider.create(priceSlider, {
+            start: [minPriceFilter, maxPriceFilter],
+            connect: true,
+            range: {
+                'min': minPrice,
+                'max': maxPrice
+            },
+            tooltips: [true, true],
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Math.round(value);
+                }
+            }
+        });
+
+        var minPriceOutput = document.getElementById('min-price-output');
+        var maxPriceOutput = document.getElementById('max-price-output');
+        var minPriceInput = document.getElementById('min_price');
+        var maxPriceInput = document.getElementById('max_price');
+
+        priceSlider.noUiSlider.on('update', function(values, handle) {
+            if (handle === 0) {
+                minPriceOutput.innerHTML = values[0];
+                minPriceInput.value = values[0];
+            } else {
+                maxPriceOutput.innerHTML = values[1];
+                maxPriceInput.value = values[1];
+            }
+        });
+    });
+</script>
 </main>
 {% endblock main %}
