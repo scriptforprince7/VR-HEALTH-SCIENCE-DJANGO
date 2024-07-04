@@ -173,7 +173,7 @@ class Tags(models.Model):
 class Product(models.Model):
     pid = ShortUUIDField(unique=True, max_length=30, prefix="sub_cat", alphabet="abcdefgh12345")
     main_category = models.ForeignKey(Main_category, on_delete=models.SET_NULL, null=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=500, default="Treseme..")
     packing_size = models.CharField(max_length=500, default="Box 100 Pcs")

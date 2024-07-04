@@ -55,69 +55,14 @@ def index(request):
     # Fetching product variants and variant types for products in summer sale
     product_variants = ProductVarient.objects.filter(product__in=summer_sale)
     product_variant_types = ProductVariantTypes.objects.filter(product_variant__product__in=summer_sale)
-    
-    for product in summer_sale:
-        # Check if the product has variants
-        product_has_variants = product.productvarient_set.exists()
 
-        if product_has_variants:
-            # Get the first variant
-            first_variant = product.productvarient_set.first()
-            first_variant_type = first_variant.productvarianttypes_set.first()
-
-            product.first_variant_type_title = first_variant_type.variant_title if first_variant_type else None
-            product.first_variant_type_id = first_variant_type.id if first_variant_type else None
-
-            # Calculate default price without GST
-            price_wo_gst = first_variant_type.varient_price if first_variant_type else product.price
-            # Fetching GST rate
-            gst_rate = first_variant_type.gst_rate if first_variant_type else product.gst_rate
-            # Calculate default price including GST
-            base_price = first_variant_type.varient_price if first_variant_type else product.price
-            # Calculate GST amount
-            gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
-            # Calculate total price including GST and round off to two decimal places
-            product.gst_inclusive_price = round(base_price + gst_amount, 2)
-            # Include original variant price in the context
-            product.variant_price = price_wo_gst
-        else:
-            # Use the existing price for the product if it doesn't have variants
-            product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
-            product.variant_price = None
-            product.first_variant_type_title = None
-            product.first_variant_type_id = None
-
-     # Iterate over products in new arrival to determine prices
     for product in new_arrival:
-    # Check if the product has variants
-        product_has_variants = product.productvarient_set.exists()
+    # Calculate the default price including GST and round off to two decimal places
+        product.gst_inclusive_price = product.price
+        product.variant_price = None
+        product.first_variant_type_title = None
+        product.first_variant_type_id = None
 
-        if product_has_variants:
-        # Get the first variant
-            first_variant = product.productvarient_set.first()
-            first_variant_type = first_variant.productvarianttypes_set.first()
-
-            product.first_variant_type_title = first_variant_type.variant_title if first_variant_type else None
-            product.first_variant_type_id = first_variant_type.id if first_variant_type else None
-
-            # Calculate default price without GST
-            price_wo_gst = first_variant_type.varient_price if first_variant_type else product.price
-            # Fetching GST rate
-            gst_rate = first_variant_type.gst_rate if first_variant_type else product.gst_rate
-            # Calculate default price including GST
-            base_price = first_variant_type.varient_price if first_variant_type else product.price
-            # Calculate GST amount
-            gst_amount = base_price * Decimal(gst_rate.strip('%')) / 100
-        # Calculate total price including GST and round off to two decimal places
-            product.gst_inclusive_price = round(base_price + gst_amount, 2)
-        # Include original variant price in the context
-            product.variant_price = price_wo_gst
-        else:
-        # Use the existing price for the product if it doesn't have variants
-            product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
-            product.variant_price = None
-            product.first_variant_type_title = None
-            product.first_variant_type_id = None
 
          # Iterate over products in new arrival to determine prices
     for product in yellow_peel:
@@ -513,6 +458,31 @@ def payment_success_view(request):
 
 def about(request):
     return render(request, "core/about-us.html")
+
+def main_categoryy(request, main_title):
+    main_categoryy = Main_category.objects.get(main_title=main_title)
+    product = Product.objects.filter(main_category=main_categoryy)
+
+    prices = product.values_list('price', flat=True)
+    min_price = min(prices) if prices else 0
+    max_price = max(prices) if prices else 0
+
+    min_price_filter = float(request.GET.get('min_price', min_price))
+    max_price_filter = float(request.GET.get('max_price', max_price))
+
+    if min_price_filter and max_price_filter:
+        products = product.filter(price__range=(min_price_filter, max_price_filter))
+
+    context = {
+        "main_categoryy": main_categoryy,
+        "product": product,
+        "min_price": min_price,
+        "max_price": max_price,
+        "min_price_filter": min_price_filter,
+        "max_price_filter": max_price_filter,
+    }
+
+    return render(request, "core/main_categoryy.html", context)
 
 def tnc(request):
     return render(request, "core/tnc.html")

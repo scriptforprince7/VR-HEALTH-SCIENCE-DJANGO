@@ -5,6 +5,7 @@ app_name = "core"
 
 urlpatterns = [
     path("", index, name="index"),
+    path("main-category/<main_title>/", main_categoryy, name="main_categoryy"),
     path("shop-category/<category_slug>/", main_category, name="main_category"),
     path("expert-series/", expert_series, name="expert_series"),
     path("product/<product_slug>/", product_new, name="product_new"),

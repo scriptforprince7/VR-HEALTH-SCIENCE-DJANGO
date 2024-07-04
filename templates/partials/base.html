@@ -288,7 +288,7 @@
       <li>
         <a
           class="dropdown-item pe-6 border-hover"
-          href=""
+          href="{% url 'core:main_categoryy' cat.main_title %}"
         >
           <span class="border-hover-target">
             {{ cat.main_title }}
@@ -2016,11 +2016,14 @@ referrerpolicy="no-referrer"
             <div class="col-xl-6 d-flex justify-content-center">
                 <form
                     class="w-xl-100 w-sm-75 w-100 mt-6 mt-xl-0 px-6 px-xl-0"
+                    action="{% url 'core:search' %}"
+                    method="GET"
                 >
                     <div class="input-group mx-auto">
                         <input
                             type="text"
                             class="form-control form-control bg-transparent border-primary"
+                            name="q"
                             placeholder="Search product"
                         />
                         <div
