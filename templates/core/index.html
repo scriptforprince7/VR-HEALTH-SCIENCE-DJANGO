@@ -82,11 +82,20 @@
 
 </style>
 
-<section class="container container-xxl pt-14 pt-lg-17 position-relative">
+<style>
+  .gradient-text {
+    background: linear-gradient(360deg, #0390ac, #065f7c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+</style>
+
+<section class="container container-xxl pt-14 pt-lg-17 position-relative" style="background-color: aliceblue;">
   <div class="overlay"></div>
   <div class="mb-lg-13 mb-7">
     <div class="text-center">
-      <h2 class="mb-2" style="font-family: Fira Sans; font-size: 2.4rem; color: #004818;">Shop by Categories</h2>
+      <h2 class="mb-2 gradient-text" style="font-family: Fira Sans; font-size: 2.6rem;">Shop by Categories</h2>
       <p class="fs-18px mb-0">Our products are designed for everyone.</p>
     </div>
   </div>
@@ -234,10 +243,10 @@
   </div>
 </section>
 
-<section style="box-shadow: 0px 25px 40px burlywood; background-color:floralwhite;">
+<section style="box-shadow: 0px 13px 30px #0c98ac; background-color:floralwhite;">
   <div class="container container-xxl pt-14 mb-2">
     <div class="mb-11 mt-2 pt-1 pb-3 text-center" data-animate="fadeInUp">
-      <h3 class="mb-5">Shop the <span style="font-family: Fira Sans; background: linear-gradient(135deg, #1c1c1c, #4a4a4a); -webkit-background-clip: text; color: transparent; font-size:2.5rem;">NEW ARRIVALS</span>
+      <h3 class="mb-5">Shop the <span style="font-family: Fira Sans; background: linear-gradient(150deg, #353935, #066582); -webkit-background-clip: text; color: transparent; font-size:2.5rem;">NEW ARRIVALS</span>
 
       </h3>
       <p class="fs-18px mb-0 mw-xl-30 mw-lg-50 mw-md-75 ms-auto me-auto">
@@ -4835,125 +4844,7 @@
   </div>
   </div>
   <div class="col-lg-7">
-  <div class="row gy-11">
-    {% for yellow in yellow_peel %}
-    <div class="col-md-4 col-sm-6 col-12">
-  <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
-  <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-  <a href="{% url 'core:product_new' yellow.product_slug %}" class="hover-zoom-in d-block" title="{{yellow.title}}">
-  <img src="{{yellow.image.url}}" data-src="{{yellow.image.url}}" class="img-fluid lazy-image w-100" alt="{{yellow.title}}" width="330" height="440">
-  </a>
-  <div class="position-absolute d-flex z-index-2 product-actions  horizontal">
-    <input type="hidden" value="{{yellow.pid}}" class="product-id">
-
-    <input type="hidden" value="{{yellow.pid}}" id="product-quantity-{{products.pid}}" class="product-id-{{yellow.pid}}">
-
-    <input type="hidden" value="1" class="product-quantity-{{yellow.pid}}">
-
-    <input type="hidden" value="{{yellow.title}}{% if product.first_variant_type_title %} - ({{ yellow.first_variant_type_title }}){% endif %}" class="product-title-{{yellow.pid}}">
-
-    <input type="hidden" value="{{yellow.gst_inclusive_price}}" class="product-price-{{yellow.pid}}">
-
-   
-    {% with price_wo_gst=yellow.variant_price|default:yellow.price %}
-    <input type="hidden" value="{{ price_wo_gst }}" class="product-price-wo-gst-{{ yellow.pid }}">
-    {% endwith %}
-   
-
-    {% if yellow.productvarient_set.exists %}
-    {% with first_variant=yellow.productvarient_set.first %}
-    <input type="hidden" value="{{ first_variant.productvarianttypes_set.first.gst_rate }}" class="gst_rate-{{ yellow.pid }}">
-    {% endwith %}
-    {% else %}
-    <input type="hidden" value="{{ yellow.gst_rate }}" class="gst_rate-{{ yellow.pid }}">
-    {% endif %}
-
-    <input type="hidden" value="{{yellow.sku}}" class="product-sku-{{yellow.pid}}">
-
-    <input type="hidden" value="{{yellow.image.url}}" class="product-image-{{yellow.pid}}">
-
-    <input type="hidden" id="variant-id-hidden-{{ yellow.pid }}" value="{{ yellow.first_variant_type_id }}">
-
-    <!-- <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm add_to_cart add-to-cart-btn" href="#" id="add-to-cart-btn" data-index="{{yellow.pid}}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-  <svg class="icon icon-shopping-bag-open-light">
-  <use xlink:href="#icon-shopping-bag-open-light"></use>
-  </svg>
-  </a> -->
-
-  <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm" href="{% url 'core:product_new' yellow.product_slug %}">
-  
-  <svg class="icon icon-eye-light">
-  <use xlink:href="#icon-eye-light"></use>
-  </svg>
-  </span>
-  </a>
-  </div>
-  </figure>
-  <div class="card-body text-center p-0">
-  <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">₹ {{yellow.gst_inclusive_price|floatformat:"2"}}</span>
-  <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3"><a class="text-decoration-none text-reset" href="{% url 'core:product_new' yellow.product_slug %}">{{yellow.title}}<span class="modif">{% if yellow.first_variant_type_title %} - ({{ yellow.first_variant_type_title }}){% endif %}</span></a></h4>
-  <div class="d-flex align-items-center fs-12px justify-content-center">
-  <div class="rating">
-  <div class="empty-stars">
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star-o">
-  <use xlink:href="#star-o"></use>
-  </svg>
-  </span>
-  </div>
-  <div class="filled-stars" style="width: 100%">
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  <span class="star">
-  <svg class="icon star text-primary">
-  <use xlink:href="#star"></use>
-  </svg>
-  </span>
-  </div>
-  </div><span class="reviews ms-4 pt-3 fs-14px">0 reviews</span></div>
-  </div>
-  </div>
-    </div>
-    {% endfor %}
-</div>
+    <img src="{% static 'assets/images/yellow-banner.jpg' %}" alt="" width="100%" height="100%">
   </div>
   </div>
   </section>
@@ -4970,8 +4861,8 @@
   <img class="lazy-image dark-mode-img img-fluid" src="{% static '#' %}" data-src="{% static 'assets/images/image-box/image-box-33.png' %}" width="102" height="118" alt="Guaranteed PURE">
   </div>
   <div class="card-body text-center pt-7 mt-3">
-  <h3 class="fs-4 mb-6">Guaranteed PURE</h3>
-  <p class="mb-0 px-lg-6">All Grace formulations adhere to strict purity standards and will never contain harsh or toxic ingredients</p>
+  <h3 class="fs-4 mb-6">100% safe and 100% result oriented.</h3>
+  <p class="mb-0 px-lg-6">Our commitment to excellence ensures that every Grace product is both safe and effective. We rigorously test our formulations to guarantee they meet the highest standards of safety without compromising on results.</p>
   </div>
   </div>
   </div>
@@ -4983,7 +4874,7 @@
   </div>
   <div class="card-body text-center pt-7 mt-3">
   <h3 class="fs-4 mb-6">Completely Cruelty-Free</h3>
-  <p class="mb-0 px-lg-6">All Grace formulations adhere to strict purity standards and will never contain harsh or toxic ingredients</p>
+  <p class="mb-0 px-lg-6">At Grace, we are committed to ensuring that no animals are harmed in the production of our products. All our formulations are completely cruelty-free, meaning they are never tested on animals at any stage of development.</p>
   </div>
   </div>
   </div>
@@ -4995,7 +4886,7 @@
   </div>
   <div class="card-body text-center pt-7 mt-3">
   <h3 class="fs-4 mb-6">Ingredient Sourcing</h3>
-  <p class="mb-0 px-lg-6">All Grace formulations adhere to strict purity standards and will never contain harsh or toxic ingredients</p>
+  <p class="mb-0 px-lg-6">Our commitment to quality begins with the careful selection of ingredients. We source our raw materials from trusted suppliers who adhere to sustainable and ethical practices</p>
   </div>
   </div>
   </div>

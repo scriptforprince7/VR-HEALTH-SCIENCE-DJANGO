@@ -18,6 +18,7 @@ urlpatterns = [
     path('contact-us/', contact_us_view, name='contact_us'),
     path("career", career, name="career"),
     path("faq", faq, name="faq"),
+    path("private-label", private_label, name="private_label"),
     path("shipping-policy/", shipping_policy, name="shipping_policy"),
     path("termsandconditions/", tnc, name="tnc"),
     path("blog/", blogs, name="blogs"),

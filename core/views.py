@@ -520,6 +520,9 @@ def tnc(request):
 def contact(request):
     return render(request, "core/contact_us.html")
 
+def  private_label(request):
+    return render(request, "core/private_label.html")
+
 def career(request):
     return render(request, "core/career.html")
 

@@ -1,0 +1,73 @@
+{% extends "partials/base.html" %} {% load static %} 
+{% load custom_filters %}
+{% block main %}
+  <section class="page-title z-index-2 position-relative">
+    <div class="bg-body-secondary">
+      <div class="container">
+        <nav class="py-4 lh-30px" aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center py-1">
+            <li class="breadcrumb-item">
+              <a href="/">Home</a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">
+              Private Label
+            </li>
+    
+            <li class="breadcrumb-item" aria-current="page">
+                <a href="{% static 'assets/images/third-party-label-pdf.pdf' %}" class="blinking-text" download>DOWNLOAD PDF</a>
+            </li>
+            <style>
+                .blinking-text {
+    color: #097fa0;
+    text-decoration: none;
+    animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+    50% {
+        visibility: hidden;
+    }
+}
+
+            </style>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div
+      class="slick-slider hero hero-header-04 slick-slider-dots-inside container container-xxl mx-auto"
+      data-slick-options="{&#34;arrows&#34;:false,&#34;autoplay&#34;:true,&#34;cssEase&#34;:&#34;ease-in-out&#34;,&#34;dots&#34;:true,&#34;fade&#34;:true,&#34;infinite&#34;:true,&#34;slidesToShow&#34;:1,&#34;speed&#34;:600}"
+    >
+      <div class="vh-100 d-flex align-items-center py-lg-21 px-0">
+        <div
+          class="z-index-2 container container-xxl py-21 pt-xl-10 pb-xl-11 ps-lg-19 ps-6"
+        >
+          <div class="hero-content text-start">
+          </div>
+        </div>
+        <div
+          class="lazy-bg bg-overlay position-absolute z-index-1 w-100 h-100 light-mode-img"
+          data-bg-src="{% static 'assets/images/white-label.png' %}"
+        ></div>
+        <div
+          class="lazy-bg bg-overlay dark-mode-img position-absolute z-index-1 w-100 h-100"
+          data-bg-src="{% static 'assets/images/white-label.png' %}"
+        ></div>
+      </div>
+    </div>
+  </section>
+  <div class="border-top w-100"></div>
+  <section class="container container-xxl" style="margin: 5rem;">
+    <div class="row gy-30px">
+      <div class="col-lg-6" data-animate="fadeInUp">
+       <img src="{% static 'assets/images/label-1.jpg' %}" alt="" width="90%">
+      </div>
+      <div class="col-lg-6" data-animate="fadeInUp">
+        <img src="{% static 'assets/images/label-2.jpg' %}" alt="" width="90%">
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock main %}
