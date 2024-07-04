@@ -91,22 +91,22 @@
           <div class="w-50 d-none d-lg-block">
             <ul class="social-icons list-inline mb-0 fs-14">
               <li class="list-inline-item">
-                <a href="https://x.com/vrhscience" title="Twitter">
+                <a href="https://x.com/vrhscience" title="Twitter" target="_blank">
                   <svg class="icon"><use xlink:href="#twitter"></use></svg>
                 </a>
               </li>
               <li class="list-inline-item ms-6">
-                <a href="https://www.facebook.com/vrhealthscience" title="Facebook">
+                <a href="https://www.facebook.com/vrhealthscience" title="Facebook" target="_blank">
                   <svg class="icon"><use xlink:href="#facebook"></use></svg>
                 </a>
               </li>
               <li class="list-inline-item ms-6">
-                <a href="https://www.instagram.com/vrhscience/" title="Instagram">
+                <a href="https://www.instagram.com/vrhscience/" title="Instagram" target="_blank">
                   <svg class="icon"><use xlink:href="#instagram"></use></svg>
                 </a>
               </li>
               <li class="list-inline-item ms-6">
-                <a href="https://www.youtube.com/channel/UCQedcrCbHTPlvHLC2NxEdOA" title="Youtube">
+                <a href="https://www.youtube.com/channel/UCQedcrCbHTPlvHLC2NxEdOA" title="Youtube" target="_blank">
                   <svg class="icon"><use xlink:href="#youtube"></use></svg>
                 </a>
               </li>
@@ -302,7 +302,7 @@
 
                   
                   
-                      <li>
+                      <!-- <li>
                         <a
                           class="dropdown-item pe-6 border-hover"
                           href=""
@@ -311,7 +311,7 @@
                             Hygiene (Sanitizers)
                           </span>
                         </a>
-                      </li>
+                      </li> -->
                     </ul>
                   </li>
                   <li
@@ -334,7 +334,7 @@
                       <li>
                         <a
                           class="dropdown-item pe-6 border-hover"
-                          href="/shop-category"
+                          href=""
                         >
                           <span class="border-hover-target"> {{ingred.ingredient_title}} </span>
                         </a>
@@ -374,7 +374,7 @@
                   >
                     <a
                       class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px dropdown-toggle"
-                      href="http://127.0.0.1:8000/shop-category/expert-series/"
+                      href="https://www.vrhealthscience.com/shop-category/expert-series/"
                       id="menu-item-docs"
                       >Expert Series +</a
                     >
@@ -488,6 +488,13 @@
       </div>
     </header>
         <main id="content" class="wrapper layout-page">
+            {% if messages %}
+    {% for message in messages  %}
+    <div class="alert alert-{{message.tags}}" role="alert" id="alertMessage">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
 
 {% block main %}{% endblock main %}
 {% comment %} footer starr {% endcomment %}
@@ -628,18 +635,18 @@
                 <p class="mb-0">© VR HEALTH SCIENCE PVT. LTD. 2024</p>
                 <ul class="list-inline fs-18px ms-6 mb-0">
                     <li class="list-inline-item me-8">
-                        <a href="https://x.com/vrhscience"><i class="fab fa-twitter"></i></a>
+                        <a href="https://x.com/vrhscience" target="_blank"><i class="fab fa-twitter"></i></a>
                     </li>
                     <li class="list-inline-item me-8">
-                        <a href="https://www.facebook.com/vrhealthscience"
+                        <a href="https://www.facebook.com/vrhealthscience" target="_blank"
                             ><i class="fab fa-facebook-f"></i
                         ></a>
                     </li>
                     <li class="list-inline-item me-8">
-                        <a href="https://www.instagram.com/vrhscience/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/vrhscience/" target="_blank"><i class="fab fa-instagram"></i></a>
                     </li>
                     <li class="list-inline-item">
-                        <a href="https://www.youtube.com/channel/UCQedcrCbHTPlvHLC2NxEdOA"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.youtube.com/channel/UCQedcrCbHTPlvHLC2NxEdOA" target="_blank"><i class="fab fa-youtube"></i></a>
                     </li>
                 </ul>
             </div>
@@ -649,10 +656,10 @@
                 <a class="d-inline-block" href="/">
                     <img
                         class="lazy-image img-fluid light-mode-img"
-                        src="{% static '#' %}"
+                        src=""
                         data-src="{% static 'assets/images/VRH-LOGO-black.png' %}"
-                        width="179"
-                        height="26"
+                        width="20%"
+                        height="20%"
                         alt="Glowing - Bootstrap 5 HTML Templates"
                     />
                 </a>
@@ -661,8 +668,8 @@
                 class="col-sm-12 col-md-6 col-lg-4 order-3 text-sm-start text-lg-end mt-8 mt-lg-0"
             >
                 <img
-                    src="{% static '#' %}"
-                    data-src="{% static './assets/images/footer/img_1.png' %}"
+                    src=""
+                    data-src="{% static 'assets/images/payment-options.png' %}"
                     width="313"
                     height="28"
                     alt="Paypal"
@@ -678,6 +685,14 @@ integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2i
 crossorigin="anonymous"
 referrerpolicy="no-referrer"
 ></script>
+<script>
+    setTimeout(function() {
+      var alertMessage = document.getElementById('alertMessage');
+      if (alertMessage) {
+        alertMessage.style.display = 'none';
+      }
+    }, 5000); // 5000 milliseconds = 5 seconds
+  </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.5.0-beta.5/lightgallery.min.js" integrity="sha512-+cRLP8t0rsqPalRf//6kfVwRVPzxvwtgLOm8XoSw+M/ND6/0aODP3WFs8m4EPtqsJ9aurqbYq4q/0u8lRJSldA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -1985,7 +2000,7 @@ referrerpolicy="no-referrer"
             class="navbar navbar-expand-xl px-0 py-6 py-xl-12 row align-items-start"
         >
             <div
-                class="col-xl-3 d-flex justify-content-center justify-content-xl-start"
+                class="col-xl-3 d-flex justify-content-center justify-content-xl-start" style="text-align: center;"
             >
                 <a
                     href=""
@@ -1993,7 +2008,7 @@ referrerpolicy="no-referrer"
                 >
                     <img
                         src="{% static 'assets/images/VRH-LOGO-black.png' %}"
-                        height="26"
+                        width="25%"
                         alt="Glowing - Bootstrap 5 HTML Templates"
                     />
                 </a>
@@ -2148,7 +2163,7 @@ referrerpolicy="no-referrer"
                                     <p
                                         class="fw-500 text-body-emphasis"
                                     >
-                                  <a href="{% url 'core:product_new' item.title %}">{{ item.title }} x {{item.qty}}</a>   <br>
+                                  <a href="/cart">{{ item.title }} x {{item.qty}}</a>   <br>
                                     {{ item.sku }}
                                     </p>
                                 </div>
@@ -2182,13 +2197,13 @@ referrerpolicy="no-referrer"
               {% endfor %}
               {% else %}
               <div style="text-align: center;">
-                <img src="{% static 'images/no-product.png' %}" alt="Empty Cart Image" width="70%">
+                <img src="{% static 'assets/images/no-product.png' %}" alt="Empty Cart Image" width="70%">
                 <style>
                     .explore:hover {
                         background-color: #9fcfb5;
                     }
                 </style>
-                <a href="/shop-category" style="text-align: center;">
+                <a href="https://vrhealthscience.com/shop-category/expert-series/" style="text-align: center;">
                     <button class="btn btn-success mt-3 d-block explore">Explore Categories</button>
                 </a>
             </div>
@@ -3488,7 +3503,7 @@ referrerpolicy="no-referrer"
                 >
                     <a
                         class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px"
-                        href="http://127.0.0.1:8000/shop-category/expert-series/"
+                        href="https://www.vrhealthscience.com/shop-category/expert-series/"
                         data-bs-toggle="dropdown"
                         id="menu-item-home-canvas"
                         >Expert Series</a

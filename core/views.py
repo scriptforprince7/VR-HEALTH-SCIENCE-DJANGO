@@ -418,7 +418,7 @@ def cart_view(request):
         })
     else:
         messages.warning(request, "Your cart is empty")
-        return redirect("core:main_category")
+        return redirect("/")
 
 
 

@@ -192,7 +192,7 @@ class Product(models.Model):
     yellow_peel= models.BooleanField(default=False)
     sku = ShortUUIDField(unique=True, max_length=7, prefix="sku", alphabet="12345678900")
     date = models.DateTimeField(auto_now_add=True)
-    youtube_link = models.CharField(max_length=12000, default="youtube video link..")
+    youtube_link = models.CharField(max_length=12000, default="1")
     youtube_content = models.CharField(max_length=12000, default="100percent free from..")
     image = models.ImageField(upload_to=user_directory_path, default="product.jpg")
 
