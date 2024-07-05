@@ -46,24 +46,34 @@
             </div>
             <div class="mb-7">
               <label for="password" class="visually-hidden"
-                >Email address</label
+                >Password</label
               >
               {{form.password1}}
             </div>
-            <div class="form-check mb-7">
+            <div class="mb-7">
+              <label for="password" class="visually-hidden"
+                >Confirm Password</label
+              >
               {{form.password2}}
+            </div>
+            <div class="form-check mb-6">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="agree_terms"
+                name="agree_terms"
+              />
               <label
                 class="form-check-label text-secondary"
                 for="agree_terms"
               >
                 Yes, I agree with Grace
-                <a href="#" class="text-decoration-underline"
-                  >Privacy Policy</a
-                >
+                <a href="/privacy-policy" class="text-decoration-underline">Privacy Policy</a>
                 and
-                <a href="#" class="text-decoration-underline">Terms of Use</a>
+                <a href="/terms-&-conditions" class="text-decoration-underline">Terms & Conditions</a>
               </label>
             </div>
+            
             <button type="submit" value="Login" class="btn btn-primary w-100">
               Sign Up
             </button>
