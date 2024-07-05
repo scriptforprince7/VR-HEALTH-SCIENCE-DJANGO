@@ -140,32 +140,38 @@
                 <span class="d-inline-block me-3"
                   ><img src="{% static '../assets/images/header/flag.html' %}" alt
                 /></span>
-              <a href="/blog"><button
+              <a href="/career"><button
                 class="btn btn-link fw-semibold text-uppercase ls-1 p-0 dropdown-menu-end fs-13px"
                 type="button"
               > 
-                  Blog
+                  Work With Us
                 </button>
             </a> 
               </div>
 
-              <div>
-              <a href="/career"><button
-                class="btn btn-link fw-semibold text-uppercase ls-1 p-0 dropdown-menu-end fs-13px"
-                type="button"
-              >
-                Work with Us
-              </button></a>  
-                <!-- <div
-                  class="dropdown-menu dropdown-menu-end py-5"
-                  style="min-width: unset"
+              <div class="dropdown me-10">
+                <span class="d-inline-block me-3"
+                  ><img src="{% static '../assets/images/header/flag.html' %}" alt
+                /></span>
+                {% if user.is_authenticated %}
+                <a href="/dashboard"><button
+                  class="btn btn-link fw-semibold text-uppercase ls-1 p-0 dropdown-menu-end fs-13px"
+                  type="button"
                 >
-                  <a class="dropdown-item py-1" href="#">EUR</a>
-                  <a class="dropdown-item py-1" href="#">GBP</a>
-                  <a class="dropdown-item py-1" href="#">JPY</a>
-                  <a class="dropdown-item py-1" href="#">AUD</a>
-                </div> -->
+                Hello,  {{ user.username }} <i class="fa-solid fa-right-to-bracket"></i>
+                </button></a>
+                {% else %}
+                <a href="/blog"><button
+                    class="btn btn-link fw-semibold text-uppercase ls-1 p-0 dropdown-menu-end fs-13px"
+                    type="button"
+                  >
+                  Blog
+                  </button></a>
+                {% endif %}
+  
+  
               </div>
+              
             </div>
           </div>
         </div>
@@ -454,7 +460,7 @@
                   <div class="px-5 d-none d-xl-inline-block">
                     <a
                       class="lh-1 color-inherit text-decoration-none"
-                      href="/user/sign-up"
+                      href="{% if user.is_authenticated %}{% url 'core:dashboard' %}{% else %}{% url 'userauths:sign-in' %}{% endif %}"
                     >
                       <svg class="icon icon-user-light">
                         <use xlink:href="#icon-user-light"></use>

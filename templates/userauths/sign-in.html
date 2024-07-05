@@ -15,7 +15,7 @@
               class="breadcrumb-item active pl-0 d-flex align-items-center"
               aria-current="page"
             >
-              Login
+              Sign In
             </li>
           </ol>
         </nav>
@@ -26,39 +26,45 @@
             <h2 class="fs-36px mb-11 mb-lg-14">My Account</h2>
           </div>
         </div>
+        {% if messages %}
+    {% for message in messages  %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
         <div class="row no-gutters">
           <div class="col-lg-10 mx-auto">
             <div class="row no-gutters">
               <div class="col-lg-6 mb-15 mb-lg-0 pe-xl-2">
                 <h3 class="fs-4 mb-10">Log In</h3>
-                <form class>
+                <form method="POST">
+                  {% csrf_token %}
                   <div class="form-group mb-6">
-                    <label for="user_login_email" class="visually-hidden"
+                    <label for="customerNameEmailInput1" class="visually-hidden"
                       >Email address</label
                     >
                     <input
                       type="email"
                       class="form-control"
-                      id="user_login_email"
-                      name="user_login_email"
+                      name="email"
                       placeholder="Email Address"
                     />
                   </div>
                   <div class="form-group mb-6">
-                    <label for="user_login_password" class="visually-hidden"
+                    <label for="customerPasswodInput" class="visually-hidden"
                       >Password</label
                     >
                     <input
                       type="password"
                       class="form-control"
-                      id="user_login_password"
                       placeholder="Password"
-                      name="user_login_password"
+                      name="password"
                     />
                   </div>
-                  <a href="#" class="d-inline-block fs-15 lh-12 mb-7"
+                  <!-- <a href="#" class="d-inline-block fs-15 lh-12 mb-7"
                     >Forgot your password?</a
-                  >
+                  > -->
                   <button type="submit" class="btn btn-primary w-100 mb-7">
                     Submit
                   </button>
@@ -75,7 +81,7 @@
                       >Keep me signed in.</label
                     >
                   </div>
-                  <div class="row no-gutters mx-n5">
+                  <!-- <div class="row no-gutters mx-n5">
                     <div class="col-sm-6 mb-4 mb-sm-0 px-5">
                       <a
                         href="#"
@@ -96,7 +102,7 @@
                         >Continue with Google</a
                       >
                     </div>
-                  </div>
+                  </div> -->
                 </form>
               </div>
               <div class="col-lg-6 ps-lg-6 ps-xl-12">
@@ -108,7 +114,7 @@
                   account and more.
                 </p>
                 <a
-                  href="https://templates.g5plus.net/user-registration.html"
+                  href="/user/sign-up/"
                   class="btn btn-primary"
                   >Register</a
                 >
