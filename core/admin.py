@@ -48,7 +48,7 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = ['ingredient_title', 'image', 'description', 'banner_image']   
 
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ['banner_title', 'active_status', 'display_banner_image']  
+    list_display = ['banner_title', 'active_status', 'order', 'display_banner_image']  
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['main_category', 'cat_title', 'meta_description', 'meta_title', 'meta_tag', 'home_page_display', 'image', 'big_image']

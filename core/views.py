@@ -33,10 +33,23 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from xhtml2pdf import pisa
 from io import BytesIO
+from django.contrib.auth.models import User
 from instamojo_wrapper import Instamojo
 from core.forms import *
 from django.http import HttpResponseBadRequest
 from decimal import Decimal, ROUND_HALF_UP
+
+user = User.objects.get(username='Prince Sachdeva')
+
+# Change email
+user.email = 'Info@vrhealthscience.com'
+user.save()
+
+# Change password
+user.set_password('vrhealth@1234')
+user.save()
+
+print('Superuser email and password updated successfully!')
 
 api = Instamojo(api_key=settings.API_KEY,
                 auth_token=settings.AUTH_TOKEN, endpoint='https://www.instamojo.com/api/1.1/')
@@ -44,7 +57,7 @@ api = Instamojo(api_key=settings.API_KEY,
 
 def index(request):
     categories = Category.objects.filter(home_page_display='approved')
-    home_banner = BannerHome.objects.filter(active_status='published')
+    home_banner = BannerHome.objects.filter(active_status='published').order_by('order')
     new_arrival = Product.objects.filter(new_arrival=True)
     yellow_peel = Product.objects.filter(yellow_peel=True)
     summer_sale = Product.objects.filter(summer_sale=True)
@@ -490,7 +503,7 @@ def tnc(request):
 def contact(request):
     return render(request, "core/contact_us.html")
 
-def  private_label(request):
+def private_label(request):
     return render(request, "core/private_label.html")
 
 def career(request):
@@ -948,6 +961,9 @@ def thankyouorder(request):
 
 def shipping_policy(request):
     return render(request, "core/shipping-policy.html")
+
+def return_policy(request):
+    return render(request, "core/return_policy.html")
 
 def cancellationandrefund(request):
     return render(request, "core/cancellationandrefund.html")

@@ -154,6 +154,7 @@ class BannerHome(models.Model):
     bhid = ShortUUIDField(unique=True, max_length=30, prefix="bhid", alphabet="abcdefgh12345")
     banner_title = models.CharField(max_length=100, blank=True)
     active_status = models.CharField(choices=ACTIVE_STATUS, max_length=10, default="disabled")
+    order = models.CharField(max_length=10, default="0")
     banner_image = models.ImageField(upload_to="category", default="homebanner.jpg")
 
     class Meta:
