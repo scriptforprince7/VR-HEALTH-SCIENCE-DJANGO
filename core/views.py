@@ -17,6 +17,7 @@ from django.views.generic import View
 import razorpay
 from django.db import transaction
 from datetime import datetime 
+import csv
 from decimal import Decimal, ROUND_HALF_UP
 import re
 from django.http import QueryDict
@@ -38,18 +39,6 @@ from instamojo_wrapper import Instamojo
 from core.forms import *
 from django.http import HttpResponseBadRequest
 from decimal import Decimal, ROUND_HALF_UP
-
-user = User.objects.get(username='Prince Sachdeva')
-
-# Change email
-user.email = 'Info@vrhealthscience.com'
-user.save()
-
-# Change password
-user.set_password('vrhealth@1234')
-user.save()
-
-print('Superuser email and password updated successfully!')
 
 api = Instamojo(api_key=settings.API_KEY,
                 auth_token=settings.AUTH_TOKEN, endpoint='https://www.instamojo.com/api/1.1/')
@@ -1035,6 +1024,8 @@ def product_new(request, product_slug):
 
     product_images = ProductImages.objects.filter(product=product)
 
+    product_description = ProductDescription.objects.filter(product=product).first()
+
     context = {
         "products": product,
         "product_variants": product_variants,
@@ -1046,9 +1037,23 @@ def product_new(request, product_slug):
         "has_variants": has_variants,
         "related_products": related_products,
         "related_maincategory":  related_maincategory,
+        "product_description": product_description,
     }
 
     return render(request, "core/product.html", context)
+
+def export_cart_orders_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="cart_orders.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['User', 'Price', 'Courier Partner', 'Tracking ID', 'Paid Status', 'Order Date', 'Product Status'])
+
+    orders = CartOrder.objects.all().values_list('user__username', 'price', 'courier_partner', 'tracking_id', 'paid_status', 'order_date', 'product_status')
+    for order in orders:
+        writer.writerow(order)
+
+    return response
 
 def contact_us_view(request):
     if request.method == "POST":

@@ -334,7 +334,7 @@
             aria-controls="product-details"
             aria-selected="true"
           >
-          Reasons to Love
+          Description
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -423,38 +423,9 @@
                     />
                   </div>
                   <div class="pb-3 col-12 col-lg-6 pt-12 pt-lg-0">
-                    <p class="fw-semibold text-body-emphasis mb-2 pb-4">
-                      For Normal, Oily, Combination Skin Types
-                    </p>
                     <p class="mb-2 pb-4">
-                      Complexion-perfecting natural foundation enriched with
-                      antioxidant-packed superfruits, vitamins, and other
-                      skin-nourishing nutrients. Creamy liquid formula sets
-                      with a pristine matte finish for soft, velvety smooth
-                      skin.
+                      {{ product_description.product_description|safe }}
                     </p>
-                    <p class="mb-9">
-                      Say hello to flawless, long-lasting foundation that
-                      comes in 7 melt-into-your-skin shades. This
-                      lightweight, innovative formula creates a smooth,
-                      natural matte finish that won’t settle into lines.
-                      It’s the perfect fit for your skin. 1 fl. oz.
-                    </p>
-                    <p class="fw-semibold text-body-emphasis mb-2 pb-4">
-                      Benefits
-                    </p>
-                    <ul class="mb-7 ps-6">
-                      <li class="mb-1">
-                        Buildable medium-to-full coverage
-                      </li>
-                      <li class="mb-1">Weightless, airy feel—no caking!</li>
-                      <li class="mb-1">Long-wearing</li>
-                      <li class="mb-1">Evens skin tone</li>
-                      <li>
-                        Available in 07 shades (all exclusive to
-                        Makeaholic!)
-                      </li>
-                    </ul>
                   </div>
                 </div>
               </div>
@@ -490,32 +461,8 @@
               >
                 <div class="pb-3">
                   <p class="fw-semibold text-body-emphasis mb-2 pb-4">
-                    Follow these safety guidelines when using cosmetics
-                    products of any type:
+                    {{ product_description.safety_warnings|safe }}
                   </p>
-                  <ul class="ps-6 mb-8">
-                    <li class="mb-3">
-                      Read the label. Follow all directions and heed all
-                      warnings.
-                    </li>
-                    <li class="mb-3">
-                      Wash your hands before you use the product.
-                    </li>
-                    <li class="mb-3">Do not share makeup.</li>
-                    <li class="mb-3">
-                      Keep the containers clean and tightly closed when not
-                      in use, and protect them from temperature extremes.
-                    </li>
-                    <li class="mb-3">
-                      Throw away cosmetics if there are changes in color or
-                      smell.
-                    </li>
-                    <li>
-                      Use aerosols or sprays cans in well-ventilated areas.
-                      Do not use them while you are smoking or near an open
-                      flame. It could start a fire.
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -549,70 +496,9 @@
             >
               <div class="pb-3">
                 <div class="table-responsive mb-5">
-                  <table class="table table-borderless mb-0">
-                    <tbody>
-                      <tr>
-                        <td class="ps-0 py-5 pe-5 text-body-emphasis">
-                          CAS
-                        </td>
-                        <td class="text-end py-5 ps-5 pe-0">
-                          92128-82-0, 9057-02-7
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="ps-0 py-5 pe-5 text-body-emphasis">
-                          INCI
-                        </td>
-                        <td class="text-end py-5 ps-5 pe-0">
-                          Nannochloropsis Oculata (micro algae) extract,
-                          pullulan
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="ps-0 py-5 pe-5 text-body-emphasis">
-                          Composition
-                        </td>
-                        <td class="text-end py-5 ps-5 pe-0">
-                          Nannochloropsis Oculata (micro algae) extract,
-                          pullulan, water, ethanol
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="ps-0 py-5 pe-5 text-body-emphasis">
-                          Appearance
-                        </td>
-                        <td class="text-end py-5 ps-5 pe-0">
-                          Yellow to amber, viscous liquid
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="ps-0 py-5 pe-5 text-body-emphasis">
-                          Solubility
-                        </td>
-                        <td class="text-end py-5 ps-5 pe-0">
-                          Soluble in water &amp; ethanol
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="ps-0 py-5 pe-5 text-body-emphasis">
-                          Storage
-                        </td>
-                        <td class="text-end py-5 ps-5 pe-0">
-                          Store refrigerated (4-8oC / 39-46oF)
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
                 </div>
                 <p class="mb-0">
-                  Perfect for Equestrian homes or every horse lover.
-                  Designer premium signature aluminum alloy all Arthur Court
-                  is compliance with FDA regulations. Aluminum Serveware can
-                  be chilled in the freezer or refrigerator and warmed in
-                  the oven to 350. Wash by hand with mild dish soap and dry
-                  immediately – do not put in the dishwasher. Comes in Gift
-                  Box perfect for Equestrian home or Horse lover in your
-                  life.
+                  {{ product_description.direction_for_use|safe }}
                 </p>
               </div>
             </div>

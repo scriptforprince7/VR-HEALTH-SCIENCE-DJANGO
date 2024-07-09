@@ -1,5 +1,8 @@
 from django.contrib import admin
 from core.models import *
+import csv
+from django.urls import path
+from django.http import HttpResponse
 
 class ProductSeoAdmin(admin.StackedInline):
     model = ProductSeo
@@ -54,9 +57,27 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['main_category', 'cat_title', 'meta_description', 'meta_title', 'meta_tag', 'home_page_display', 'image', 'big_image']
     list_filter = ['main_category']  # Fields to filter by
 
+
 class CartOrderAdmin(admin.ModelAdmin):
     list_editable = ['paid_status', 'product_status', 'tracking_id']
     list_display = ['user', 'price', 'paid_status', 'order_date', 'tracking_id', 'product_status']
+    
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('export/', self.admin_site.admin_view(self.export_cart_orders_csv), name='export_cart_orders_csv'),
+        ]
+        return custom_urls + urls
+
+    def export_cart_orders_csv(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="cart_orders.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['User', 'Price', 'Courier Partner', 'Tracking ID', 'Paid Status', 'Order Date', 'Product Status'])
+        orders = CartOrder.objects.all().values_list('user__username', 'price', 'courier_partner', 'tracking_id', 'paid_status', 'order_date', 'product_status')
+        for order in orders:
+            writer.writerow(order)
+        return response
 
 class CartOrderItemsAdmin(admin.ModelAdmin):
     list_display = ['order', 'invoice_no', 'item', 'image', 'qty', 'price', 'total']
