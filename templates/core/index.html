@@ -99,10 +99,10 @@
       <p class="fs-18px mb-0">Our products are designed for everyone.</p>
     </div>
   </div>
-  <div class="row row-custom">
+  <div class="row row-custom" style="background-color: aliceblue;">
     {% for cat in category %}
-    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10">
-      <div class="card border-0 fw-semibold">
+    <div class="col-lg-2 col-md-4 col-sm-6 mt-lg-0 mt-10" style="background-color: aliceblue;">
+      <div class="card border-0 fw-semibold" style="background-color: aliceblue;">
         <a
           href="{% url 'core:main_category' cat.category_slug %}"
           class="rounded-circle mx-auto hover-zoom-in w-100 image-box-1 custom-circle"
@@ -259,10 +259,10 @@
         <div class="card border-0 rounded-0 hover-zoom-in hover-shine">
           <img
             class="lazy-image w-100 img-fluid card-img object-fit-cover banner-02 light-mode-img"
-            src="{% static 'assets/images/new-arrivals.jpeg' %}"
-            data-src="{% static 'assets/images/new-arrivals.jpeg' %}"
-            width="570"
-            height="913"
+            src="{% static 'assets/images/new-arrivals.jpg' %}"
+            data-src="{% static 'assets/images/new-arrivals.jpg' %}"
+            width="100%"
+            height="100%"
             alt="Empower Yourself"
           />
           <img
@@ -276,15 +276,15 @@
           <div
             class="card-img-overlay p-12 m-2 d-inline-flex flex-column justify-content-end"
           >
-            <h3 class="card-title mb-0 fs-2 text-white">
+            <!-- <h3 class="card-title mb-0 fs-2 text-white">
               Empower Yourself
-            </h3>
-            <p class="card-text mb-0 fs-18px text-white mt-5">
+            </h3> -->
+            <!-- <p class="card-text mb-0 fs-18px text-white mt-5">
               Get the skin you want to feel
-            </p>
-            <div class="mt-10 pt-2">
+            </p> -->
+            <!-- <div class="mt-10 pt-2">
               <a href="https://www.vrhealthscience.com/product/hydronomics-forte-hq4-serum/" class="btn btn-white">Explore More</a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
