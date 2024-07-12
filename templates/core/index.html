@@ -4982,6 +4982,117 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div> --> 
+
+    <style>
+      @keyframes slideIn {
+        0% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+    
+      .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .popup-content {
+        background-color: aliceblue;
+        padding: 20px;
+        border-radius: 8px;
+        width: 600px;
+        position: relative;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      }
+    
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    </style>
+    <button id="openPopup"></button>
+<div class="container">
+<div class="row">
+
+    <div id="popupForm" class="popup">
+      <div class="popup-content">
+        <span id="closePopup" class="close">&times;</span>
+        <h3 class="gradient-text" style="text-align: center;">Free Expert Consultation</h3>
+        <style>
+          .popup-content input {
+              width: 100% !important;
+              margin-bottom: 20px; 
+              line-height: 1.5rem;
+          }
+          input {
+            padding: 5px;
+          }
+        </style>
+        <form id="contactForm">
+          <div>
+
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" placeholder="Full Name" required />
+        </div>
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="Email ID" required />
+          <!-- phone -->
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" name="phone" placeholder="Phone Number" required />
+
+          <!-- location -->
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" placeholder="Location" required />
+
+          <button style="width: 100%;" class="btn btn-dark" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
+<script>
+  // script.js
+  document.addEventListener("DOMContentLoaded", function () {
+    const openPopupButton = document.getElementById("openPopup");
+    const closePopupButton = document.getElementById("closePopup");
+    const popupForm = document.getElementById("popupForm");
+
+    openPopupButton.addEventListener("click", function () {
+      popupForm.style.display = "flex";
+    });
+
+    closePopupButton.addEventListener("click", function () {
+      popupForm.style.display = "none";
+    });
+
+    window.addEventListener("click", function (event) {
+      if (event.target === popupForm) {
+        popupForm.style.display = "none";
+      }
+    });
+    setTimeout(() => {
+      popupForm.style.display = "flex";
+      popupForm.style.animation = "slideIn 2s forwards";
+    }, 5000);
+  });
+</script>
+
 </main>
     {% endblock main %}
