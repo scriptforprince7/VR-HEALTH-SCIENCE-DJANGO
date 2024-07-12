@@ -1022,6 +1022,8 @@ def product_new(request, product_slug):
     # Round the GST amount to 2 decimal places
     gst_amount_applied = gst_amount_applied.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
+    usd_rates = base_price / Decimal('83.52')
+
     product_images = ProductImages.objects.filter(product=product)
 
     product_description = ProductDescription.objects.filter(product=product).first()
@@ -1034,6 +1036,7 @@ def product_new(request, product_slug):
         "price_wo_gst": price_wo_gst,
         "gst_amount_applied": gst_amount_applied,
         "gst_rate": gst_rate,
+        "usd_rates": usd_rates,
         "has_variants": has_variants,
         "related_products": related_products,
         "related_maincategory":  related_maincategory,

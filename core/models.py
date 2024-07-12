@@ -394,8 +394,6 @@ class InvoiceNumber(models.Model):
     
 class Testimonials(models.Model):
     testimonial_name = models.CharField(max_length=100)
-    testimonial_company = models.CharField(max_length=100)
-    testimonial_image = models.ImageField(upload_to="blogs-images", default="blogs.jpg")
     testimonial = HTMLField()   
     date = models.DateField(auto_now_add=True)
 

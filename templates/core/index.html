@@ -4943,21 +4943,12 @@
   <div class="container container-xxl">
   <div class="col-lg-6 offset-lg-3">
   <div class="slick-slider custom-arrow dot-lg-0" data-slick-options="{&quot;slidesToShow&quot;: 1,&quot;infinite&quot;:true,&quot;autoplay&quot;:true,&quot;dots&quot;:false,&quot;arrows&quot;:true,&quot;fade&quot;:false,&quot;cssEase&quot;:&quot;ease-in-out&quot;,&quot;speed&quot;:600, &quot;responsive&quot;:[{&quot;breakpoint&quot;: 992,&quot;settings&quot;: {&quot;slidesToShow&quot;:1,&quot;dots&quot;:true, &quot;arrows&quot;:false }}]}">
+  {% for testi in  testimonials%}
   <div class="px-6 text-center">
-
-  <p class="text-primary fs-3 mb-12 pb-2">“Amazing product. The results are so transformative in texture and my face feels plump and healthy.“</p>
-  <h4 class="fs-15px fw-bold text-uppercase mb-4">Kathleen C.</h4>
+  <p class="text-primary fs-3 mb-12 pb-2">{{testi.testimonial|safe }}"</p>
+  <h4 class="fs-15px fw-bold text-uppercase mb-4">{{testi.testimonial_name}}</h4>
   </div>
-  <div class="px-6 text-center">
-  <img src="#" data-src="{% static 'assets/images/testimonial/testimonial-11.png' %}" alt="Amazing product. The results are so transformative in texture." class="lazy-image mx-auto mb-11" style="width: 80px; height: 80px">
-  <p class="text-primary fs-3 mb-12 pb-2">“Amazing product. The results are so transformative in texture and my face feels plump and healthy.“</p>
-  <h4 class="fs-15px fw-bold text-uppercase mb-4">Kathleen C.</h4>
-  </div>
-  <div class="px-6 text-center">
-  <img src="#" data-src="{% static 'assets/images/testimonial/testimonial-12.png' %}" alt="Amazing product. The results are so transformative in texture." class="lazy-image mx-auto mb-11" style="width: 80px; height: 80px">
-  <p class="text-primary fs-3 mb-12 pb-2">“Amazing product. The results are so transformative in texture and my face feels plump and healthy.“</p>
-  <h4 class="fs-15px fw-bold text-uppercase mb-4">Kathleen C.</h4>
-  </div>
+  {% endfor %}
   </div>
   </div>
   </div>
