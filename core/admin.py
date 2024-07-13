@@ -91,8 +91,8 @@ class wishlistAdmin(admin.ModelAdmin):
 class AddressAdmin(admin.ModelAdmin):
     list_display = ['user', 'address', 'status']   
 
-class PrivacyPolicyAdmin(admin.ModelAdmin):
-    list_display = ['privacy_policy_content']     
+class InternationalShippingAdmin(admin.ModelAdmin):
+    list_display = ['international_shipping_content']     
 
 class BlogsAdmin(admin.ModelAdmin):
     list_display = ['blog_title', 'blog_image', 'blog_description']  
@@ -109,7 +109,7 @@ admin.site.register(CartOrderItems, CartOrderItemsAdmin)
 admin.site.register(ProductReview, ProductReviewAdmin)
 admin.site.register(Wishlist, wishlistAdmin)
 admin.site.register(Address, AddressAdmin)
-admin.site.register(PrivacyPolicy, PrivacyPolicyAdmin)
+admin.site.register(InternationalShipping, InternationalShippingAdmin)
 admin.site.register(Blogs, BlogsAdmin)
 admin.site.register(Testimonials, TestimonialsAdmin)
 admin.site.register(BannerHome, BannerAdmin)

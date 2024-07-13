@@ -364,12 +364,12 @@ class Address(models.Model):
         verbose_name_plural = "Address"
 
 
-class PrivacyPolicy(models.Model):
-    privacy_policy_content = HTMLField()
+class InternationalShipping(models.Model):
+    international_shipping_content = HTMLField()
 
 
     class Meta:
-        verbose_name_plural = "Privacy Policy"
+        verbose_name_plural = "International Shipping"
 
 
 class Blogs(models.Model):

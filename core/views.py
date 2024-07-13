@@ -345,22 +345,13 @@ def cart_view(request):
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount += int(item['qty']) * float(item['price'])
 
-        num_products = len(cart_data)
-        if num_products == 1:
-            shipping_rate = 40
-        else:
-            shipping_rate = 65 * num_products
-        
-        gst_amount = shipping_rate * 0.18
-        total_shipping_rate_with_gst = shipping_rate + gst_amount
 
-        cart_total_amount_shipping = cart_total_amount + total_shipping_rate_with_gst
+        cart_total_amount_shipping = cart_total_amount
 
         return render(request, "core/cart.html", {
             "cart_data": request.session['cart_data_obj'], 
             'totalcartitems': len(request.session['cart_data_obj']), 
             'cart_total_amount': cart_total_amount,
-            'shipping_rate': total_shipping_rate_with_gst,
             'cart_total_amount_shipping': cart_total_amount_shipping
         })
     else:
@@ -460,6 +451,9 @@ def payment_success_view(request):
 
 def about(request):
     return render(request, "core/about-us.html")
+
+def privacypolicy(request):
+    return render(request, "core/privacy-policy.html")
 
 def main_categoryy(request, main_title):
     main_categoryy = Main_category.objects.get(main_title=main_title)
@@ -978,12 +972,12 @@ def order_detail(request, id):
 def address(request):
     return render(request, "core/account_address.html")
 
-def privacypolicy(request):
-    privacy_policy = PrivacyPolicy.objects.first()  # Assuming you have a PrivacyPolicy instance
+def international_shipping(request):
+    privacy_policy = InternationalShipping.objects.first()  # Assuming you have a PrivacyPolicy instance
     context = {
-        'privacy_policy_content': privacy_policy.privacy_policy_content if privacy_policy else ''
+        'privacy_policy_content': privacy_policy.international_shipping_content if privacy_policy else ''
     }
-    return render(request, 'core/privacy-policy.html', context)
+    return render(request, 'core/international-shipping.html', context)
 
 class RobotsTxtView(View):
     def get(self, request, *args, **kwargs):

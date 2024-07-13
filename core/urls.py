@@ -20,6 +20,7 @@ urlpatterns = [
     path('export_cart_orders/', export_cart_orders_csv, name='export_cart_orders_csv'),
     path("career", career, name="career"),
     path("faq", faq, name="faq"),
+    path("international-shipping/", international_shipping, name="international_shipping"),
     path("private-label/", private_label, name="private_label"),
     path("shipping-policy/", shipping_policy, name="shipping_policy"),
     path("return-policy/", return_policy, name="return_policy"),
