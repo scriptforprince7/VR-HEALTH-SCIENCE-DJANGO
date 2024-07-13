@@ -766,9 +766,9 @@ def checkout_view(request):
             cart_data = request.session['cart_data_obj']
             num_products = len(cart_data)
             if num_products == 1:
-                shipping_rate = Decimal('40')
+                shipping_rate = Decimal('0')
             elif num_products > 1:
-                shipping_rate = Decimal('65') * num_products
+                shipping_rate = Decimal('0') * num_products
 
             gst_amount = shipping_rate * Decimal('0.18')
             total_shipping_rate_with_gst = shipping_rate + gst_amount
@@ -907,9 +907,9 @@ def checkout_view(request):
 
             num_products = len(cart_data)
             if num_products == 1:
-                shipping_rate = Decimal('40')
+                shipping_rate = Decimal('0')
             elif num_products > 1:
-                shipping_rate = Decimal('65') * num_products
+                shipping_rate = Decimal('0') * num_products
 
             gst_amount = shipping_rate * Decimal('0.18')
             total_shipping_rate_with_gst = shipping_rate + gst_amount
