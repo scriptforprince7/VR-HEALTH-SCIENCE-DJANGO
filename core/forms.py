@@ -27,3 +27,16 @@ class UserQueryForm(forms.Form):
         widget=forms.Textarea(attrs={"class": "form-control form-control_gray", "placeholder": "Your Message", "cols": 30, "rows": 8}),
         required=True,
     )
+
+
+class ExportCartOrdersForm(forms.Form):
+    start_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'type': 'date'}))
+    paid_status = forms.ChoiceField(
+        choices=[
+            ('', 'All'),  # Allowing all options
+            ('True', 'Paid'),
+            ('False', 'Unpaid')
+        ],
+        required=False
+    )

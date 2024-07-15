@@ -1,0 +1,22 @@
+{% extends 'admin/change_list.html' %}
+{% load i18n %}
+
+{% block object-tools %}
+    {{ block.super }}
+    <ul class="object-tools-items">
+        <li>
+            <form method="get" action="{% url 'admin:export_cart_orders_csv' %}" style="display: inline;">
+                <input type="date" name="start_date">
+                <input type="date" name="end_date">
+                <select name="paid_status">
+                    <option value="">{{ _('All') }}</option>
+                    <option value="True">{{ _('Paid') }}</option>
+                    <option value="False">{{ _('Unpaid') }}</option>
+                </select>
+                <button type="submit" class="button btn btn-primary">{{ _('Download Cart Orders') }}</button>
+            </form>
+        </li>
+    </ul>
+{% endblock %}
+
+

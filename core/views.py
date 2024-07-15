@@ -866,7 +866,7 @@ def checkout_view(request):
                     buyer_name=f'{first_name} {last_name}',
                     email=email,
                     phone=phone,
-                    redirect_url='http://127.0.0.1:8000/payment-success/'
+                    redirect_url='http://127.0.0.1:8000/payment-invoice/'
                 )
                 payment_url = response['payment_request']['longurl']
                 return redirect(payment_url)
@@ -1054,6 +1054,7 @@ def export_cart_orders_csv(request):
         writer.writerow(order)
 
     return response
+
 
 def contact_us_view(request):
     if request.method == "POST":
