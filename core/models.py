@@ -56,6 +56,9 @@ def user_directory_path(instance, filename):
     user_id = instance.user.id if instance.user else 'unknown'
     return 'user_{0}/{1}'.format(user_id, filename)
 
+def product_variant_type_image_upload_path(instance, filename):
+    return f'product_variant_type_{instance.product_variant_type.id}/{filename}'
+
 
 
 class Main_category(models.Model):
@@ -293,6 +296,21 @@ class ProductVariantTypes(models.Model):
 
     class Meta:
         verbose_name_plural = "Product Variant Types"
+
+class ProductVariantTypeImages(models.Model):
+    product_variant_type = models.ForeignKey(ProductVariantTypes, related_name='images', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to=product_variant_type_image_upload_path)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image for {self.product_variant_type.variant_title}"
+
+    def image_tag(self):
+        return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
+
+    class Meta:
+        verbose_name_plural = "Product Variant Type Images"
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

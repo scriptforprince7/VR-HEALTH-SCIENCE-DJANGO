@@ -1022,6 +1022,8 @@ def product_new(request, product_slug):
 
     product_description = ProductDescription.objects.filter(product=product).first()
 
+    product_variant_type_images = ProductVariantTypeImages.objects.filter(product_variant_type__in=product_variant_types)
+
     context = {
         "products": product,
         "product_variants": product_variants,
@@ -1035,6 +1037,7 @@ def product_new(request, product_slug):
         "related_products": related_products,
         "related_maincategory":  related_maincategory,
         "product_description": product_description,
+        "product_variant_type_images": product_variant_type_images,
     }
 
     return render(request, "core/product.html", context)

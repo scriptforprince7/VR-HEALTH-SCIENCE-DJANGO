@@ -29,17 +29,22 @@ class ProductDescriptionAdmin(admin.StackedInline):
     model = ProductDescription
     extra = 0
 
-class ProductVariantImagesAdmin(admin.StackedInline):
+class ProductVariantTypeImagesAdmin(admin.StackedInline):
+    model = ProductVariantTypeImages
+    extra = 0
+
+class ProductVariantTypesAdmin(admin.StackedInline):
     model = ProductVariantTypes
     extra = 0  # This allows adding multiple images at once in the admin
+    inlines = [ProductVariantTypeImagesAdmin]
 
 class ProductVarientAdmin(admin.StackedInline):
     model = ProductVarient
     extra = 0
-    inlines = [ProductVariantImagesAdmin]
+    inlines = [ProductVariantTypesAdmin]
 
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductImagesAdmin, ProductVarientAdmin, ProductVariantImagesAdmin, ProductDescriptionAdmin]
+    inlines = [ProductImagesAdmin, ProductVarientAdmin, ProductVariantTypesAdmin, ProductVariantTypeImagesAdmin, ProductDescriptionAdmin]
     list_display = ['main_category','title', 'product_slug', 'packing_size', 'price', 'product_status']
     list_filter = ['main_category', 'category', 'product_status'] 
     search_fields = ['title', 'description'] 

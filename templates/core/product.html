@@ -21,84 +21,112 @@
     <div class="row">
       <div class="col-md-6 pe-lg-13">
         <div class="position-sticky top-0">
-            <div class="row">
-                <div class="col-xl-2 pe-xl-0 order-1 order-xl-0 mt-5 mt-xl-0">
-                    <div
-                        id="slide-thumb-5"
-                        class="slick-slider slick-slider-thumb ps-1 ms-n3 me-n4 mx-xl-0"
-                        data-slick-options='{"arrows":false,"asNavFor":"#slide-5","dots":false,"focusOnSelect":true,"responsive":[{"breakpoint":1260,"settings":{"vertical":false}}],"slidesToShow":4,"vertical":true}'
-                    >
+          <div class="row">
+            <div class="col-xl-2 pe-xl-0 order-1 order-xl-0 mt-5 mt-xl-0">
+                <div
+                    id="slide-thumb-5"
+                    class="slick-slider slick-slider-thumb ps-1 ms-n3 me-n4 mx-xl-0"
+                    data-slick-options='{"arrows":false,"asNavFor":"#slide-5","dots":false,"focusOnSelect":true,"responsive":[{"breakpoint":1260,"settings":{"vertical":false}}],"slidesToShow":4,"vertical":true}'
+                >
+                    <img
+                        src="{{products.image.url}}"
+                        data-src="{{products.image.url}}"
+                        class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+                        width="540"
+                        height="720"
+                        alt
+                        data-variant-type-id="default"
+                    />
+                    {% for pi in product_images %}
+                    <img
+                        src="{{pi.images.url}}"
+                        data-src="{{pi.images.url}}"
+                        class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+                        width="540"
+                        height="720"
+                        alt
+                        data-variant-type-id="default"
+                    />
+                    {% endfor %}
+                    {% for pvti in product_variant_type_images %}
+                    <img
+                        src="{{pvti.image.url}}"
+                        data-src="{{pvti.image.url}}"
+                        class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+                        width="540"
+                        height="720"
+                        alt
+                        data-variant-type-id="{{ pvti.product_variant_type.id }}"
+                    />
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xl-10 ps-xl-8 pe-xl-0 order-0 order-xl-1">
+                <div class="position-relative">
+                    <div class="position-absolute z-index-2 w-100 d-flex justify-content-end">
+                        <div class="p-6">
+                            {% if products.youtube_link != "youtube video link.." %}
+                            <a
+                                href="{{ products.youtube_link }}"
+                                class="view-video d-flex align-items-center justify-content-center mt-5 product-gallery-action rounded-circle"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="left"
+                                data-bs-title="Play Video"
+                            >
+                                <svg class="icon fs-4">
+                                    <use xlink:href="#icon-Play"></use>
+                                </svg>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div
+                    id="slide-5"
+                    class="slick-slider slick-slider-arrow-inside slick-slider-dots-inside slick-slider-dots-light g-0"
+                    data-slick-options='{"arrows":false,"asNavFor":"#slide-thumb-5","dots":false,"slidesToShow":1,"vertical":true}'
+                >
+                    <a href="{{products.image.url}}" data-gallery="gallery5">
                         <img
                             src="{{products.image.url}}"
                             data-src="{{products.image.url}}"
-                            class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+                            class="h-auto lazy-image"
                             width="540"
                             height="720"
                             alt
+                            data-variant-type-id="default"
                         />
-                        {% for pi in product_images %}
+                    </a>
+                    {% for pi in product_images %}
+                    <a href="{{pi.images.url}}" data-gallery="gallery5">
                         <img
                             src="{{pi.images.url}}"
                             data-src="{{pi.images.url}}"
-                            class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+                            class="h-auto lazy-image"
                             width="540"
                             height="720"
                             alt
+                            data-variant-type-id="default"
                         />
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="col-xl-10 ps-xl-8 pe-xl-0 order-0 order-xl-1">
-                    <div class="position-relative">
-                        <div class="position-absolute z-index-2 w-100 d-flex justify-content-end">
-                            <div class="p-6">
-                              {% if products.youtube_link != "youtube video link.." %}
-                              <a
-                                  href="{{ products.youtube_link }}"
-                                  class="view-video d-flex align-items-center justify-content-center mt-5 product-gallery-action rounded-circle"
-                                  data-bs-toggle="tooltip"
-                                  data-bs-placement="left"
-                                  data-bs-title="Play Video"
-                              >
-                                  <svg class="icon fs-4">
-                                      <use xlink:href="#icon-Play"></use>
-                                  </svg>
-                              </a>
-                          {% endif %}
-                          
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        id="slide-5"
-                        class="slick-slider slick-slider-arrow-inside slick-slider-dots-inside slick-slider-dots-light g-0"
-                        data-slick-options='{"arrows":false,"asNavFor":"#slide-thumb-5","dots":false,"slidesToShow":1,"vertical":true}'
-                    >
-                        <a href="{{products.image.url}}" data-gallery="gallery5">
-                            <img
-                                src="{{products.image.url}}"
-                                data-src="{{products.image.url}}"
-                                class="h-auto lazy-image"
-                                width="540"
-                                height="720"
-                                alt
-                            />
-                        </a>
-                        {% for pi in product_images %}
-                        <a href="{{pi.images.url}}" data-gallery="gallery5">
-                            <img
-                                src="{{pi.images.url}}"
-                                data-src="{{pi.images.url}}"
-                                class="h-auto lazy-image"
-                                width="540"
-                                height="720"
-                                alt
-                            />
-                        </a>
-                        {% endfor %}
-                    </div>
+                    </a>
+                    {% endfor %}
+                    {% for pvti in product_variant_type_images %}
+                    <a href="{{pvti.image.url}}" data-gallery="gallery5">
+                        <img
+                            src="{{pvti.image.url}}"
+                            data-src="{{pvti.image.url}}"
+                            class="h-auto lazy-image"
+                            width="540"
+                            height="720"
+                            alt
+                            data-variant-type-id="{{ pvti.product_variant_type.id }}"
+                        />
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
+        </div>
+        
         </div>
     </div>
       <div class="col-md-6 pt-md-0 pt-10">
@@ -319,194 +347,127 @@
   </section>
   <section class="container pt-15 pb-12 pt-lg-17 pb-lg-20">
     <div class="collapse-tabs">
-      <ul
-        class="nav nav-tabs border-0 justify-content-center pb-12 d-none d-md-flex"
-        id="productTabs"
-        role="tablist"
-      >
+      <ul class="nav nav-tabs border-0 justify-content-center pb-12 d-none d-md-flex" id="productTabs" role="tablist">
         <li class="nav-item" role="presentation">
-          <button
-            class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis active"
-            id="product-details-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#product-details"
-            type="button"
-            role="tab"
-            aria-controls="product-details"
-            aria-selected="true"
-          >
-          Description
+          <button class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis active" id="product-details-tab" data-bs-toggle="tab" data-bs-target="#product-details" type="button" role="tab" aria-controls="product-details" aria-selected="true">
+            Description
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button
-            class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis"
-            id="how-to-use-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#how-to-use"
-            type="button"
-            role="tab"
-            aria-controls="how-to-use"
-            aria-selected="false"
-          >
+          <button class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis" id="safety-warning-tab" data-bs-toggle="tab" data-bs-target="#safety-warning" type="button" role="tab" aria-controls="safety-warning" aria-selected="false">
             Safety Warning
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button
-            class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis"
-            id="ingredients-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#ingredients"
-            type="button"
-            role="tab"
-            aria-controls="ingredients"
-            aria-selected="false"
-          >
+          <button class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis" id="direction-for-use-tab" data-bs-toggle="tab" data-bs-target="#direction-for-use" type="button" role="tab" aria-controls="direction-for-use" aria-selected="false">
             Direction for Use
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button
-            class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis"
-            id="ingredients-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#ingredients"
-            type="button"
-            role="tab"
-            aria-controls="ingredients"
-            aria-selected="false"
-          >
+          <button class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients" type="button" role="tab" aria-controls="ingredients" aria-selected="false">
             Ingredients
           </button>
         </li>
-        
+        <li class="nav-item" role="presentation">
+          <button class="nav-link m-auto fw-semibold py-0 px-8 fs-4 fs-lg-3 border-0 text-body-emphasis" id="reasons-to-love-tab" data-bs-toggle="tab" data-bs-target="#reasons-to-love" type="button" role="tab" aria-controls="reasons-to-love" aria-selected="false">
+            For Your Ease
+          </button>
+        </li>
       </ul>
+    
       <div class="tab-content">
         <div class="tab-inner">
-          <div
-            class="tab-pane fade active show"
-            id="product-details"
-            role="tabpanel"
-            aria-labelledby="product-details-tab"
-            tabindex="0"
-          >
+          <div class="tab-pane fade active show" id="product-details" role="tabpanel" aria-labelledby="product-details-tab" tabindex="0">
             <div class="card border-0 bg-transparent">
-              <div
-                class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none"
-              >
+              <div class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none">
                 <h5 class="mb-0">
-                  <button
-                    class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapse-product-detail"
-                    aria-expanded="false"
-                    aria-controls="collapse-product-detail"
-                  >
+                  <button class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-product-detail" aria-expanded="false" aria-controls="collapse-product-detail">
                     Product Detail
                   </button>
                 </h5>
               </div>
-              <div
-                class="collapse show border-md-0 border p-md-0 p-6"
-                id="collapse-product-detail"
-              >
+              <div class="collapse show border-md-0 border p-md-0 p-6" id="collapse-product-detail">
                 <div class="row">
                   <div class="col-12 col-lg-6 pe-lg-10 pe-xl-20">
-                    <img
-                      src="{% static '#' %}"
-                      data-src="{{products.image.url}}"
-                      class="w-100 lazy-image"
-                      alt
-                      width="470"
-                      height="540"
-                    />
+                    <img src="{% static '#' %}" data-src="{{products.image.url}}" class="w-100 lazy-image" alt width="470" height="540" />
                   </div>
                   <div class="pb-3 col-12 col-lg-6 pt-12 pt-lg-0">
-                    <p class="mb-2 pb-4">
-                      {{ product_description.product_description|safe }}
-                    </p>
+                    <p class="mb-2 pb-4">{{ product_description.product_description|safe }}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="tab-pane fade"
-            id="how-to-use"
-            role="tabpanel"
-            aria-labelledby="how-to-use-tab"
-            tabindex="0"
-          >
+    
+          <div class="tab-pane fade" id="safety-warning" role="tabpanel" aria-labelledby="safety-warning-tab" tabindex="0">
             <div class="card border-0 bg-transparent">
-              <div
-                class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none"
-              >
+              <div class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none">
                 <h5 class="mb-0">
-                  <button
-                    class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapse-to-use"
-                    aria-expanded="false"
-                    aria-controls="collapse-to-use"
-                  >
-                    How To Use
+                  <button class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-to-use" aria-expanded="false" aria-controls="collapse-to-use">
+                    Safety Warning
                   </button>
                 </h5>
               </div>
-              <div
-                class="collapse border-md-0 border p-md-0 p-6"
-                id="collapse-to-use"
-              >
+              <div class="collapse border-md-0 border p-md-0 p-6" id="collapse-to-use">
                 <div class="pb-3">
-                  <p class="fw-semibold text-body-emphasis mb-2 pb-4">
-                    {{ product_description.safety_warnings|safe }}
-                  </p>
+                  <p class="fw-semibold text-body-emphasis mb-2 pb-4">{{ product_description.safety_warnings|safe }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="tab-pane fade"
-            id="ingredients"
-            role="tabpanel"
-            aria-labelledby="ingredients-tab"
-            tabindex="0"
-          >
-            <div
-              class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none"
-            >
+    
+          <div class="tab-pane fade" id="direction-for-use" role="tabpanel" aria-labelledby="direction-for-use-tab" tabindex="0">
+            <div class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none">
               <h5 class="mb-0">
-                <button
-                  class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapse-ingredients"
-                  aria-expanded="false"
-                  aria-controls="collapse-ingredients"
-                >
-                  How To Use
+                <button class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-direction-for-use" aria-expanded="false" aria-controls="collapse-direction-for-use">
+                  Direction for Use
                 </button>
               </h5>
             </div>
-            <div
-              class="collapse border-md-0 border p-md-0 p-6"
-              id="collapse-ingredients"
-            >
+            <div class="collapse border-md-0 border p-md-0 p-6" id="collapse-direction-for-use">
               <div class="pb-3">
-                <div class="table-responsive mb-5">
-                </div>
-                <p class="mb-0">
-                  {{ product_description.direction_for_use|safe }}
-                </p>
+                <div class="table-responsive mb-5"></div>
+                <p class="mb-0">{{ product_description.direction_for_use|safe }}</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab" tabindex="0">
+            <div class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none">
+              <h5 class="mb-0">
+                <button class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-ingredients" aria-expanded="false" aria-controls="collapse-ingredients">
+                  Ingredients
+                </button>
+              </h5>
+            </div>
+            <div class="collapse border-md-0 border p-md-0 p-6" id="collapse-ingredients">
+              <div class="pb-3">
+                <div class="table-responsive mb-5"></div>
+                <p class="mb-0">{{ product_description.key_active_ingredients|safe }}</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="tab-pane fade" id="reasons-to-love" role="tabpanel" aria-labelledby="reasons-to-love-tab" tabindex="0">
+            <div class="card-header border-0 bg-transparent px-0 py-4 product-tabs-mobile d-block d-md-none">
+              <h5 class="mb-0">
+                <button class="btn lh-2 fs-5 py-3 px-6 shadow-none w-100 border text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-reasons-to-love" aria-expanded="false" aria-controls="collapse-reasons-to-love">
+                  Reasons to Love
+                </button>
+              </h5>
+            </div>
+            <div class="collapse border-md-0 border p-md-0 p-6" id="collapse-reasons-to-love">
+              <div class="pb-3">
+                <div class="table-responsive mb-5"></div>
+                <p class="mb-0">{{ product_description.for_your_ease|safe }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+    
   </section>
   <section
         class="bg-section-2 overflow-hidden"
@@ -522,17 +483,27 @@
                   <p
                     class="fs-15px mb-7 ls-1 text-body-emphasis fw-semibold text-uppercase"
                   >
-                    Special offer
+                    Shop the Best
                   </p>
                   <h2 class="mb-6 mw-xl-50 mw-lg-60 pt-1">
-                    Beauty Inspired by Real Life
+                    Why Choose <span style="color: #00a7be;">{{products.title}} 😍</span> 
                   </h2>
                   <p class="fs-18px mb-0 mw-xl-60 mw-lg-75">
-                    Made using clean, non-toxic ingredients, our products are
-                    designed for everyone.
+                    {{ product_description.reasons_to_love|safe }}
                   </p>
                 </div>
-                <a href="#" class="btn btn-white mt-10 mb-2">Discover Now</a>
+                <style>
+                  @keyframes blink {
+                    0% { opacity: 1; }
+                    50% { opacity: 0; }
+                    100% { opacity: 1; }
+                  }
+                
+                  .blink {
+                    animation: blink 2s infinite;
+                  }
+                </style>
+                <a href="#" class="btn btn-black mt-10 mb-2 blink add-to-cart-btn" id="add-to-cart-btn" data-index="{{products.pid}}">Add to Cart</a>
               </div>
             </div>
             <div class="col-lg-6 py-20 py-lg-0 position-relative">
@@ -683,62 +654,79 @@
   </script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var radioButtons = document.querySelectorAll('input[name="variant_size"]');
-      radioButtons.forEach(function(radioButton) {
-          radioButton.addEventListener('click', updatePrice);
-      });
-  
-      // Calculate and display default price and update title for the default selected variant type
-      updatePrice();
-  });
-  
-  function updatePrice() {
-      var hasVariants = true; // Assuming that the presence of variants is always true
-      var productTitle = document.getElementById('product-title');
-      var variantName = document.getElementById('variant-name');
-      var hiddenProductTitle = document.querySelector('.product-title-{{ products.pid }}');
-      var productPid = '{{ products.pid }}'; // Ensure this is the actual product PID
-      var variantIdHidden = document.getElementById('variant-id-hidden-' + productPid);
-  
-      if (hasVariants) {
-          var selectedVariantType = document.querySelector('input[name="variant_size"]:checked');
-  
-          if (!selectedVariantType) {
-              selectedVariantType = document.querySelector('input[name="variant_size"]');
-              selectedVariantType.checked = true;
-          }
-  
-          var selectedVariantTypeId = selectedVariantType.getAttribute('data-variant-type-id');
-          if (variantIdHidden) {
-              variantIdHidden.value = selectedVariantTypeId;
-          } else {
-              variantIdHidden = { value: null };
-          }
-  
-          var price = parseFloat(selectedVariantType.getAttribute('data-price'));
-          var gstRate = parseFloat(selectedVariantType.getAttribute('data-gst'));
-  
-          var basePrice = price;
-          var totalPrice = price + (price * (gstRate / 100));
-          document.getElementById('clicked-price').textContent = totalPrice.toFixed(2);
-  
-          var variantText = selectedVariantType.nextElementSibling.textContent;
-          variantName.textContent = '(' + variantText + ')';
-          hiddenProductTitle.value = '{{products.title}} - (' + variantText + ')';
-      } else {
-          document.getElementById('clicked-price').textContent = '{{default_price}}';
-          var totalPrice = parseFloat('{{ default_price }}');
-          var basePrice = {{price_wo_gst}};
-  
-          variantName.textContent = '';
-          hiddenProductTitle.value = '{{products.title}}';
-      }
-  
-      document.querySelector('.product-price-{{ products.pid }}').value = totalPrice.toFixed(2);
-      document.querySelector('.product-price-wo-gst-{{ products.pid }}').value = basePrice.toFixed(2);
-  
-      updateSwatchSelection();
-  }
+    var radioButtons = document.querySelectorAll('input[name="variant_size"]');
+    radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('click', updatePriceAndImages);
+    });
+
+    // Calculate and display default price and update title for the default selected variant type
+    updatePriceAndImages();
+});
+
+function updatePriceAndImages() {
+    var hasVariants = true; // Assuming that the presence of variants is always true
+    var productTitle = document.getElementById('product-title');
+    var variantName = document.getElementById('variant-name');
+    var hiddenProductTitle = document.querySelector('.product-title-{{ products.pid }}');
+    var productPid = '{{ products.pid }}'; // Ensure this is the actual product PID
+    var variantIdHidden = document.getElementById('variant-id-hidden-' + productPid);
+
+    if (hasVariants) {
+        var selectedVariantType = document.querySelector('input[name="variant_size"]:checked');
+
+        if (!selectedVariantType) {
+            selectedVariantType = document.querySelector('input[name="variant_size"]');
+            selectedVariantType.checked = true;
+        }
+
+        var selectedVariantTypeId = selectedVariantType.getAttribute('data-variant-type-id');
+        if (variantIdHidden) {
+            variantIdHidden.value = selectedVariantTypeId;
+        } else {
+            variantIdHidden = { value: null };
+        }
+
+        var price = parseFloat(selectedVariantType.getAttribute('data-price'));
+        var gstRate = parseFloat(selectedVariantType.getAttribute('data-gst'));
+
+        var basePrice = price;
+        var totalPrice = price + (price * (gstRate / 100));
+        document.getElementById('clicked-price').textContent = totalPrice.toFixed(2);
+
+        var variantText = selectedVariantType.nextElementSibling.textContent;
+        variantName.textContent = '(' + variantText + ')';
+        hiddenProductTitle.value = '{{products.title}} - (' + variantText + ')';
+
+        // Update images
+        updateImages(selectedVariantTypeId);
+    } else {
+        document.getElementById('clicked-price').textContent = '{{default_price}}';
+        var totalPrice = parseFloat('{{ default_price }}');
+        var basePrice = {{price_wo_gst}};
+
+        variantName.textContent = '';
+        hiddenProductTitle.value = '{{products.title}}';
+
+        // Update images
+        updateImages('default');
+    }
+
+    document.querySelector('.product-price-{{ products.pid }}').value = totalPrice.toFixed(2);
+    document.querySelector('.product-price-wo-gst-{{ products.pid }}').value = basePrice.toFixed(2);
+
+    updateSwatchSelection();
+}
+
+function updateImages(variantTypeId) {
+    var allImages = document.querySelectorAll('#slide-thumb-5 img, #slide-5 img');
+    allImages.forEach(function(img) {
+        if (img.getAttribute('data-variant-type-id') === variantTypeId) {
+            img.style.display = 'block';
+        } else {
+            img.style.display = 'none';
+        }
+    });
+}
   
   function updateSwatchSelection() {
       var selectedVariantType = document.querySelector('input[name="variant_size"]:checked');
