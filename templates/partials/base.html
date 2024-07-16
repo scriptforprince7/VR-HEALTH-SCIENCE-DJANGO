@@ -2956,16 +2956,105 @@ referrerpolicy="no-referrer"
                     >
                 </li>
                 <li
+                class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth position-static"
+            >
+                <a
+                    class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px dropdown-toggle"
+                    href=""
+                    data-bs-toggle="dropdown"
+                    id="menu-item-shop-canvas"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    >Shop by Category</a
+                >
+                <div
+                    class="dropdown-menu mega-menu start-0 py-6 w-100"
+                    aria-labelledby="menu-item-shop-canvas"
+                >
+                    <div
+                        class="megamenu-shop container-wide py-8 px-12"
+                    >
+                        <div class="row">
+                            {% for cat in main_cat %}
+                            <div class="col">
+                                <h6 class="fs-18px">{{ cat.main_title }}</h6>
+                                <ul class="list-unstyled mb-0">
+                                    {% if categories_by_main_category|get_item:cat.id %}
+                                   {% for category in categories_by_main_category|get_item:cat.id %}
+                                    <li>
+                                        <a
+                                            href="{% url 'core:main_category' category.category_slug %}"
+                                            class="border-hover text-decoration-none py-3 d-block"
+                                            ><span
+                                                class="border-hover-target"
+                                                >{{ category.cat_title }}
+                                               </span
+                                            ></a
+                                        >
+                                    </li>
+                                    {% endfor %}
+                                    {% else %}
+                                    <li>
+                                        <a
+                                          class="dropdown-item pe-6 border-hover"
+                                          href="{% url 'core:main_categoryy' cat.main_title %}"
+                                        >
+                                          <span class="border-hover-target">
+                                            {{ cat.main_title }}
+                                          </span>
+                                        </a>
+                                      </li>
+                                      {% endif %}
+                                </ul>
+                            </div>
+                            {% endfor %}
+                            <div
+                                class="col d-xxl-block d-none megamenu-shop-banner"
+                                data-bs-theme="light"
+                            >
+                                <div class="card border-0 mt-4">
+                                    <img
+                                        src="{% static 'assets/images/background/bg-mega-menu-shop.jpg' %}"
+                                        alt="bg mega menu"
+                                        class="card-img"
+                                    />
+                                    <div
+                                        class="card-img-overlay d-flex flex-column mx-2 px-9 py-6"
+                                    >
+                                        <p
+                                            class="text-body-emphasis ls-1 fw-semibold mb-4 mt-6 text-uppercase"
+                                        >
+                                            new collection
+                                        </p>
+                                        <h3 class="fs-3">
+                                            Special <br />
+                                            Offer
+                                        </h3>
+                                        <div class="mt-auto">
+                                            <a
+                                                href="#"
+                                                class="btn btn-white"
+                                                >Shop Sale</a
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </li>
+                <li
                     class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth position-static"
                 >
                     <a
                         class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px dropdown-toggle"
-                        href="store.html"
+                        href="/"
                         data-bs-toggle="dropdown"
                         id="menu-item-shop-canvas"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        >Shop by Category</a
+                        >Shop by Ingredients</a
                     >
                     <div
                         class="dropdown-menu mega-menu start-0 py-6 w-100"
@@ -2976,274 +3065,20 @@ referrerpolicy="no-referrer"
                         >
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="fs-18px">Shop Pages</h6>
                                     <ul class="list-unstyled mb-0">
+                                        {% for ingred in ingredients  %}
                                         <li>
                                             <a
-                                                href="shop/shop-layout-v1.html"
+                                                href="/"
                                                 class="border-hover text-decoration-none py-3 d-block"
                                                 ><span
                                                     class="border-hover-target"
-                                                    >Shop Layout
-                                                    <sup>v1</sup></span
+                                                    >{{ingred.ingredient_title}}
+                                                    </span
                                                 ></a
                                             >
                                         </li>
-                                        <li>
-                                            <a
-                                                href="shop/shop-layout-v2.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Shop Layout
-                                                    <sup>v2</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/shop-layout-v3.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Shop Layout
-                                                    <sup>v3</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/shop-layout-v4.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Shop Layout
-                                                    <sup>v4</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/shop-layout-v5.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Shop Layout
-                                                    <sup>v5</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col">
-                                    <h6 class="fs-18px">
-                                        Product Pages
-                                    </h6>
-                                    <ul class="list-unstyled mb-0">
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v1.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v1</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v2.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v2</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v3.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v3</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v4.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v4</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v5.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v5</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v6.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v6</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v7.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v7</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-details-v8.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Detail
-                                                    <sup>v8</sup></span
-                                                ></a
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col">
-                                    <h6 class="fs-18px">
-                                        Product Types
-                                    </h6>
-                                    <ul class="list-unstyled mb-0">
-                                        <li>
-                                            <a
-                                                href="shop/product-simple.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product
-                                                    Simple</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-variable.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product
-                                                    Variable</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-time-limit.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product Time
-                                                    Limit</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/product-grouped.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Product
-                                                    Grouped</span
-                                                ></a
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col">
-                                    <h6 class="fs-18px">Other Pages</h6>
-                                    <ul class="list-unstyled mb-0">
-                                        <li>
-                                            <a
-                                                href="shop/shopping-cart.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Shopping Cart</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/compare.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Compare</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/wishlist.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Wishlist</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="shop/checkout.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Checkout</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="user-registration.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Register</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="user-login.html"
-                                                class="border-hover text-decoration-none py-3 d-block"
-                                                ><span
-                                                    class="border-hover-target"
-                                                    >Login</span
-                                                ></a
-                                            >
-                                        </li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div
@@ -3283,225 +3118,138 @@ referrerpolicy="no-referrer"
                     </div>
                 </li>
                 <li
-                    class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth"
+                class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth position-static"
+            >
+                <a
+                    class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px dropdown-toggle"
+                    href="/"
+                    data-bs-toggle="dropdown"
+                    id="menu-item-shop-canvas"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    >Shop by Concern</a
                 >
-                    <a
-                        class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px dropdown-toggle"
-                        href="#"
-                        data-bs-toggle="dropdown"
-                        id="menu-item-docs-canvas"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        >Shop by Ingredients</a
-                    >
+                <!-- <div
+                    class="dropdown-menu mega-menu start-0 py-6 w-100"
+                    aria-labelledby="menu-item-shop-canvas"
+                >
                     <div
-                        class="dropdown-menu mega-menu start-0 py-6"
-                        aria-labelledby="menu-item-docs-canvas"
+                        class="megamenu-shop container-wide py-8 px-12"
                     >
-                        <div
-                            class="menumega-docs px-8"
-                            style="min-width: 250px"
-                        >
-                            <a
-                                href="docs/usage/getting-started.html"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="Documentation"
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="fs-18px">Shop Pages</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a
+                                            href="shop/shop-layout-v1.html"
+                                            class="border-hover text-decoration-none py-3 d-block"
+                                            ><span
+                                                class="border-hover-target"
+                                                >Shop Layout
+                                                <sup>v1</sup></span
+                                            ></a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                            <div
+                                class="col d-xxl-block d-none megamenu-shop-banner"
+                                data-bs-theme="light"
                             >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use xlink:href="#book"></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">Documentation</h6>
-                                    <small
-                                        >Kick-start customization</small
+                                <div class="card border-0 mt-4">
+                                    <img
+                                        src="{% static 'assets/images/background/bg-mega-menu-shop.jpg' %}"
+                                        alt="bg mega menu"
+                                        class="card-img"
+                                    />
+                                    <div
+                                        class="card-img-overlay d-flex flex-column mx-2 px-9 py-6"
                                     >
+                                        <p
+                                            class="text-body-emphasis ls-1 fw-semibold mb-4 mt-6 text-uppercase"
+                                        >
+                                            new collection
+                                        </p>
+                                        <h3 class="fs-3">
+                                            Special <br />
+                                            Offer
+                                        </h3>
+                                        <div class="mt-auto">
+                                            <a
+                                                href="#"
+                                                class="btn btn-white"
+                                                >Shop Sale</a
+                                            >
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
-                            <hr class="dropdown-divider mx-n8" />
-                            <a
-                                href="docs/components/accordion.html"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="UI Kit"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use
-                                            xlink:href="#layer-group"
-                                        ></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">UI Kit</h6>
-                                    <small>Flexible components</small>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider mx-n8" />
-                            <a
-                                href="docs/usage/changelog.html"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="Changelog"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use
-                                            xlink:href="#pen-to-square"
-                                        ></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">Changelog</h6>
-                                    <small>Regular updates</small>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider mx-n8" />
-                            <a
-                                href="https://sp.g5plus.net/"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="Support"
-                                target="_blank"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use
-                                            xlink:href="#headset"
-                                        ></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">Support</h6>
-                                    <small
-                                        >https://sp.g5plus.net/</small
-                                    >
-                                </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
-                </li>
-                <li
-                    class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth"
+                </div> -->
+               </li>
+               <li
+                class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth position-static"
+            >
+                <a
+                    class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px dropdown-toggle"
+                    href=""
+                    data-bs-toggle="dropdown"
+                    id="menu-item-shop-canvas"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    >About Us</a
                 >
-                    <a
-                        class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px dropdown-toggle"
-                        href="#"
-                        data-bs-toggle="dropdown"
-                        id="menu-item-docs-canvas"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        >About Us</a
-                    >
+                <div
+                    class="dropdown-menu mega-menu start-0 py-6 w-100"
+                    aria-labelledby="menu-item-shop-canvas"
+                >
                     <div
-                        class="dropdown-menu mega-menu start-0 py-6"
-                        aria-labelledby="menu-item-docs-canvas"
+                        class="megamenu-shop container-wide py-8 px-12"
                     >
-                        <div
-                            class="menumega-docs px-8"
-                            style="min-width: 250px"
-                        >
-                            <a
-                                href="docs/usage/getting-started.html"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="Documentation"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use xlink:href="#book"></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">Documentation</h6>
-                                    <small
-                                        >Kick-start customization</small
-                                    >
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider mx-n8" />
-                            <a
-                                href="docs/components/accordion.html"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="UI Kit"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use
-                                            xlink:href="#layer-group"
-                                        ></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">UI Kit</h6>
-                                    <small>Flexible components</small>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider mx-n8" />
-                            <a
-                                href="docs/usage/changelog.html"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="Changelog"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use
-                                            xlink:href="#pen-to-square"
-                                        ></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">Changelog</h6>
-                                    <small>Regular updates</small>
-                                </div>
-                            </a>
-                            <hr class="dropdown-divider mx-n8" />
-                            <a
-                                href="https://sp.g5plus.net/"
-                                class="d-flex text-decoration-none mb-4 mb-lg-0"
-                                title="Support"
-                                target="_blank"
-                            >
-                                <div
-                                    class="flex-shrink-0 fs-5 lh-1 text-muted pt-2"
-                                >
-                                    <svg class="icon">
-                                        <use
-                                            xlink:href="#headset"
-                                        ></use>
-                                    </svg>
-                                </div>
-                                <div class="flex-grow-1 ps-6">
-                                    <h6 class="mb-2">Support</h6>
-                                    <small
-                                        >https://sp.g5plus.net/</small
-                                    >
-                                </div>
-                            </a>
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="fs-18px">Our Services</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a
+                                            href="/about-us"
+                                            class="border-hover text-decoration-none py-3 d-block"
+                                            ><span
+                                                class="border-hover-target"
+                                                >Who We Are
+                                                </span
+                                            ></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="/private-label"
+                                            class="border-hover text-decoration-none py-3 d-block"
+                                            ><span
+                                                class="border-hover-target"
+                                                >Third Party Label
+                                               </span
+                                            ></a
+                                        >
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="/faq"
+                                            class="border-hover text-decoration-none py-3 d-block"
+                                            ><span
+                                                class="border-hover-target"
+                                                >FAQ's
+                                               </span
+                                            ></a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </li>
-                <li
-                    class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth"
-                >
-                    <a
-                        class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px"
-                        href="/"
-                        data-bs-toggle="dropdown"
-                        id="menu-item-home-canvas"
-                        >Shop by Concern</a
-                    >
+                </div>
                 </li>
                 <li
                     class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth"
@@ -3509,8 +3257,6 @@ referrerpolicy="no-referrer"
                     <a
                         class="nav-link d-flex justify-content-between position-relative text-uppercase fw-semibold ls-1 fs-15px"
                         href="https://www.vrhealthscience.com/shop-category/expert-series/"
-                        data-bs-toggle="dropdown"
-                        id="menu-item-home-canvas"
                         >Expert Series</a
                     >
                 </li>
