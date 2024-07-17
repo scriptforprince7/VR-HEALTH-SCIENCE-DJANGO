@@ -130,17 +130,7 @@
         </div>
     </div>
       <div class="col-md-6 pt-md-0 pt-10">
-        <p class="d-flex align-items-center mb-6">
-          {% comment %} <span class="text-decoration-line-through">₹ 39.00</span> {% endcomment %}
-          <span id="clicked-price" class="fs-18px text-body-emphasis ps-2 fw-bold"
-            >₹ {{products.price}}</span
-          >
-          <p>(Includes {{products.gst_rate}} gst)</p>
-          <!-- <span
-            class="badge text-bg-primary fs-6 fw-semibold ms-7 px-6 py-3"
-            >20%</span
-          > -->
-        </p>
+     
         <style>
           .variant-name {
               font-size: 18px;
@@ -181,6 +171,11 @@
                   </svg>
                 </span>
               </div>
+              <style>
+                .text-primary {
+    color: gold !important; /* Use !important to override any existing styles */
+}
+              </style>
               <div class="filled-stars" style="width: 100%">
                 <span class="star">
                   <svg class="icon star text-primary">
@@ -211,9 +206,16 @@
             </div>
           </div>
           <a href="#" class="border-start ps-6 text-body"
-            >Read 0 reviews</a
+            >Best Rated</a
           >
         </div>
+        <p class="d-flex align-items-center mb-6">
+          {% comment %} <span class="text-decoration-line-through">₹ 39.00</span> {% endcomment %}
+          <span id="clicked-price" class="fs-18px text-body-emphasis ps-2 fw-bold"
+            >₹ {{products.price}}</span
+          >
+          <p>(Includes {{products.gst_rate}} gst)</p>
+        </p>
         <p> <b>USD:</b>  ${{usd_rates|floatformat:"2"}}</p>
         <p class="fs-15px">
           Discover the perfect blend of nature and science with VRH's premium hair care and skin care products, designed to nurture your beauty from within."
@@ -302,7 +304,7 @@
               <use xlink:href="#icon-delivery-1"></use></svg
             >Get it between:
           </span>
-          July 3 - July 14,2024
+          July 28 - July 31,2024
         </p>
         <p class="mb-4 pb-2">
           <span class="text-body-emphasis">
