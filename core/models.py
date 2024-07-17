@@ -152,6 +152,18 @@ class Ingredients(models.Model):
     def __str__(self):
         return self.ingredient_title
     
+class Concern(models.Model):
+    ccid = ShortUUIDField(unique=True, max_length=30, prefix="concern_", alphabet="abcdefgh12345")
+    concern_title = models.CharField(max_length=100)
+    product_link = models.CharField(max_length=100, default="N/A")
+    active_status = models.CharField(choices=ACTIVE_STATUS, max_length=10, default="published")
+
+    class Meta:
+        verbose_name_plural = "Shop By Concern"
+    
+    def __str__(self):
+        return self.concern_title
+    
 
 class BannerHome(models.Model):
     bhid = ShortUUIDField(unique=True, max_length=30, prefix="bhid", alphabet="abcdefgh12345")

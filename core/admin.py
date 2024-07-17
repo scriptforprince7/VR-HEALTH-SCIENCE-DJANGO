@@ -53,6 +53,9 @@ class ProductAdmin(admin.ModelAdmin):
 class MainCategoryAdmin(admin.ModelAdmin):
     list_display = ['main_title', 'image', 'description', 'banner_image']  
 
+class ConcernAdmin(admin.ModelAdmin):
+    list_display = ['concern_title', 'product_link', 'active_status']   
+
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ['ingredient_title', 'image', 'description', 'banner_image']   
 
@@ -130,6 +133,7 @@ class TestimonialsAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Main_category, MainCategoryAdmin)
 admin.site.register(Ingredients, IngredientAdmin)
+admin.site.register(Concern, ConcernAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(CartOrder, CartOrderAdmin)
 admin.site.register(CartOrderItems, CartOrderItemsAdmin)

@@ -359,15 +359,33 @@
               </div>
               <div class="w-auto w-xl-50 d-flex align-items-center">
                 <ul class="navbar-nav w-100 w-xl-auto">
-                  <li
-                    class="nav-item transition-all-xl-1 py-xl-11 py-0 px-xxl-8 px-xl-6"
+                    <li
+                    class="nav-item transition-all-xl-1 py-xl-11 py-0 px-xxl-8 px-xl-6 dropdown dropdown-hover"
                   >
                     <a
                       class="nav-link d-flex justify-content-between position-relative py-xl-0 px-xl-0 text-uppercase fw-semibold ls-1 fs-15px fs-xl-14px dropdown-toggle"
                       href="#"
-                      id="menu-item-blocks"
-                      >Shop by Concern</a
+                      data-bs-toggle="dropdown"
+                      id="menu-item-pages"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      >Shop by Ingredients</a
                     >
+                    <ul
+                      class="dropdown-menu py-6"
+                      aria-labelledby="menu-item-pages"
+                    >
+                    {% for con in concern  %}
+                      <li>
+                        <a
+                          class="dropdown-item pe-6 border-hover"
+                          href="{{con.product_link}}"
+                        >
+                          <span class="border-hover-target"> {{con.concern_title}} </span>
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
                   </li>
                   <li
                     class="nav-item transition-all-xl-1 py-xl-11 py-0 px-xxl-8 px-xl-6 dropdown dropdown-hover dropdown-fullwidth"

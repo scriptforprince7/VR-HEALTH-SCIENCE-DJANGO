@@ -73,6 +73,7 @@ TEMPLATES = [
                 "core.context_processor.default",
                 "core.context_processor.defaultOne",
                 "core.context_processor.defaultTwo",
+                "core.context_processor.defaultThree",
                 "core.context_processor.cart_context",
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",

@@ -29,6 +29,13 @@ def defaultTwo(request):
         "ingredients": ingredients,
     }
 
+def defaultThree(request):
+    concern = Concern.objects.filter(active_status='published')
+
+    return {
+        "concern": concern,
+    }
+
 def cart_context(request):
     cart_total_amount = 0
     total_cart_items = 0
