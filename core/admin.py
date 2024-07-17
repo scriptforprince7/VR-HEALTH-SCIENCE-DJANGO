@@ -125,7 +125,7 @@ class BlogsAdmin(admin.ModelAdmin):
     list_display = ['blog_title', 'blog_image', 'blog_description']  
 
 class TestimonialsAdmin(admin.ModelAdmin):
-    list_display = ['testimonial_name', 'testimonial']        
+    list_display = ['testimonial_name', 'testimonial', 'testimonial_image']        
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Main_category, MainCategoryAdmin)

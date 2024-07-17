@@ -4939,18 +4939,137 @@
     </div>
   </div>
 </section>
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display:700);
+
+/* Testimonials Style
+-----------------------*/
+.testimonials {
+position: relative;
+width: 100%;
+text-align: center;
+background-color: #96A2C8;
+overflow: hidden;
+}
+.testimonials::before {
+content: '';
+display: block;
+position: absolute;
+width: 100%;
+height: 100%;
+border: 1.8rem solid #F3BC75;
+}
+.testimonials ul {
+margin: 0 auto;
+padding: 8rem 0;
+transition: transform .6s;
+}
+.testimonials ul::after {
+content: '';
+display: table;
+clear: both;
+}
+.testimonials li {
+float: left;
+list-style: none;
+cursor: pointer;
+max-width: 680px;
+background: whitesmoke;
+border-radius: 10px;
+box-shadow: 0 0 10px 2px rgba(0,0,0,.1);
+transform: scale(0.9);
+transition: transform .6s;
+}
+.testimonials li img {
+width: 13rem;
+border-radius: 50%;
+margin-top: -5rem;
+box-shadow: 0 3px 10px 0 rgba(0,0,0,.2);
+}
+.testimonials li blockquote {
+width: 80%;
+margin: 0 auto;
+padding: 2.5rem 0;
+}
+.quote {
+position: relative;
+z-index: 1;
+font-size: 2rem;
+line-height: 3.5rem;
+color: #585D6D;
+}
+.quote::before {
+content: '\201c';
+font-size: 12rem;
+color: #F1AD56;
+opacity: .4;
+font-family: serif;
+font-weight: bold;
+position: absolute;
+top: 1rem;
+left: -2rem;
+z-index: -1;
+pointer-events: none;
+}
+.testimonials footer {
+border-top: 1px solid #D6D3D2;
+padding: 1.5rem 0;
+}
+.author {
+display: block;
+font-size: 3.5rem;
+font-family: 'Playfair Display', sans-serif;
+color: #585D6D;
+margin-bottom: 1rem;
+}
+.info {
+font-size: 1.2rem;
+color: #B1B4BD;
+width: 60%;
+margin: 0 auto;
+line-height: 2.5rem;
+}
+.testimonials li.current_slide {
+transform: scale(1);
+cursor: inherit;
+cursor: initial;
+}
+@media screen and (max-width: 950px) {
+.testimonials li { max-width: 580px; }
+}
+@media screen and (max-width: 750px) {
+.testimonials li { max-width: 400px; }
+}
+@media screen and (max-width: 500px) {
+.testimonials li { max-width: 300px; }
+}
+@media screen and (max-width: 400px) {
+.testimonials li { max-width: 200px; }
+}
+</style>
 <section class="pt-lg-18 pt-15 mt-3 pb-lg-17 pb-16" data-animate="fadeInUp">
   <div class="container container-xxl">
-  <div class="col-lg-6 offset-lg-3">
-  <div class="slick-slider custom-arrow dot-lg-0" data-slick-options="{&quot;slidesToShow&quot;: 1,&quot;infinite&quot;:true,&quot;autoplay&quot;:true,&quot;dots&quot;:false,&quot;arrows&quot;:true,&quot;fade&quot;:false,&quot;cssEase&quot;:&quot;ease-in-out&quot;,&quot;speed&quot;:600, &quot;responsive&quot;:[{&quot;breakpoint&quot;: 992,&quot;settings&quot;: {&quot;slidesToShow&quot;:1,&quot;dots&quot;:true, &quot;arrows&quot;:false }}]}">
-  {% for testi in  testimonials%}
-  <div class="px-6 text-center">
-  <p class="text-primary fs-3 mb-12 pb-2">{{testi.testimonial|safe }}"</p>
-  <h4 class="fs-15px fw-bold text-uppercase mb-4">{{testi.testimonial_name}}</h4>
-  </div>
-  {% endfor %}
-  </div>
-  </div>
+    <div class="mb-12 pb-3 text-center" data-animate="fadeInUp"><h2 class="mb-5">
+      <span style="font-family: Fira Sans; background: linear-gradient(130deg, #353935, #066582); -webkit-background-clip: text; color: transparent; font-size:2.5rem;">Happy Customers, Happy Stories</span>✨
+  
+    </h2>
+    <p class="fs-18px mb-0 mw-xl-30 mw-lg-50 mw-md-75 ms-auto me-auto"> We take pride in the positive experiences our clients have with our hair and skin care products.</p></div>
+    <div class="testimonials">
+      <ul>
+        {% for testi in  testimonials%}
+        <li class="{% if forloop.first %}current_slide{% endif %}">
+          <img src="{{testi.testimonial_image.url }}">
+          <blockquote>
+            <p class="quote">{{testi.testimonial|safe }}</p>
+          </blockquote>
+          <footer>
+            <span class="author" style="font-size: 30px;">{{testi.testimonial_name}}</span> <i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i><i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+          </footer>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
   </section>
 <style>
@@ -5092,6 +5211,102 @@
       popupForm.style.animation = "slideIn 2s forwards";
     }, 5000);
   });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  $(function () {
+      var cdSlider = $(".testimonials"),
+          wrapper = cdSlider.children("ul"),
+          card = wrapper.find("li"),
+          animationTime = 600, // Animation duration on IE9
+          autoSlideInterval = 4000, // Auto slide interval in milliseconds (4 seconds)
+          autoSlideTimer; // Timer variable
+
+      initSlider();
+
+      function initSlider() {
+          var sliderWidth = cdSlider.outerWidth(),
+              cardWidth = card.eq(0).outerWidth(),
+              marginLeftFirstCard = sliderWidth / 2 - cardWidth / 2, // Center first card
+              marginLeft = marginLeftFirstCard - (cardWidth * 1) / 7;
+
+          card.css("margin-left", marginLeft + "px");
+          card.eq(0).css("margin-left", marginLeftFirstCard + "px");
+
+          var wrapperWidth =
+              card.length * cardWidth +
+              (card.length - 1) * marginLeft +
+              marginLeftFirstCard;
+
+          if (card.length > 1) {
+              wrapper.css("width", wrapperWidth + "px");
+          }
+
+          var cardCurrentIndex = cdSlider.find("li.current_slide").index(),
+              translate = cardCurrentIndex * (cardWidth + marginLeft) + "px";
+
+          move(translate);
+          startAutoSlide(); // Start auto slide after initialization
+      }
+
+      function startAutoSlide() {
+          autoSlideTimer = setInterval(function () {
+              var currentSlide = wrapper.find("li.current_slide"),
+                  nextSlide = currentSlide.next();
+
+              if (nextSlide.length === 0) {
+                  nextSlide = card.first();
+              }
+
+              var cardWidth = card.eq(0).outerWidth(),
+                  sliderWidth = cdSlider.outerWidth(),
+                  marginLeft = sliderWidth / 2 - cardWidth / 2 - (cardWidth * 1) / 7,
+                  translate = nextSlide.index() * (cardWidth + marginLeft) + "px";
+
+              move(translate);
+
+              currentSlide.removeClass("current_slide");
+              nextSlide.addClass("current_slide");
+          }, autoSlideInterval);
+      }
+
+      function GetIEVersion() {
+          var sAgent = window.navigator.userAgent;
+          var Idx = sAgent.indexOf("MSIE");
+
+          if (Idx > 0) {
+              var version = parseInt(
+                  sAgent.substring(Idx + 5, sAgent.indexOf(".", Idx))
+              );
+              if (version == 9) {
+                  $("html").addClass("ie9");
+              }
+          }
+      }
+
+      GetIEVersion();
+
+      function move(translate) {
+          // IE 9
+          if ($(".ie9").length > 0) {
+              wrapper.animate({
+                  "margin-left": "-" + translate
+              }, animationTime);
+          } else {
+              wrapper.css({
+                  "-webkit-transform": "translateX(-" + translate + ")",
+                  transform: "translateX(-" + translate + ")"
+              });
+          }
+      }
+
+      $(window).on("resize", function () {
+          initSlider();
+      });
+  });
+
 </script>
 
 </main>
