@@ -57,7 +57,7 @@ class ConcernAdmin(admin.ModelAdmin):
     list_display = ['concern_title', 'product_link', 'active_status']   
 
 class IngredientAdmin(admin.ModelAdmin):
-    list_display = ['ingredient_title', 'image', 'description', 'banner_image']   
+    list_display = ['ingredient_title', 'product_link', 'active_status']   
 
 class BannerAdmin(admin.ModelAdmin):
     list_display = ['banner_title', 'active_status', 'order', 'display_banner_image']  
