@@ -3147,7 +3147,7 @@ referrerpolicy="no-referrer"
                     aria-expanded="false"
                     >Shop by Concern</a
                 >
-                <!-- <div
+                <div
                     class="dropdown-menu mega-menu start-0 py-6 w-100"
                     aria-labelledby="menu-item-shop-canvas"
                 >
@@ -3156,19 +3156,20 @@ referrerpolicy="no-referrer"
                     >
                         <div class="row">
                             <div class="col">
-                                <h6 class="fs-18px">Shop Pages</h6>
                                 <ul class="list-unstyled mb-0">
+                                    {% for con in concern  %}
                                     <li>
                                         <a
-                                            href="shop/shop-layout-v1.html"
+                                            href="{{con.product_link}}"
                                             class="border-hover text-decoration-none py-3 d-block"
                                             ><span
                                                 class="border-hover-target"
-                                                >Shop Layout
-                                                <sup>v1</sup></span
+                                                >{{con.concern_title}}
+                                                </span
                                             ></a
                                         >
                                     </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                             <div
@@ -3205,8 +3206,8 @@ referrerpolicy="no-referrer"
                             </div>
                         </div>
                     </div>
-                </div> -->
-               </li>
+                </div>
+            </li>
                <li
                 class="nav-item transition-all-xl-1 py-0 dropdown dropdown-fullwidth position-static"
             >
