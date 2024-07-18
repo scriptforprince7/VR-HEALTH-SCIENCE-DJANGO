@@ -369,7 +369,7 @@
                       id="menu-item-pages"
                       aria-haspopup="true"
                       aria-expanded="false"
-                      >Shop by Ingredients</a
+                      >Shop by Concern</a
                     >
                     <ul
                       class="dropdown-menu py-6"
@@ -472,7 +472,7 @@
                   <div class="px-5 d-none d-xl-inline-block">
                     <a
                       class="lh-1 color-inherit text-decoration-none"
-                      href="{% if user.is_authenticated %}{% url 'core:index' %}{% else %}{% url 'userauths:sign-in' %}{% endif %}"
+                      href="{% if user.is_authenticated %}{% url 'core:dashboard' %}{% else %}{% url 'userauths:sign-in' %}{% endif %}"
                     >
                       <svg class="icon icon-user-light">
                         <use xlink:href="#icon-user-light"></use>
