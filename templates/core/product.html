@@ -28,15 +28,33 @@
     class="slick-slider slick-slider-thumb ps-1 ms-n3 me-n4 mx-xl-0"
     data-slick-options='{"arrows":false,"asNavFor":"#slide-5","dots":false,"focusOnSelect":true,"responsive":[{"breakpoint":1260,"settings":{"vertical":false}}],"slidesToShow":4,"vertical":true}'
 >
-    <img
-        src="{{products.image.url}}"
-        data-src="{{products.image.url}}"
-        class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
-        width="540"
-        height="720"
-        alt
-        data-variant-type-id="default"
-    />
+
+{% if product_variant_type_images %}
+{% for pvti in product_variant_type_images %}
+<img
+    src="{{pvti.image.url}}"
+    data-src="{{pvti.image.url}}"
+    class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+    width="540"
+    height="720"
+    alt
+    data-variant-type-id="{{ pvti.product_variant_types.id }}"
+/>
+{% endfor %}
+{% else %}
+{% for pi in product_images %}
+<img
+    src="{{pi.images.url}}"
+    data-src="{{pi.images.url}}"
+    class="cursor-pointer lazy-image h-auto mx-3 mx-xl-0 px-0 mb-xl-7"
+    width="540"
+    height="720"
+    alt
+    data-variant-type-id="default"
+/>
+{% endfor %}
+{% endif %}
+
     {% if product_variant_type_images %}
         {% for pvti in product_variant_type_images %}
         <img
@@ -91,17 +109,35 @@
     class="slick-slider slick-slider-arrow-inside slick-slider-dots-inside slick-slider-dots-light g-0"
     data-slick-options='{"arrows":false,"asNavFor":"#slide-thumb-5","dots":false,"slidesToShow":1,"vertical":true}'
 >
-    <a href="{{products.image.url}}" data-gallery="gallery5">
-        <img
-            src="{{products.image.url}}"
-            data-src="{{products.image.url}}"
-            class="h-auto lazy-image"
-            width="540"
-            height="720"
-            alt
-            data-variant-type-id="default"
-        />
-    </a>
+{% if product_variant_type_images %}
+{% for pvti in product_variant_type_images %}
+<a href="{{pvti.image.url}}" data-gallery="gallery5">
+    <img
+        src="{{pvti.image.url}}"
+        data-src="{{pvti.image.url}}"
+        class="h-auto lazy-image"
+        width="540"
+        height="720"
+        alt
+        data-variant-type-id="{{ pvti.product_variant_type.id }}"
+    />
+</a>
+{% endfor %}
+{% else %}
+{% for pi in product_images %}
+<a href="{{pi.images.url}}" data-gallery="gallery5">
+    <img
+        src="{{pi.images.url}}"
+        data-src="{{pi.images.url}}"
+        class="h-auto lazy-image"
+        width="540"
+        height="720"
+        alt
+        data-variant-type-id="default"
+    />
+</a>
+{% endfor %}
+{% endif %}
     {% if product_variant_type_images %}
         {% for pvti in product_variant_type_images %}
         <a href="{{pvti.image.url}}" data-gallery="gallery5">
