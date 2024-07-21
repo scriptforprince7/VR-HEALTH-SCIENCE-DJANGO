@@ -29,6 +29,7 @@ from bs4 import BeautifulSoup
 from indian_pincode_details import get_pincode_details
 import indiapins
 import json
+import pdfkit
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -530,11 +531,6 @@ def invoice(request):
     return render(request, "core/payment_invoice.html")
 
 def payment_invoice(request):
-    razorpay_payment_id = request.GET.get('razorpay_payment_id')
-    razorpay_order_id = request.GET.get('razorpay_order_id')
-    razorpay_signature = request.GET.get('razorpay_signature')
-
-    # Retrieve form data from query parameters
     query_params = request.GET
     first_name = query_params.get('first_name')
     last_name = query_params.get('last_name')
@@ -672,9 +668,6 @@ def payment_invoice(request):
             "igst_amounts": igst_amounts,
             "zipcode": zipcode,
             "maharashtra_zipcodes": maharashtra_zipcodes,
-            'razorpay_payment_id': razorpay_payment_id,
-            'razorpay_order_id': razorpay_order_id,
-            'razorpay_signature': razorpay_signature,
             'first_name': first_name,
             'last_name': last_name,
             'company_name': company_name,
@@ -1053,6 +1046,22 @@ def export_cart_orders_csv(request):
     for order in orders:
         writer.writerow(order)
 
+    return response
+
+def generate_invoice(request, order_id):
+    order = get_object_or_404(CartOrder, pk=order_id)
+    context = {'order': order}
+    html_template = render_to_string('core/download_invoice.html', context)
+    
+    pdf_file = BytesIO()
+    pisa_status = pisa.CreatePDF(html_template, dest=pdf_file)
+    pdf_file.seek(0)
+
+    if pisa_status.err:
+        return HttpResponse(f'We had some errors with code {pisa_status.err}', content_type='text/plain')
+    
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{order.id}.pdf"'
     return response
 
 

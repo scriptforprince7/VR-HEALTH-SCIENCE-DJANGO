@@ -1,8 +1,10 @@
 from django.contrib import admin
 from core.models import *
+from core.views import *
 import csv
 from django.urls import path
 from django.http import HttpResponse
+from django.utils.html import format_html
 from .forms import ExportCartOrdersForm
 
 class ProductSeoAdmin(admin.StackedInline):
@@ -68,16 +70,22 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class CartOrderAdmin(admin.ModelAdmin):
     list_editable = ['paid_status', 'product_status', 'tracking_id']
-    list_display = ['user', 'price', 'paid_status', 'order_date', 'tracking_id', 'product_status']
+    list_display = ['user', 'price', 'paid_status', 'order_date', 'tracking_id', 'product_status', 'download_invoice_link']
     change_list_template = "core/change_list.html"
 
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
             path('export/', self.admin_site.admin_view(self.export_cart_orders_csv), name='export_cart_orders_csv'),
+            path('<int:order_id>/invoice/', self.admin_site.admin_view(generate_invoice), name='generate_invoice'),
         ]
         return custom_urls + urls
-        
+
+    def download_invoice_link(self, obj):
+        return format_html('<a class="btn btn-success" href="{}">Download Invoice</a>', reverse('admin:generate_invoice', args=[obj.id]))
+
+    download_invoice_link.short_description = 'Download Invoice'
+    download_invoice_link.allow_tags = True
 
     def export_cart_orders_csv(self, request):
         form = ExportCartOrdersForm(request.GET)
