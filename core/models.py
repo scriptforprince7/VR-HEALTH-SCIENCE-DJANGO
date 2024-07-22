@@ -322,6 +322,22 @@ class CartOrder(models.Model):
     paid_status = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default="processing")
+    firstname = models.CharField(max_length=200, blank=True, null=True)
+    lastname = models.CharField(max_length=200, blank=True, null=True)
+    zipcode = models.CharField(max_length=20, blank=True, null=True)
+    pin_details = models.CharField(max_length=200, blank=True, null=True)
+    city = models.CharField(max_length=200, blank=True, null=True)
+    district = models.CharField(max_length=200, blank=True, null=True)
+    division = models.CharField(max_length=200, blank=True, null=True)
+    state = models.CharField(max_length=200, blank=True, null=True)
+    billingaddress = models.CharField(max_length=200, blank=True, null=True)
+    shippingaddress = models.CharField(max_length=200, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    companyname = models.CharField(max_length=200, blank=True, null=True)
+    gstnumber = models.CharField(max_length=200, blank=True, null=True)
+    price_wo_gst_total = models.DecimalField(max_digits=99999, decimal_places=2, default="0")
+    gst_rates_final = models.DecimalField(max_digits=5, decimal_places=2, default="0.00")  # For storing the GST rate
 
     class Meta:
         verbose_name_plural = "Cart Orders"
@@ -338,6 +354,8 @@ class CartOrderItems(models.Model):
     qty = models.IntegerField(default=0)
     price = models.DecimalField(max_digits=99999, decimal_places=2, default="1")
     total = models.DecimalField(max_digits=99999, decimal_places=2, default="1")
+    price_wo_gst = models.DecimalField(max_digits=99999, decimal_places=2, default="0")  # Update field name
+    gst_rates_final = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
     class Meta:
         verbose_name_plural = "Cart Order Items"

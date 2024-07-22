@@ -70,7 +70,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class CartOrderAdmin(admin.ModelAdmin):
     list_editable = ['paid_status', 'product_status', 'tracking_id']
-    list_display = ['user', 'price', 'paid_status', 'order_date', 'tracking_id', 'product_status', 'download_invoice_link']
+    list_display = ['firstname', 'zipcode', 'price', 'paid_status', 'order_date', 'tracking_id', 'product_status', 'download_invoice_link']
     change_list_template = "core/change_list.html"
 
     def get_urls(self):

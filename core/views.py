@@ -750,9 +750,19 @@ def checkout_view(request):
         # Get form data
         first_name = request.POST.get('firstname')
         last_name = request.POST.get('lastname')
-        zip_code = request.POST.get('zip')
-        email = request.POST.get('email')
+        zipcode = request.POST.get('zipcode')  # Fixed: Should match the name used in the form
+        pin_details = request.POST.get('pin_details')
+        city = request.POST.get('city')
+        district = request.POST.get('district')
+        division = request.POST.get('division')
+        state = request.POST.get('state')
+        billing_address = request.POST.get('billingaddress')
+        shipping_address = request.POST.get('shippingaddress')
         phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        company_name = request.POST.get('companyname')
+        gst_number = request.POST.get('gstnumber')
+        have_gst = request.POST.get('have-gst')  # For the checkbox
 
         # Calculate shipping charge based on number of products
         if 'cart_data_obj' in request.session:
@@ -780,19 +790,17 @@ def checkout_view(request):
             cart_total_amount_shipping = cart_total_amount + total_shipping_rate_with_gst
 
         total_amount = Decimal('0')
-        user_zipcode = zip_code  # Get user's zipcode from the form
+        user_zipcode = zipcode  # Get user's zipcode from the form
 
         with open('new_delhi_zipcodes.json', 'r') as f:
             maharashtra_zipcodes = json.load(f)
 
         # Check if user's zipcode is in Maharashtra
         if user_zipcode in maharashtra_zipcodes:
-            # Maharashtra zipcode logic
             cgst_factor = Decimal('0.025')  # CGST rate for Maharashtra (2.5%)
             sgst_factor = Decimal('0.025')  # SGST rate for Maharashtra (2.5%)
             igst_factor = Decimal('0')      # IGST will be 0%
         else:
-            # Non-Maharashtra zipcode logic
             cgst_factor = Decimal('0.09')   # CGST rate for other states (9%)
             sgst_factor = Decimal('0.09')   # SGST rate for other states (9%)
             igst_factor = Decimal('1')      # IGST will be 100%
@@ -841,15 +849,40 @@ def checkout_view(request):
                 messages.error(request, f"Product with ID {product_id} does not exist.")
                 return redirect('/cart')  # Redirect the user to the cart page
 
-            cart_order_products = CartOrderItems.objects.create(
-                order=order,
-                invoice_no="order_id-" + str(order.id),
-                item=item['title'],
-                image=item['image'],
-                qty=item['qty'],
-                price=item['price'],
-                total=float(item['qty']) * float(item['price'])
+            order = CartOrder.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                price=cart_total_amount + total_shipping_rate_with_gst,
+                firstname=first_name,
+                lastname=last_name,
+                zipcode=zipcode,
+                pin_details=pin_details,
+                city=city,
+                district=district,
+                division=division,
+                state=state,
+                billingaddress=billing_address,
+                shippingaddress=shipping_address,
+                phone=phone,
+                email=email,
+                companyname=company_name if have_gst else '',
+                gstnumber=gst_number if have_gst else '',
+                price_wo_gst_total=price_wo_gst_total,
+                gst_rates_final=gst_amount / (price_wo_gst_total + total_gst) * 100  # Example calculation
             )
+
+        for unique_key, item in cart_data.items():
+         CartOrderItems.objects.create(
+            order=order,
+            invoice_no="order_id-" + str(order.id),
+            product_status=item.get('product_status', ''),
+            item=item.get('title', ''),  # Ensure this matches the field in your model
+            image=item.get('image', ''),
+            qty=item['qty'],
+            price=item['price'],
+            total=Decimal(item['qty']) * Decimal(item['price']),
+            price_wo_gst=Decimal(item['price_wo_gst']),  # Store price without GST
+            gst_rates_final=Decimal(item['gst_applied'])
+        )
 
         if 'cart_data_obj' in request.session:
             try:
@@ -911,18 +944,13 @@ def checkout_view(request):
         context = {
             "price_wo_gst_total": price_wo_gst_total,
             "total_gst": total_gst,
-            "shipping_rate": total_shipping_rate_with_gst,
-            'cart_total_amount_shipping': cart_total_amount_shipping
-        }
-
-        return render(request, "core/checkout.html", {
+            'cart_total_amount_shipping': cart_total_amount_shipping,
             'cart_data': request.session.get('cart_data_obj', {}),
             'totalcartitems': len(request.session.get('cart_data_obj', {})),
-            'cart_total_amount': cart_total_amount,
-            **context
-        })
+            'cart_total_amount': cart_total_amount
+        }
 
-
+        return render(request, "core/checkout.html", context)
 
 
 @login_required
@@ -940,6 +968,9 @@ def shipping_policy(request):
 
 def return_policy(request):
     return render(request, "core/return_policy.html")
+
+def download_invoice(request):
+    return render(request, "core/download_invoice.html")
 
 def cancellationandrefund(request):
     return render(request, "core/cancellationandrefund.html")
@@ -1049,20 +1080,76 @@ def export_cart_orders_csv(request):
     return response
 
 def generate_invoice(request, order_id):
+    # Get the order object
     order = get_object_or_404(CartOrder, pk=order_id)
-    context = {'order': order}
-    html_template = render_to_string('core/download_invoice.html', context)
     
-    pdf_file = BytesIO()
-    pisa_status = pisa.CreatePDF(html_template, dest=pdf_file)
-    pdf_file.seek(0)
+    # Fetch related cart items
+    cart_items = CartOrderItems.objects.filter(order=order)
 
-    if pisa_status.err:
-        return HttpResponse(f'We had some errors with code {pisa_status.err}', content_type='text/plain')
-    
-    response = HttpResponse(pdf_file, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="invoice_{order.id}.pdf"'
-    return response
+    # Prepare data for the invoice
+    cart_data = {}
+    price_wo_gst_total = Decimal('0')
+    for item in cart_items:
+        cart_data[item.id] = {
+            'title': item.item,  # Assuming 'item' is a string
+            'qty': item.qty,
+            'price': item.price,
+            'image': item.image,
+            'invoice_no': item.invoice_no,
+            'product_status': item.product_status,
+            'total': item.total,
+            'price_wo_gst': item.price_wo_gst,  # Use the correct field name
+            'gst_rates_final': item.gst_rates_final,  # Include gst_rates_final
+            'first_name': order.firstname,
+            'last_name': order.lastname,
+            'zipcode': order.zipcode,
+            'email': order.email,
+            'phone': order.phone,
+            'pin_details': order.pin_details,
+            'city': order.city,
+            'district': order.district,
+            'division': order.division,
+            'state': order.state,
+            'billing_address': order.billingaddress,
+            'shipping_address': order.shippingaddress,
+            'company_name': order.companyname,
+            'gst_number': order.gstnumber,
+        }
+        price_wo_gst_total += item.price_wo_gst * item.qty
+        cart_total_amount_words = num2words(order.price, lang='en_IN')
+
+    context = {
+        'order': order,
+        'cart_data': cart_data,  # Adjust if needed
+        'first_name': order.firstname,
+        'last_name': order.lastname,
+        'zipcode': order.zipcode,
+        'email': order.email,
+        'phone': order.phone,
+        'pin_details': order.pin_details,
+        'city': order.city,
+        'district': order.district,
+        'division': order.division,
+        'state': order.state,
+        'billing_address': order.billingaddress,
+        'shipping_address': order.shippingaddress,
+        'company_name': order.companyname,
+        'gst_number': order.gstnumber,
+        'price_wo_gst_total': price_wo_gst_total,  # Add price_wo_gst_total to context
+        'cart_total_amount_words': cart_total_amount_words
+    }
+
+    # Render the invoice template with the context
+    return render(request, 'core/download_invoice.html', context)
+
+
+
+
+
+
+
+
+
 
 
 def contact_us_view(request):

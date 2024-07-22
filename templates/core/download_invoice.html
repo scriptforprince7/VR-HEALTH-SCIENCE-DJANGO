@@ -23,7 +23,7 @@
         <div class="cs-invoice_head cs-type1 cs-mb25">
           <div class="cs-invoice_left">
             <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color"></b><b>TAX INVOICE</b> <span style="border: 1px solid grey; color: grey; font-size: 12px; padding: 3px;">ORIGINAL FOR RECIPIENT</span> </p>
-            <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color">Invoice No:</b> {{ invoice_no }}</p>
+            <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color">Invoice No:</b> VRHINV- {{ order.id }} </p>
             <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date: </b>{{ order.order_date }}</p>
           </div>
           <div class="cs-invoice_right cs-text_right">
@@ -45,21 +45,27 @@ Phone: 011-41112587, 8448200102
           <div class="cs-invoice_right">
             <b class="cs-primary_color">Bill To:</b>
             <p>
-             <b>{{first_name}} {{last_name}}</b>  <br> {{street_address}}<br> {{zipcode}}
+                <b>{{ first_name }} {{ last_name }}</b> <br>
+                {{ billing_address }}<br>
+                {{ zipcode }}
             </p>
-          </div>
-          <div class="cs-invoice_right">
+        </div>
+        
+        <div class="cs-invoice_right">
             <b class="cs-primary_color">Ship To:</b>
             <p>
-             <b>{{shipping_address}}</b>  <br>{{zipcode}}
+                <b>{{ shipping_address }}</b> <br>
+                {{ zipcode }}
             </p>
             {% if gst_number %}
             <b class="cs-primary_color">GST Details:</b>
             <p>
-             <b>GSTIN:</b> {{gst_number}} <br><b>Company Name</b>: {{company_name}} 
+                <b>GSTIN:</b> {{ gst_number }} <br>
+                <b>Company Name:</b> {{ company_name }}
             </p>
             {% endif %}
-          </div>
+        </div>
+        
         
         </div>
         <div class="cs-table cs-style1">
@@ -74,7 +80,6 @@ Phone: 011-41112587, 8448200102
                 <tr>
                   <th class="cs-width_1 cs-semi_bold cs-primary_color cs-focus_bg cs-center">Sr. No.</th>
                   <th class="cs-width_4 cs-semi_bold cs-primary_color cs-focus_bg cs-center">Description of Goods</th>
-                  <th class="cs-width_1 cs-semi_bold cs-primary_color cs-focus_bg cs-center">Sku ID</th>
                   <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg cs-center">Qty</th>
                   <th class="cs-width_2 cs-semi_bold cs-primary_color cs-focus_bg cs-center">Rate (Per Unit)</th>
                   <th class="cs-width_1 cs-semi_bold cs-primary_color cs-focus_bg cs-center">Amount</th>
@@ -86,16 +91,20 @@ Phone: 011-41112587, 8448200102
                   }
                 </style>
                 <tbody>
-                  {% for product_id, item in cart_data.items  %}
-                  <tr>
-                    <td class="cs-width_1 cs-center">{{ forloop.counter }}</td>
-                    <td class="cs-width_4 cs-center"><b>{{ item.title }}</b></td>
-                    <td class="cs-width_2 cs-center">{{ item.sku }}</td>
-                    <td class="cs-width_1 cs-center">{{ item.qty }}</td>
-                    <td class="cs-width_2 cs-center">₹{{ item.price_wo_gst }} <b>({{item.gst_rates_final|floatformat:"2"}}%)</b></td>
-                    <td class="cs-width_2 cs-text_right">₹<b>{% widthratio item.price_wo_gst 1 item.qty%}.00</b></td>
-                  </tr>
-                  {% endfor %}
+                  {% for product_id, item in cart_data.items %}
+        <tr>
+            <td class="cs-width_1 cs-center">{{ forloop.counter }}</td>
+            <td class="cs-width_4 cs-center"><b>{{ item.title }}</b></td>
+            <td class="cs-width_1 cs-center">{{ item.qty }}</td>
+            <td class="cs-width_2 cs-center">₹{{ item.price_wo_gst }} <br> <b>(18%)</b></td>
+            <td class="cs-width_2 cs-text_right">₹<b>{% widthratio item.price_wo_gst item.qty 1 %}.00</b></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No items found</td>
+        </tr>
+        {% endfor %}
+              
                 </tbody>
               </table>
             </div>
@@ -125,23 +134,12 @@ Phone: 011-41112587, 8448200102
                           <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Total Taxable Value</td>
                           <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹ {{ price_wo_gst_total }}</td>
                       </tr>
-                      {% for gst_rate, amounts in gst_amounts_combined.items %}
-                          {% if zipcode in maharashtra_zipcodes %}
+                      {% for product_id, item in cart_data.items %}
                               <tr class="cs-border_left">
-                                  <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add CGST ({{ gst_rate }})%</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ amounts.cgst }}</td>
+                                  <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add GST (18%)</td>
+                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹ {{ item.gst_rates_final|floatformat:"2" }}</td>
                               </tr>
-                              <tr class="cs-border_left">
-                                  <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add SGST ({{ gst_rate }})%</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ amounts.sgst }}</td>
-                              </tr>
-                          {% else %}
-                              <tr class="cs-border_left">
-                                  <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add IGST ({{ gst_rate }})%</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ igst_amount }}</td>
-                              </tr>
-                          {% endif %}
-                      {% endfor %}
+                              {% endfor %}
                   </tbody>
               </table>
               
@@ -177,12 +175,26 @@ Phone: 011-41112587, 8448200102
             <p class="cs-mb0"><b class="cs-primary_color cs-bold">Paid Amount:</b></p>
             <p class="cs-m0"> <p><b>{{ cart_total_amount_words }}</b> rupees only/-</p> </p>
             <p class="cs-mb0"><b class="cs-primary_color cs-bold">Additional Information:</b></p>
-            <p class="cs-m0"> <p class="cs-m0"><b>Order Id: </b>{{razorpay_order_id}} <br>
+            <p class="cs-m0"> <p class="cs-m0"><b>Order Id: </b>order_id-{{ order.id }}<br>
               <b> Bill To: </b> {{first_name}} {{last_name}} <br>
                
                </p> </p>
           </div>
         </div><!-- .cs-note -->
+      </div>
+      <div class="cs-invoice_btns cs-hide_print">
+        <a href="javascript:window.print()" class="cs-invoice_btn cs-color1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><path d="M384 368h24a40.12 40.12 0 0040-40V168a40.12 40.12 0 00-40-40H104a40.12 40.12 0 00-40 40v160a40.12 40.12 0 0040 40h24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><rect x="128" y="240" width="256" height="208" rx="24.32" ry="24.32" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M384 128v-24a40.12 40.12 0 00-40-40H168a40.12 40.12 0 00-40 40v24" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="392" cy="184" r="24"/></svg>
+          <span>Print</span>
+        </a>
+        <button id="download_btn" class="cs-invoice_btn cs-color2" onclick="downloadInvoice()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+              <title>Download</title>
+              <path d="M336 176h40a40 40 0 0140 40v208a40 40 0 01-40 40H136a40 40 0 01-40-40V216a40 40 0 0140-40h40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M176 272l80 80 80-80M256 48v288"/>
+          </svg>
+          <span>Download</span>
+      </button>
       </div>
     </div>
   </div>
@@ -190,5 +202,32 @@ Phone: 011-41112587, 8448200102
   <script src="https://vrhealthscience.com/static/assets-invoice/js/jspdf.min.js"></script>
   <script src="https://vrhealthscience.com/static/assets-invoice/js/html2canvas.min.js"></script>
   <script src="https://vrhealthscience.com/static/assets-invoice/js/main.js"></script>
+  <script>
+    function downloadInvoice() {
+        // Get the HTML content of the invoice
+        var invoiceContent = document.querySelector('.invoice-content').innerHTML;
+        
+        // Create a Blob containing the HTML content
+        var blob = new Blob([invoiceContent], { type: 'text/html' });
+        
+        // Create a URL for the Blob
+        var url = URL.createObjectURL(blob);
+        
+        // Create an anchor element
+        var a = document.createElement('a');
+        
+        // Set the href attribute to the URL
+        a.href = url;
+        
+        // Set the download attribute to specify the filename
+        a.download = 'invoice.html';
+        
+        // Trigger a click event on the anchor element to initiate the download
+        a.click();
+        
+        // Release the URL object
+        URL.revokeObjectURL(url);
+    }
+    </script>
 </body>
 </html>
