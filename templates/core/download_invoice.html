@@ -97,7 +97,7 @@ Phone: 011-41112587, 8448200102
             <td class="cs-width_4 cs-center"><b>{{ item.title }}</b></td>
             <td class="cs-width_1 cs-center">{{ item.qty }}</td>
             <td class="cs-width_2 cs-center">₹{{ item.price_wo_gst }} <br> <b>(18%)</b></td>
-            <td class="cs-width_2 cs-text_right">₹<b>{% widthratio item.price_wo_gst item.qty 1 %}.00</b></td>
+            <td class="cs-width_2 cs-text_right">₹<b>{% widthratio item.price_wo_gst 1 item.qty%}.00</b></td>
         </tr>
         {% empty %}
         <tr>
@@ -137,7 +137,8 @@ Phone: 011-41112587, 8448200102
                       {% for product_id, item in cart_data.items %}
                               <tr class="cs-border_left">
                                   <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add GST (18%)</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹ {{ item.gst_rates_final|floatformat:"2" }}</td>
+                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹ {% widthratio item.gst_rates_final 1 item.qty%}.00</td>
+                                  
                               </tr>
                               {% endfor %}
                   </tbody>

@@ -527,213 +527,6 @@ def blog_details(request, blog_slug):
 
     return render(request, "core/blog-details.html", context)
 
-def invoice(request):
-    return render(request, "core/payment_invoice.html")
-
-def payment_invoice(request):
-    query_params = request.GET
-    first_name = query_params.get('first_name')
-    last_name = query_params.get('last_name')
-    company_name = query_params.get('company_name')
-    gst_number = query_params.get('gst_number')
-    zipcode = query_params.get('zipcode')
-    city = query_params.get('city')
-    street_address = query_params.get('street_address')
-    shipping_address = query_params.get('shipping_address')
-    phone = query_params.get('phone')
-    email = query_params.get('email')
-    cart_total_amount = 0
-    total_amount = 0
-    price_wo_gst_total = 0
-    total_gst = 0
-
-    current_datetime = datetime.now()
-
-    with open('new_delhi_zipcodes.json', 'r') as f:
-        maharashtra_zipcodes = json.load(f)
-
-        print('payment', maharashtra_zipcodes)
-
-    if 'cart_data_obj' in request.session:
-        # Initialize dictionaries to store CGST, SGST, and IGST amounts for each product
-        cgst_amounts = {}
-        sgst_amounts = {}
-        igst_amounts = {}
-        gst_amounts = {}
-        gst_amounts_combined = {}  # Dictionary to store aggregated GST amounts
-
-        # Calculate total amount, price without GST, and total GST
-        for p_id, item in request.session['cart_data_obj'].items():
-            total_amount += int(item['qty']) * Decimal(item['price'])
-            price_wo_gst_total += int(item['qty']) * Decimal(item.get('price_wo_gst', item['price']))
-            price_wo_gst_final = int(item['qty']) * Decimal(item.get('price_wo_gst', item['price']))
-            item_gst = (Decimal(item['price']) - Decimal(item.get('price_wo_gst', item['price']))) * int(
-                item['qty'])  # Calculate GST for this item
-
-            # Calculate GST rates
-            if price_wo_gst_final != 0:
-                gst_rates_final = (item_gst / price_wo_gst_final) * 100
-            else:
-                gst_rates_final = Decimal('0')
-
-            item['gst_rates_final'] = gst_rates_final
-
-            # Divide the GST amount by 2 to get CGST and SGST separately
-            if zipcode in maharashtra_zipcodes:
-                # For Maharashtra zip codes, calculate CGST and SGST separately
-                igst_amount = Decimal('0')  # IGST will be 0
-                gst_rates_final = gst_rates_final / Decimal(2)
-            else:
-                # For non-Maharashtra zip codes, IGST will be double of CGST
-                igst_amount = item_gst
-                gst_rates_final = gst_rates_final
-
-            # Aggregate GST amounts based on GST rates
-            if gst_rates_final in gst_amounts:
-                gst_amounts[gst_rates_final] += item_gst
-            else:
-                gst_amounts[gst_rates_final] = item_gst
-
-            total_gst += item_gst
-
-        # Print CGST Amounts
-        print("CGST Amounts:")
-        for gst_rate, total_gst_amount in gst_amounts.items():
-            cgst_amount = total_gst_amount / Decimal(2)
-            print(f"CGST Amount: {cgst_amount}, GST Rate: {gst_rate}")
-
-        # Print SGST Amounts
-        print("\nSGST Amounts:")
-        for gst_rate, total_gst_amount in gst_amounts.items():
-            sgst_amount = total_gst_amount / Decimal(2)
-            print(f"SGST Amount: {sgst_amount}, GST Rate: {gst_rate}")
-
-        print("\nIGST Amounts:")
-        for gst_rate, total_gst_amount in gst_amounts.items():
-            igst_amount = total_gst_amount
-            print(f"IGST Amount: {igst_amount}, GST Rate: {gst_rate}")
-
-        print("GST Amounts:")
-        print(gst_amounts)
-
-        for gst_rate, total_gst_amount in gst_amounts.items():
-            cgst_amount = total_gst_amount / Decimal(2)
-            sgst_amount = total_gst_amount / Decimal(2)
-            gst_amounts_combined[gst_rate] = {'cgst': cgst_amount, 'sgst': sgst_amount}
-
-             # Check if the user is authenticated
-        if request.user.is_authenticated:
-            # If the user is logged in, associate the order with the logged-in user
-            order = CartOrder.objects.create(
-            user=request.user,  # Use the logged-in user
-            price=total_amount
-        )
-        else:
-            # If the user is not logged in, create the order without associating it with any user
-            order = CartOrder.objects.create(
-            price=total_amount
-        )
-
-        for p_id, item in request.session['cart_data_obj'].items():
-            cart_total_amount += int(item['qty']) * float(item['price'])
-
-            cart_order_products = CartOrderItems.objects.create(
-                order=order,
-                invoice_no="order_id-" + str(order.id),
-                item=item['title'],
-                image=item['image'],
-                qty=item['qty'],
-                price=item['price'],
-                total=float(item['qty']) * float(item['price'])
-            )
-
-        cart_total_amount_rounded = round(cart_total_amount, 2)
-        cart_total_amount_words = num2words(cart_total_amount_rounded, lang='en_IN')
-
-        invoice_number, created = InvoiceNumber.objects.get_or_create()
-
-        # Increment the invoice number
-        invoice_number.increment()
-
-        # Use the incremented invoice number for the current invoice
-        invoice_no = str(invoice_number)
-
-        half_total_gst_amount = total_gst / Decimal(2)
-
-        context = {
-            "price_wo_gst_total": price_wo_gst_total,
-            "total_gst": total_gst,
-            "cgst_amounts": cgst_amounts,
-            "sgst_amounts": sgst_amounts,
-            "igst_amounts": igst_amounts,
-            "zipcode": zipcode,
-            "maharashtra_zipcodes": maharashtra_zipcodes,
-            'first_name': first_name,
-            'last_name': last_name,
-            'company_name': company_name,
-            'gst_number': gst_number,
-            'zipcode': zipcode,
-            'city': city,
-            'street_address': street_address,
-            'phone': phone,
-            'current_datetime':current_datetime,
-            'email': email,
-            "cgst_amount": cgst_amount,
-            "sgst_amount": sgst_amount,
-            "igst_amount": igst_amount,
-            "igst_amounts": igst_amounts,
-            "gst_rates_final": gst_rates_final,
-            "shipping_address": shipping_address,
-            "cart_total_amount_words": cart_total_amount_words,
-            'invoice_no': invoice_no,
-            "half_total_gst_amount": half_total_gst_amount,
-            "gst_amounts": gst_amounts,
-            "gst_rate": gst_rate,
-            "gst_amounts_combined": gst_amounts_combined,
-            'cart_data': request.session.get('cart_data_obj', {}),
-            'totalcartitems': len(request.session.get('cart_data_obj', {})),
-            'cart_total_amount': cart_total_amount,
-            'cart_items': request.session.get('cart_data_obj', {})
-        }
-        subject = 'Payment Invoice'
-        from_email = 'princesachdeva@nationalmarketingprojects.com'
-        to_email = email
-        html_message = render_to_string('core/thankyou-order.html', {'context': context})
-        plain_message = strip_tags(html_message)
-
-         # Generate PDF using xhtml2pdf
-        html_template = render_to_string('core/payment_invoice.html', context)
-        pdf_file = BytesIO()
-        pisa_status = pisa.CreatePDF(html_template, dest=pdf_file)
-        pdf_file.seek(0)
-
-        # Create the email message
-        email_message = EmailMultiAlternatives(subject, plain_message, from_email, [to_email])
-        email_message.attach_alternative(html_message, "text/html")
-
-        if not pisa_status.err:
-            email_message.attach('invoice.pdf', pdf_file.read(), 'application/pdf')
-
-         # Send the email
-        email_message.send()
-
-        # Render the invoice before clearing the cart data
-        response = render(request, "core/payment_invoice.html", context)
-
-        # Clear cart data after successful purchase and rendering the invoice
-        if 'cart_data_obj' in request.session:
-            del request.session['cart_data_obj']
-            request.session.modified = True
-
-        return response
-
-def load_maharashtra_zipcodes():
-    try:
-        with open('maharashtra_zipcodes.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-
 def checkout_view(request):
     total_shipping_rate_with_gst = Decimal('0')
     cart_total_amount_shipping = Decimal('0')
@@ -792,6 +585,27 @@ def checkout_view(request):
         total_amount = Decimal('0')
         user_zipcode = zipcode  # Get user's zipcode from the form
 
+          # Store the form data in the session
+        request.session['checkout_data'] = {
+            'firstname': first_name,
+            'lastname': last_name,
+            'zipcode': zipcode,
+            'city': city,
+            'district': district,
+            'division': division,
+            'state': state,
+            'billingaddress': billing_address,
+            'shippingaddress': shipping_address,
+            'phone': phone,
+            'email': email,
+            'companyname': company_name,
+            'gstnumber': gst_number,
+            'have_gst': have_gst,
+            'price_wo_gst_total': float(price_wo_gst_total),
+            'total_gst': float(total_gst),
+            'cart_total_amount_shipping': float(cart_total_amount_shipping),
+        }
+
         with open('new_delhi_zipcodes.json', 'r') as f:
             maharashtra_zipcodes = json.load(f)
 
@@ -804,19 +618,6 @@ def checkout_view(request):
             cgst_factor = Decimal('0.09')   # CGST rate for other states (9%)
             sgst_factor = Decimal('0.09')   # SGST rate for other states (9%)
             igst_factor = Decimal('1')      # IGST will be 100%
-
-        # Check if the user is authenticated
-        if request.user.is_authenticated:
-            # If the user is logged in, associate the order with the logged-in user
-            order = CartOrder.objects.create(
-                user=request.user,  # Use the logged-in user
-                price=cart_total_amount_shipping  # Include shipping in order price
-            )
-        else:
-            # If the user is not logged in, create the order without associating it with any user
-            order = CartOrder.objects.create(
-                price=cart_total_amount_shipping  # Include shipping in order price
-            )
 
         if 'cart_data_obj' in request.session:
             # Calculate total amount, price without GST, and total GST
@@ -848,42 +649,7 @@ def checkout_view(request):
             except Product.DoesNotExist:
                 messages.error(request, f"Product with ID {product_id} does not exist.")
                 return redirect('/cart')  # Redirect the user to the cart page
-
-            order = CartOrder.objects.create(
-                user=request.user if request.user.is_authenticated else None,
-                price=cart_total_amount + total_shipping_rate_with_gst,
-                firstname=first_name,
-                lastname=last_name,
-                zipcode=zipcode,
-                pin_details=pin_details,
-                city=city,
-                district=district,
-                division=division,
-                state=state,
-                billingaddress=billing_address,
-                shippingaddress=shipping_address,
-                phone=phone,
-                email=email,
-                companyname=company_name if have_gst else '',
-                gstnumber=gst_number if have_gst else '',
-                price_wo_gst_total=price_wo_gst_total,
-                gst_rates_final=gst_amount / (price_wo_gst_total + total_gst) * 100  # Example calculation
-            )
-
-        for unique_key, item in cart_data.items():
-         CartOrderItems.objects.create(
-            order=order,
-            invoice_no="order_id-" + str(order.id),
-            product_status=item.get('product_status', ''),
-            item=item.get('title', ''),  # Ensure this matches the field in your model
-            image=item.get('image', ''),
-            qty=item['qty'],
-            price=item['price'],
-            total=Decimal(item['qty']) * Decimal(item['price']),
-            price_wo_gst=Decimal(item['price_wo_gst']),  # Store price without GST
-            gst_rates_final=Decimal(item['gst_applied'])
-        )
-
+            
         if 'cart_data_obj' in request.session:
             try:
                 response = api.payment_request_create(
@@ -952,6 +718,255 @@ def checkout_view(request):
 
         return render(request, "core/checkout.html", context)
 
+def invoice(request):
+    return render(request, "core/payment_invoice.html")
+
+def payment_invoice(request):
+
+    if 'checkout_data' not in request.session:
+        return HttpResponseBadRequest("No checkout data found in session.")
+
+    checkout_data = request.session.pop('checkout_data')
+
+    # Extract data from session
+    first_name = checkout_data.get('firstname')
+    last_name = checkout_data.get('lastname')
+    zipcode = checkout_data.get('zipcode')
+    pin_details = request.POST.get('pin_details')
+    city = checkout_data.get('city')
+    district = checkout_data.get('district')
+    division = checkout_data.get('division')
+    state = checkout_data.get('state')
+    billing_address = checkout_data.get('billingaddress')
+    shipping_address = checkout_data.get('shippingaddress')
+    phone = checkout_data.get('phone')
+    email = checkout_data.get('email')
+    company_name = checkout_data.get('companyname')
+    gst_number = checkout_data.get('gstnumber')
+    have_gst = checkout_data.get('have_gst')
+    price_wo_gst_total = Decimal(checkout_data.get('price_wo_gst_total'))
+    total_gst = Decimal(checkout_data.get('total_gst'))
+    cart_total_amount_shipping = Decimal(checkout_data.get('cart_total_amount_shipping'))
+    cart_total_amount = 0
+    total_amount = 0
+    price_wo_gst_total = 0
+    total_gst = 0
+
+    current_datetime = datetime.now()
+
+    with open('new_delhi_zipcodes.json', 'r') as f:
+        maharashtra_zipcodes = json.load(f)
+
+    print('payment', maharashtra_zipcodes)
+
+    if 'cart_data_obj' in request.session:
+        # Initialize dictionaries to store CGST, SGST, and IGST amounts for each product
+        cgst_amounts = {}
+        sgst_amounts = {}
+        igst_amounts = {}
+        gst_amounts = {}
+        gst_amounts_combined = {}  # Dictionary to store aggregated GST amounts
+
+        # Calculate total amount, price without GST, and total GST
+        for p_id, item in request.session['cart_data_obj'].items():
+            total_amount += int(item['qty']) * Decimal(item['price'])
+            price_wo_gst_total += int(item['qty']) * Decimal(item.get('price_wo_gst', item['price']))
+            price_wo_gst_final = int(item['qty']) * Decimal(item.get('price_wo_gst', item['price']))
+            item_gst = (Decimal(item['price']) - Decimal(item.get('price_wo_gst', item['price']))) * int(
+                item['qty'])  # Calculate GST for this item
+
+            # Calculate GST rates
+            if price_wo_gst_final != 0:
+                gst_rates_final = (item_gst / price_wo_gst_final) * 100
+            else:
+                gst_rates_final = Decimal('0')
+
+            item['gst_rates_final'] = gst_rates_final
+
+            # Divide the GST amount by 2 to get CGST and SGST separately
+            if zipcode in maharashtra_zipcodes:
+                # For Maharashtra zip codes, calculate CGST and SGST separately
+                igst_amount = Decimal('0')  # IGST will be 0
+                gst_rates_final = gst_rates_final / Decimal(2)
+            else:
+                # For non-Maharashtra zip codes, IGST will be double of CGST
+                igst_amount = item_gst
+                gst_rates_final = gst_rates_final
+
+            # Aggregate GST amounts based on GST rates
+            if gst_rates_final in gst_amounts:
+                gst_amounts[gst_rates_final] += item_gst
+            else:
+                gst_amounts[gst_rates_final] = item_gst
+
+            total_gst += item_gst
+
+        # Print CGST Amounts
+        print("CGST Amounts:")
+        for gst_rate, total_gst_amount in gst_amounts.items():
+            cgst_amount = total_gst_amount / Decimal(2)
+            print(f"CGST Amount: {cgst_amount}, GST Rate: {gst_rate}")
+
+        # Print SGST Amounts
+        print("\nSGST Amounts:")
+        for gst_rate, total_gst_amount in gst_amounts.items():
+            sgst_amount = total_gst_amount / Decimal(2)
+            print(f"SGST Amount: {sgst_amount}, GST Rate: {gst_rate}")
+
+        print("\nIGST Amounts:")
+        for gst_rate, total_gst_amount in gst_amounts.items():
+            igst_amount = total_gst_amount
+            print(f"IGST Amount: {igst_amount}, GST Rate: {gst_rate}")
+
+        print("GST Amounts:")
+        print(gst_amounts)
+
+        for gst_rate, total_gst_amount in gst_amounts.items():
+            cgst_amount = total_gst_amount / Decimal(2)
+            sgst_amount = total_gst_amount / Decimal(2)
+            gst_amounts_combined[gst_rate] = {'cgst': cgst_amount, 'sgst': sgst_amount}
+
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+            order = CartOrder.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                price=item['price'],
+                firstname=first_name,
+                lastname=last_name,
+                zipcode=zipcode,
+                order_date=current_datetime,
+                pin_details=pin_details,
+                city=city,
+                district=district,
+                division=division,
+                state=state,
+                billingaddress=billing_address,
+                shippingaddress=shipping_address,
+                phone=phone,
+                email=email,
+                companyname=company_name if have_gst else '',
+                gstnumber=gst_number if have_gst else '',
+                price_wo_gst_total=price_wo_gst_total,
+            )
+
+            cart_order_products = CartOrderItems.objects.create(
+                order=order,
+                invoice_no="order_id-" + str(order.id),
+                product_status=item.get('product_status', ''),
+                item=item.get('title', ''),  # Ensure this matches the field in your model
+                image=item.get('image', ''),
+                qty=item['qty'],
+                price=item['price'],
+                total=Decimal(item['qty']) * Decimal(item['price']),
+                price_wo_gst=Decimal(item['price_wo_gst']),  # Store price without GST
+                gst_rates_final=Decimal(item['gst_applied'])
+            )
+
+        cart_total_amount_rounded = round(cart_total_amount, 2)
+        cart_total_amount_words = num2words(cart_total_amount_rounded, lang='en_IN')
+
+        invoice_number, created = InvoiceNumber.objects.get_or_create()
+
+        # Increment the invoice number
+        invoice_number.increment()
+
+        # Use the incremented invoice number for the current invoice
+        invoice_no = str(invoice_number)
+
+        half_total_gst_amount = total_gst / Decimal(2)
+
+        context = {
+            "price_wo_gst_total": price_wo_gst_total,
+            "total_gst": total_gst,
+            "cgst_amounts": cgst_amounts,
+            "sgst_amounts": sgst_amounts,
+            "igst_amounts": igst_amounts,
+            "zipcode": zipcode,
+            "maharashtra_zipcodes": maharashtra_zipcodes,
+            'first_name': first_name,
+            'last_name': last_name,
+            'company_name': company_name,
+            'gst_number': gst_number,
+            'zipcode': zipcode,
+            'city': city,
+            'billing_address': billing_address,
+            'phone': phone,
+            'current_datetime': current_datetime,
+            'email': email,
+            "cgst_amount": cgst_amount,
+            "sgst_amount": sgst_amount,
+            "igst_amount": igst_amount,
+            "igst_amounts": igst_amounts,
+            "gst_rates_final": gst_rates_final,
+            "shipping_address": shipping_address,
+            "cart_total_amount_words": cart_total_amount_words,
+            'invoice_no': invoice_no,
+            "half_total_gst_amount": half_total_gst_amount,
+            "gst_amounts": gst_amounts,
+            "gst_rate": gst_rate,
+            "gst_amounts_combined": gst_amounts_combined,
+            'cart_data': request.session.get('cart_data_obj', {}),
+            'totalcartitems': len(request.session.get('cart_data_obj', {})),
+            'cart_total_amount': cart_total_amount,
+            'cart_items': request.session.get('cart_data_obj', {})
+        }
+        subject = 'Payment Invoice'
+        from_email = 'billing@vrhealthscience.com'
+        to_email = email
+        cc_email = 'sprince1500@gmail.com'  # Add the CC email address here
+        html_message = render_to_string('core/thankyou-order.html', {'context': context})
+        plain_message = strip_tags(html_message)
+
+        # Generate PDF using xhtml2pdf
+        html_template = render_to_string('core/payment_invoice.html', context)
+        pdf_file = BytesIO()
+        pisa_status = pisa.CreatePDF(html_template, dest=pdf_file)
+        pdf_file.seek(0)
+
+        # Create the email message for the primary recipient
+        email_message = EmailMultiAlternatives(subject, plain_message, from_email, [to_email])
+        email_message.attach_alternative(html_message, "text/html")
+
+        if not pisa_status.err:
+            email_message.attach('invoice.pdf', pdf_file.read(), 'application/pdf')
+
+        # Send the email to the primary recipient
+        email_message.send()
+
+        # Render the CC email template
+        cc_html_message = render_to_string('core/cc_invoice.html', context)
+        cc_plain_message = strip_tags(cc_html_message)
+
+        # Create the email message for the CC recipient
+        cc_email_message = EmailMultiAlternatives(subject, cc_plain_message, from_email, [cc_email])
+        cc_email_message.attach_alternative(cc_html_message, "text/html")
+
+        if not pisa_status.err:
+            pdf_file.seek(0)  # Reset the file pointer to the beginning before attaching
+            cc_email_message.attach('invoice.pdf', pdf_file.read(), 'application/pdf')
+
+        # Send the email to the CC recipient
+        cc_email_message.send()
+
+        # Render the invoice before clearing the cart data
+        response = render(request, "core/payment_invoice.html", context)
+
+        # Clear cart data after successful purchase and rendering the invoice
+        if 'cart_data_obj' in request.session:
+            del request.session['cart_data_obj']
+            request.session.modified = True
+
+        return response
+
+
+def load_maharashtra_zipcodes():
+    try:
+        with open('new_delhi_zipcodes.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
 
 @login_required
 def dashboard(request):
@@ -959,6 +974,9 @@ def dashboard(request):
 
 def faq(request):
     return render(request, "core/faqs.html")
+
+def cc_invoice(request):
+    return render(request, "core/cc_invoice.html")
 
 def thankyouorder(request):
     return render(request, "core/thankyou-order.html")
@@ -1143,15 +1161,6 @@ def generate_invoice(request, order_id):
     return render(request, 'core/download_invoice.html', context)
 
 
-
-
-
-
-
-
-
-
-
 def contact_us_view(request):
     if request.method == "POST":
         form = UserQueryForm(request.POST)
@@ -1165,7 +1174,7 @@ def contact_us_view(request):
             # Send an email
             subject = f'Contact Us Form Submission from {name}'
             message_body = f'Name: {name}\nEmail: {email}\nPhone: {phone}\nMessage:\n{message}'
-            from_email = 'princesachdeva@nationalmarketingprojects.com'
+            from_email = 'billing@vrhealthscience.com'
             recipient_list = ['scriptforprince@gmail.com']  # Replace with actual recipient email
 
             send_mail(
@@ -1205,6 +1214,7 @@ def subscribe_newsletter(request):
         form = NewsletterForm()
 
     return render(request, 'partials/base.html', {'form': form})
+
 
 
 

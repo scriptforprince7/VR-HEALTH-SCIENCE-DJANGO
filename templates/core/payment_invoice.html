@@ -14,6 +14,7 @@
   <!-- Site Title -->
   <title>Thank you for your order | You can check the invoice sent on the mail</title>
   <link rel="stylesheet" href="http://127.0.0.1:8000/static/assets-invoice/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -123,22 +124,22 @@ Phone: 011-41112587, 8448200102
                   <tbody>
                       <tr class="cs-border_left">
                           <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Total Taxable Value</td>
-                          <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹ {{ price_wo_gst_total }}</td>
+                          <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹ {{ price_wo_gst_total|floatformat:"2" }}</td>
                       </tr>
                       {% for gst_rate, amounts in gst_amounts_combined.items %}
                           {% if zipcode in maharashtra_zipcodes %}
                               <tr class="cs-border_left">
                                   <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add CGST ({{ gst_rate }})%</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ amounts.cgst }}</td>
+                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ amounts.cgst|floatformat:"2" }}</td>
                               </tr>
                               <tr class="cs-border_left">
                                   <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add SGST ({{ gst_rate }})%</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ amounts.sgst }}</td>
+                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ amounts.sgst|floatformat:"2" }}</td>
                               </tr>
                           {% else %}
                               <tr class="cs-border_left">
                                   <td class="cs-width_3 cs-semi_bold cs-primary_color cs-focus_bg">Add IGST ({{ gst_rate }})%</td>
-                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ igst_amount }}</td>
+                                  <td class="cs-width_3 cs-semi_bold cs-focus_bg cs-primary_color cs-text_right">₹{{ igst_amount|floatformat:"2" }}</td>
                               </tr>
                           {% endif %}
                       {% endfor %}
@@ -236,6 +237,19 @@ Phone: 011-41112587, 8448200102
         URL.revokeObjectURL(url);
     }
     </script>
+
+    <script>
+      // This script will show the SweetAlert when the page loads
+      document.addEventListener('DOMContentLoaded', function() {
+          Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Your order has been placed. Thank you for shopping with us.",
+              showConfirmButton: false,
+              timer: 2000
+          });
+      });
+  </script>
     
 
 </body>

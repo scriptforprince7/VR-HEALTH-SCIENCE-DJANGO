@@ -40,7 +40,7 @@
           canvasImageHeight
         );
       }
-      pdf.save("Urban-Farm.pdf");
+      pdf.save("VRH-INVOICE.pdf");
     });
   });
 

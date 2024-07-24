@@ -153,12 +153,13 @@ LOGIN_URL = "userauths:sign-in"
 AUTH_USER_MODEL = 'userauths.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.hostinger.com'
-EMAIL_PORT = 465  # Use the appropriate port for your email provider
+EMAIL_HOST = 'smtpout.secureserver.net'  # GoDaddy's SMTP server
+EMAIL_PORT = 465  # Use port 465 for SSL
 EMAIL_USE_SSL = True  # Use SSL for SMTP
-EMAIL_HOST_USER = 'princesachdeva@nationalmarketingprojects.com'
-EMAIL_HOST_PASSWORD = 'Prince_django_autuh_admin_panel_49494'
-DEFAULT_FROM_EMAIL = 'princesachdeva@nationalmarketingprojects.com'  # Use the same email as HOST_USER
+EMAIL_HOST_USER = 'billing@vrhealthscience.com'  # Your GoDaddy email address
+EMAIL_HOST_PASSWORD = 'Info@vrhealth123'  # Your GoDaddy email password
+DEFAULT_FROM_EMAIL = 'billing@vrhealthscience.com'  # Your GoDaddy email address
+
 
 API_KEY = "b6ef0020e4328e1d59453b11db4610f4"
 AUTH_TOKEN = "25f70c405c2f1bbde205cbf155dd48c1"
