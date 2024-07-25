@@ -492,10 +492,11 @@
                         <use xlink:href="#icon-shopping-bag-open-light"></use>
                       </svg>
                       <span
-                        class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
-                        style="--square-size: 18px"
-                        >{{ request.session.cart_data_obj|length }}</span
-                      >
+    id="cartItemCount"
+    class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
+    style="--square-size: 18px"
+>{{ request.session.cart_data_obj|length }}</span>
+
                     </a>
                   </div>
                 </div>
@@ -2147,7 +2148,7 @@ referrerpolicy="no-referrer"
                                 class="far fa-check fs-12px border me-4 px-2 py-1 text-body-emphasis border-dark rounded-circle"
                             ></i>
                             You have 
-                            <span class="text-body-emphasis"
+                            <span id="cartItemCountt" class="text-body-emphasis"
                                 >{{ request.session.cart_data_obj|length }}</span
                             > item in your bag
                         </td>
@@ -2219,7 +2220,7 @@ referrerpolicy="no-referrer"
                     </tr>
               {% endfor %}
               {% else %}
-              <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+              <div style="text-align: center; display: flex; flex-direction: column; align-items: center;" class="no-products-message">
                 <img src="{% static 'assets/images/no-product.png' %}" alt="Empty Cart Image" width="70%">
                 <style>
                     .explore:hover {

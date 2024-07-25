@@ -88,17 +88,20 @@ function generateProductUrl(baseUrl, title) {
 }
 
 function updateCartItemsList(cartData) {
-  var cartItemsList = $("table tbody"); // Target the correct element
-  cartItemsList.empty(); // Clear existing items
+  var cartItemsList = $("table tbody");
+  cartItemsList.empty();
 
-  var subtotalAmount = 0; // Initialize subtotal amount
+  var subtotalAmount = 0;
+  var baseUrl = "";
 
-  var baseUrl = "https://beta.urbanfarm.store/product/"; // Change to your actual base URL
+  // Update cart item count badge
+  var cartItemCount = Object.keys(cartData).length;
+  $("#cartItemCount").text(cartItemCount);
+  $("#cartItemCountt").text(cartItemCount);
 
-  // Check if the cart is empty
   if ($.isEmptyObject(cartData)) {
     var noProductsHtml = `
-      <tr>
+      <tr class="no-products-message">
         <td colspan="3" style="text-align: center;">
           <div style="text-align: center;">
             <img src="{% static 'images/no-product.png' %}" alt="Empty Cart Image" width="70%">
@@ -115,7 +118,8 @@ function updateCartItemsList(cartData) {
       </tr>`;
     cartItemsList.append(noProductsHtml);
   } else {
-    // Iterate over cart items and append them to the list
+    $(".no-products-message").remove(); // Remove the no products message if present
+
     $.each(cartData, function (productId, item) {
       var productUrl = generateProductUrl(baseUrl, item.title);
       var itemHtml = `
@@ -128,18 +132,14 @@ function updateCartItemsList(cartData) {
           <td class="shop-product">
             <div class="d-flex align-items-center">
               <div class="me-6">
-                <img src="${item.image}" width="60" height="80" alt="${
-        item.title
-      }" />
+                <img src="${item.image}" width="60" height="80" alt="${item.title}" />
               </div>
               <div>
                 <p class="card-text mb-1">
-                  <span class="fs-15px fw-bold text-body-emphasis">₹ ${parseFloat(
-                    item.price
-                  ).toFixed(2)}</span>
+                  <span class="fs-15px fw-bold text-body-emphasis">₹ ${parseFloat(item.price).toFixed(2)}</span>
                 </p>
                 <p class="fw-500 text-body-emphasis">
-                  <a href="${productUrl}">${item.title} x ${item.qty}</a><br>
+                  <a href="/cart">${item.title} x ${item.qty}</a><br>
                   ${item.sku}
                 </p>
               </div>
@@ -150,9 +150,7 @@ function updateCartItemsList(cartData) {
               <a href="#" class="shop-down position-absolute z-index-2">
                 <i class="far fa-minus"></i>
               </a>
-              <input name="number[]" type="number" class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0" value="${
-                item.qty
-              }" required />
+              <input name="number[]" type="number" class="form-control form-control-sm px-6 py-4 fs-6 text-center border-0" value="${item.qty}" required />
               <a href="#" class="shop-up position-absolute z-index-2">
                 <i class="far fa-plus"></i>
               </a>
@@ -161,14 +159,13 @@ function updateCartItemsList(cartData) {
         </tr>`;
       cartItemsList.append(itemHtml);
 
-      // Add item price to subtotal
-      subtotalAmount += parseFloat(item.price);
+      subtotalAmount += parseFloat(item.price) * item.qty;
     });
 
-    // Update subtotal amount
     $(".cart-subtotal").text(`₹ ${subtotalAmount.toFixed(2)}`);
   }
 }
+
 
 $(document).ready(function () {
   // Event delegation for delete buttons
