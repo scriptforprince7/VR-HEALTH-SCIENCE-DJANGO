@@ -68,9 +68,12 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['main_category', 'cat_title', 'meta_description', 'meta_title', 'meta_tag', 'home_page_display', 'image', 'big_image']
     list_filter = ['main_category']  # Fields to filter by
 
+
 class CartOrderAdmin(admin.ModelAdmin):
     list_editable = ['paid_status', 'product_status', 'tracking_id']
     list_display = ['firstname', 'zipcode', 'price', 'paid_status', 'order_date', 'tracking_id', 'product_status', 'download_invoice_link']
+    list_filter = ['tracking_id', 'phone', 'email', 'zipcode', 'firstname', 'courier_partner']
+    search_fields = ['tracking_id', 'phone', 'email', 'zipcode', 'firstname', 'lastname', 'city', 'billingaddress', 'shippingaddress', 'courier_partner'] 
     change_list_template = "core/change_list.html"
 
     def get_urls(self):
@@ -111,8 +114,13 @@ class CartOrderAdmin(admin.ModelAdmin):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="cart_orders.csv"'
         writer = csv.writer(response)
-        writer.writerow(['User', 'Price', 'Courier Partner', 'Tracking ID', 'Paid Status', 'Order Date', 'Product Status'])
-        for order in orders.values_list('user__username', 'price', 'courier_partner', 'tracking_id', 'paid_status', 'order_date', 'product_status'):
+        writer.writerow(['Price', 'Courier Partner', 'Tracking ID', 'Paid Status', 'Order Date', 'Product Status',
+                         'First Name', 'Last Name', 'Zip Code', 'City', 'District', 'Division', 'State',
+                         'Billing Address', 'Shipping Address', 'Phone', 'Email'])
+
+        for order in orders.values_list('price', 'courier_partner', 'tracking_id', 'paid_status', 'order_date', 'product_status',
+                                        'firstname', 'lastname', 'zipcode', 'city', 'district', 'division', 'state',
+                                        'billingaddress', 'shippingaddress', 'phone', 'email'):
             writer.writerow(order)
 
         return response

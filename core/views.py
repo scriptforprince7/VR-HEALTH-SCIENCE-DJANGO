@@ -48,7 +48,7 @@ api = Instamojo(api_key=settings.API_KEY,
 def index(request):
     categories = Category.objects.filter(home_page_display='approved')
     home_banner = BannerHome.objects.filter(active_status='published').order_by('order')
-    new_arrival = Product.objects.filter(new_arrival=True)
+    new_arrival = Product.objects.filter(new_arrival=True, product_status='published')
     yellow_peel = Product.objects.filter(yellow_peel=True)
     summer_sale = Product.objects.filter(summer_sale=True)
     testimonials = Testimonials.objects.all()
@@ -364,7 +364,7 @@ def cart_view(request):
 def search_view(request):
     query = request.GET.get("q")
 
-    products = Product.objects.filter(title__icontains=query).order_by("-date")
+    products = Product.objects.filter(title__icontains=query, product_status='published').order_by("-date")
     related_main_categories = Main_category.objects.filter(product__in=products).distinct()
     product_images = ProductImages.objects.filter(product__in=products)
     
@@ -658,7 +658,7 @@ def checkout_view(request):
                     buyer_name=f'{first_name} {last_name}',
                     email=email,
                     phone=phone,
-                    redirect_url='http://127.0.0.1:8000/payment-invoice/'
+                    redirect_url='https://vrhealthscience.com/payment-invoice/'
                 )
                 payment_url = response['payment_request']['longurl']
                 return redirect(payment_url)
@@ -1032,7 +1032,9 @@ class RobotsTxtView(View):
         return HttpResponse(content, content_type='text/plain')
     
 def product_new(request, product_slug):
-    product = Product.objects.get(product_slug=product_slug)
+    product = Product.objects.filter(product_slug=product_slug, product_status='published').first()
+    if not product:
+        raise Http404("Product not found")
     product_variants = ProductVarient.objects.filter(product=product)
     product_variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants)
     related_products = Product.objects.filter(main_category=product.main_category).exclude(pid=product.pid)[:10]
@@ -1089,13 +1091,18 @@ def export_cart_orders_csv(request):
     response['Content-Disposition'] = 'attachment; filename="cart_orders.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['User', 'Price', 'Courier Partner', 'Tracking ID', 'Paid Status', 'Order Date', 'Product Status'])
+    writer.writerow(['Price', 'Courier Partner', 'Tracking ID', 'Paid Status', 'Order Date', 'Product Status',
+                     'First Name', 'Last Name', 'Zip Code', 'City', 'District', 'Division', 'State',
+                     'Billing Address', 'Shipping Address', 'Phone', 'Email'])
 
-    orders = CartOrder.objects.all().values_list('user__username', 'price', 'courier_partner', 'tracking_id', 'paid_status', 'order_date', 'product_status')
+    orders = CartOrder.objects.all().values_list('price', 'courier_partner', 'tracking_id', 'paid_status', 'order_date', 'product_status',
+                                                 'firstname', 'lastname', 'zipcode', 'city', 'district', 'division', 'state',
+                                                 'billingaddress', 'shippingaddress', 'phone', 'email')
     for order in orders:
         writer.writerow(order)
 
     return response
+
 
 def generate_invoice(request, order_id):
     # Get the order object

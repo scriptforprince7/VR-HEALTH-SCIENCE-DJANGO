@@ -47,7 +47,8 @@ Phone: 011-41112587, 8448200102
             <p>
                 <b>{{ first_name }} {{ last_name }}</b> <br>
                 {{ billing_address }}<br>
-                {{ zipcode }}
+                {{ zipcode }} <br> 
+               <b>{{ phone }}</b> 
             </p>
         </div>
         
@@ -178,7 +179,7 @@ Phone: 011-41112587, 8448200102
             <p class="cs-mb0"><b class="cs-primary_color cs-bold">Additional Information:</b></p>
             <p class="cs-m0"> <p class="cs-m0"><b>Order Id: </b>order_id-{{ order.id }}<br>
               <b> Bill To: </b> {{first_name}} {{last_name}} <br>
-               
+             <b> Phone </b>: </b> {{phone}}
                </p> </p>
           </div>
         </div><!-- .cs-note -->
