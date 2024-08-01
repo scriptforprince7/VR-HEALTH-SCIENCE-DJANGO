@@ -5,12 +5,15 @@ from django.contrib.auth import login, authenticate, logout
 from django.conf import settings
 from userauths.models import User
 from django.utils.crypto import get_random_string
-from userauths.models import EmailVerificationToken
+from userauths.models import *
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from userauths.models import EmailVerificationToken
 from django.urls import reverse_lazy
 from django.template.loader import render_to_string
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 # User = settings.AUTH_USER_MODEL
 
 def register_view(request):
@@ -95,6 +98,33 @@ def verify_email(request, token):
     user.save()
     verification_token.delete()  # Token is no longer needed
     return render(request, "userauths/email_verified.html")  # Create this template
+
+
+@csrf_exempt
+def submit_consultation_form(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name = data.get('name')
+        email = data.get('email')
+        phone = data.get('phone')
+        location = data.get('location')
+
+        # Save to the database
+        FreeConsultationUsers.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            location=location
+        )
+
+        # Send email notification
+        subject = "New Lead from Free Consultation Form"
+        message = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nLocation: {location}"
+        recipient_list = ['scriptforprince@gmail.com']
+        send_mail(subject, message, 'billing@vrhealthscience.com', recipient_list)
+
+        return JsonResponse({'message': 'You will get a call from VRH team'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 

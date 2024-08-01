@@ -21,3 +21,15 @@ class EmailVerificationToken(models.Model):
     
     def __str__(self):
         return f"Token for {self.user}"
+    
+class FreeConsultationUsers(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = "Free Consultation Users"
+
+    def __str__(self):
+        return self.name

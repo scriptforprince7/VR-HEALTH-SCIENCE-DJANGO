@@ -1141,7 +1141,7 @@ def generate_invoice(request, order_id):
             'gst_number': order.gstnumber,
         }
         price_wo_gst_total += item.price_wo_gst * item.qty
-        cart_total_amount_words = num2words(order.price, lang='en_IN')
+        cart_total_amount_words = num2words(price_wo_gst_total, lang='en_IN')
 
     context = {
         'order': order,

@@ -5143,48 +5143,52 @@ cursor: initial;
       }
     </style>
     <button id="openPopup"></button>
-<div class="container">
+<div class="container" id="hiddddd">
 <div class="row">
 
-    <div id="popupForm" class="popup">
-      <div class="popup-content">
+  <div id="popupForm" class="popup">
+    <div class="popup-content">
         <span id="closePopup" class="close">&times;</span>
         <h3 class="gradient-text" style="text-align: center;">Free Expert Consultation</h3>
         <style>
-          .popup-content input {
-              width: 100% !important;
-              margin-bottom: 20px; 
-              line-height: 1.5rem;
-          }
-          input {
-            padding: 5px;
-          }
+            .popup-content input {
+                width: 100% !important;
+                margin-bottom: 20px; 
+                line-height: 1.5rem;
+            }
+            input {
+                padding: 5px;
+            }
         </style>
         <form id="contactForm">
-          <div>
-
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name" placeholder="Full Name" required />
-        </div>
-
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" placeholder="Email ID" required />
-          <!-- phone -->
-          <label for="phone">Phone:</label>
-          <input type="tel" id="phone" name="phone" placeholder="Phone Number" required />
-
-          <!-- location -->
-          <label for="location">Location:</label>
-          <input type="text" id="location" name="location" placeholder="Location" required />
-
-          <button style="width: 100%;" class="btn btn-dark" type="submit">Submit</button>
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Full Name" required />
+            </div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Email ID" required />
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number" required />
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" placeholder="Location" required />
+            <button style="width: 100%;" class="btn btn-dark" type="submit">Submit</button>
         </form>
-      </div>
     </div>
+</div>
   </div>
 
   </div>
 
+  <style>
+    .fade-out {
+        opacity: 1;
+        transition: opacity 4s ease-out;
+    }
+
+    .fade-out.hide {
+        opacity: 0;
+    }
+</style>
 
 <script>
   // script.js
@@ -5308,6 +5312,115 @@ cursor: initial;
   });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var phone = document.getElementById('phone').value;
+    var location = document.getElementById('location').value;
+
+    // Phone number validation
+    if (!/^\d{10}$/.test(phone)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Phone Number',
+            text: 'Phone number must be exactly 10 digits.',
+            timer: 2000, // Display for 2 seconds
+            showConfirmButton: false // Hide the confirm button
+        });
+        return;
+    }
+
+    // Email validation
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailPattern.test(email)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Email',
+            text: 'Please enter a valid email address.',
+            timer: 2000, // Display for 2 seconds
+            showConfirmButton: false // Hide the confirm button
+        });
+        return;
+    }
+
+    var formData = {
+        name: name,
+        email: email,
+        phone: phone,
+        location: location
+    };
+
+    fetch('user/submit_consultation_form/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}' // Ensure you include CSRF token for security
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: data.message,
+                timer: 2000, // Display for 2 seconds
+                showConfirmButton: false // Hide the confirm button
+            });
+
+            // Set localStorage item to indicate form submission
+            localStorage.setItem('formSubmitted', 'true');
+
+            // Add fade-out class to the form
+            var form = document.getElementById('contactForm');
+            form.classList.add('fade-out');
+            
+            // Hide the form after the animation completes
+            setTimeout(function() {
+                form.style.display = 'none';
+                // Optional: hide the popup as well
+                document.getElementById('popupForm').style.display = 'none';
+            }, 2000); // 2 seconds to match the animation duration
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Something went wrong!',
+                timer: 2000, // Display for 2 seconds
+                showConfirmButton: false // Hide the confirm button
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong!',
+            timer: 2000, // Display for 2 seconds
+            showConfirmButton: false // Hide the confirm button
+        });
+    });
+});
+
+</script>
+
+<script>
+  window.onload = function() {
+      if (localStorage.getItem('formSubmitted') === 'true') {
+          document.getElementById('contactForm').style.display = 'none';
+          document.getElementById('popupForm').style.display = 'none';
+          document.getElementById('hiddddd').style.display = 'none';
+      }
+  };
+</script>
+
+
 
 </main>
     {% endblock main %}
