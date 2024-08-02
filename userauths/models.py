@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 from django.conf import settings
 
 class User(AbstractUser):
@@ -21,6 +22,14 @@ class EmailVerificationToken(models.Model):
     
     def __str__(self):
         return f"Token for {self.user}"
+    
+class PasswordResetToken(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Password reset token for {self.user}"
     
 class FreeConsultationUsers(models.Model):
     name = models.CharField(max_length=100)

@@ -62,11 +62,10 @@
                       name="password"
                     />
                   </div>
-                  <!-- <a href="#" class="d-inline-block fs-15 lh-12 mb-7"
-                    >Forgot your password?</a
-                  > -->
+                  <a href="{% url 'userauths:password-reset-request' %}" class="d-inline-block fs-15 lh-12 mb-7">Forgot your password?</a>
+
                   <button type="submit" class="btn btn-primary w-100 mb-7">
-                    Submit
+                    Log In
                   </button>
                   <div class="form-check mb-7 d-flex">
                     <input

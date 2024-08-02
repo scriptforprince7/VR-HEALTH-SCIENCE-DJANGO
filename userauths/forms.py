@@ -19,3 +19,16 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"})
+    )
+
+class PasswordResetForm(forms.Form):
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "New Password"})
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Confirm New Password"})
+    )

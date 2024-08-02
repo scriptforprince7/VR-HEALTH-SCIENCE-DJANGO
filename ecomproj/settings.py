@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 from django.urls import reverse_lazy
 
-BASE_URL = 'https://vrhealthscience.com/'  # Replace with your actual domain and port
+BASE_URL = 'http://127.0.0.1:8000/'  # Replace with your actual domain and port
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
