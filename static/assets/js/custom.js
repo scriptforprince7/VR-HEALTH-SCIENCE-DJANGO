@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  $(".add-to-cart-btn").on("click", function () {
+  $(".add-to-cart-btn").on("click", function (event) {
     event.preventDefault();
     let this_val = $(this);
     let index = this_val.attr("data-index");
@@ -69,11 +69,26 @@ $(document).ready(function () {
             showConfirmButton: false,
             timer: 1500,
           });
+
+          // Show the checkout button
+          $("#checkout-button").show();
+
+          // Store the product ID in local storage
+          localStorage.setItem("product_in_cart", product_id);
         }
       },
     });
   });
+
+  // Check if the product is already in the cart on page load
+  let currentProductId = $(".product-id").val();
+  let productInCart = localStorage.getItem("product_in_cart");
+
+  if (currentProductId === productInCart) {
+    $("#checkout-button").show();
+  }
 });
+
 
 function cleanTitle(title) {
   // Use a regex to remove the variant part (e.g., "- (50Pcs)")
@@ -201,11 +216,10 @@ $(document).ready(function () {
           success: function (response) {
             this_val.show();
             $(".cart-items-count").text(response.totalcartitems);
-            $("#cart-list").html(response.data);
+            $("#cart-list").html(response.data);;
 
             // Set a flag in local storage before refreshing the page
             localStorage.setItem("productDeleted", "true");
-
             // Refresh the page
             window.location.reload();
           },

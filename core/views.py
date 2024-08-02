@@ -1082,6 +1082,7 @@ def product_new(request, product_slug):
         "related_maincategory":  related_maincategory,
         "product_description": product_description,
         "product_variant_type_images": product_variant_type_images,
+        "in_stock": product.in_stock,
     }
 
     return render(request, "core/product.html", context)

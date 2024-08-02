@@ -174,7 +174,7 @@
         </div>
     </div>
       <div class="col-md-6 pt-md-0 pt-10">
-     
+
         <style>
           .variant-name {
               font-size: 18px;
@@ -182,6 +182,14 @@
           }
       </style>
         <h1 class="mb-4 pb-2 fs-4">{{products.title}} <span id="variant-name" class="variant-name"></span></h1>
+        {% if not in_stock %}
+        <span style="float: right;">
+            <img src="{% static 'assets/images/ous-3.jpg' %}" alt="" width="25%">
+        </span>
+    {% endif %}
+    
+
+ 
         <div class="d-flex align-items-center fs-15px mb-6">
           <!-- <p class="mb-0 fw-semibold text-body-emphasis">4.86</p> -->
           <div
@@ -254,7 +262,6 @@
           >
         </div>
         <p class="d-flex align-items-center mb-6">
-          {% comment %} <span class="text-decoration-line-through">₹ 39.00</span> {% endcomment %}
           <span id="clicked-price" class="fs-18px text-body-emphasis ps-2 fw-bold"
             >₹ {{products.price}}</span
           >
@@ -290,57 +297,73 @@
               </ul>
             </div>
               {% endfor %}
-          <div class="row align-items-end">
-            <div class="form-group col-sm-4">
-              <label
-                class="text-body-emphasis fw-semibold fs-15px pb-6"
-                for="number"
-                >Quantity:
-              </label>
-              <div
-                class="input-group position-relative w-100 input-group-lg"
-              >
-                <a
-                  href="#"
-                  class="shop-down position-absolute translate-middle-y top-50 start-0 ps-7 product-info-2-minus"
-                  ><i class="far fa-minus"></i
-                ></a>
-                <input
-                name="quantity"
-                  type="number"
-                  id="product-quantity-{{ products.pid }}"
-                  class="product-info-2-quantity form-control w-100 px-6 text-center product-quantity-{{ products.pid }}"
-                  value="1"
-                  required
-                />
-                <a
-                  href="#"
-                  class="shop-up position-absolute translate-middle-y top-50 end-0 pe-7 product-info-2-plus"
-                  ><i class="far fa-plus"></i>
-                </a>
+
+              {% if in_stock %}
+              <div class="row align-items-end">
+                <div class="form-group col-sm-4">
+                  <label
+                    class="text-body-emphasis fw-semibold fs-15px pb-6"
+                    for="number"
+                    >Quantity:
+                  </label>
+                  <div
+                    class="input-group position-relative w-100 input-group-lg"
+                  >
+                    <a
+                      href="#"
+                      class="shop-down position-absolute translate-middle-y top-50 start-0 ps-7 product-info-2-minus"
+                      ><i class="far fa-minus"></i
+                    ></a>
+                    <input
+                    name="quantity"
+                      type="number"
+                      id="product-quantity-{{ products.pid }}"
+                      class="product-info-2-quantity form-control w-100 px-6 text-center product-quantity-{{ products.pid }}"
+                      value="1"
+                      required
+                    />
+                    <a
+                      href="#"
+                      class="shop-up position-absolute translate-middle-y top-50 end-0 pe-7 product-info-2-plus"
+                      ><i class="far fa-plus"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-sm-8 pt-9 mt-2 mt-sm-0 pt-sm-0">
+                  <input type="hidden" value="{{products.pid}}" class="product-id">
+                  <input type="hidden" value="{{products.pid}}" class="product-id-{{products.pid}}">
+                  <input type="hidden" value="{{products.title}}" class="product-title-{{products.pid}}" id="product-title-hidden">
+                  <input type="hidden" value="{{products.price}}" class="product-price-{{products.pid}}">
+                  <input type="hidden" value="{{gst_amount_applied}}" class="gst-applied-{{products.pid}}">
+                  <input type="hidden" value="{{price_wo_gst}}" class="product-price-wo-gst-{{products.pid}}">
+                  <input type="hidden" value="{{gst_rate}}" class="gst_rate-{{products.pid}}">
+                  <input type="hidden" value="{{products.sku}}" class="product-sku-{{products.pid}}">
+                  <input type="hidden" value="{{products.image.url}}" class="product-image-{{products.pid}}">
+                  <input type="hidden" id="variant-id-hidden-{{ products.pid }}" value="None">
+                  <button
+                    type="submit"
+                    class="btn-hover-bg-primary btn-hover-border-primary btn btn-lg btn-dark w-100 add-to-cart-btn"
+                    id="add-to-cart-btn"
+                    data-index="{{products.pid}}"
+                  >
+                    Add To Bag
+                  </button>
+                </div>
+              </div>  
+              <div class="col-sm-12 pt-4 mt-0">
+            <a href="/checkout">
+              <span id="checkout-button" class="btn btn-success w-100" style="display: none;">
+                Checkout
+              </span>
+            </a>    
               </div>
-            </div>
-            <div class="col-sm-8 pt-9 mt-2 mt-sm-0 pt-sm-0">
-              <input type="hidden" value="{{products.pid}}" class="product-id">
-              <input type="hidden" value="{{products.pid}}" class="product-id-{{products.pid}}">
-              <input type="hidden" value="{{products.title}}" class="product-title-{{products.pid}}" id="product-title-hidden">
-              <input type="hidden" value="{{products.price}}" class="product-price-{{products.pid}}">
-              <input type="hidden" value="{{gst_amount_applied}}" class="gst-applied-{{products.pid}}">
-              <input type="hidden" value="{{price_wo_gst}}" class="product-price-wo-gst-{{products.pid}}">
-              <input type="hidden" value="{{gst_rate}}" class="gst_rate-{{products.pid}}">
-              <input type="hidden" value="{{products.sku}}" class="product-sku-{{products.pid}}">
-              <input type="hidden" value="{{products.image.url}}" class="product-image-{{products.pid}}">
-              <input type="hidden" id="variant-id-hidden-{{ products.pid }}" value="None">
-              <button
-                type="submit"
-                class="btn-hover-bg-primary btn-hover-border-primary btn btn-lg btn-dark w-100 add-to-cart-btn"
-                id="add-to-cart-btn"
-                data-index="{{products.pid}}"
-              >
-                Add To Bag
-              </button>
-            </div>
-          </div>
+              
+{% else %}
+<div class="alert alert-danger" role="alert">
+  This product is currently out of stock. You will be notified once it becomes available again.
+</div>
+{% endif %}
+
         </form>
         <p class="mb-4 pb-2">
           <span class="text-body-emphasis">
@@ -348,7 +371,7 @@
               <use xlink:href="#icon-delivery-1"></use></svg
             >Get it between:
           </span>
-          July 28 - July 31,2024
+          August 28 - August 31,2024
         </p>
         <p class="mb-4 pb-2">
           <span class="text-body-emphasis">
@@ -356,7 +379,7 @@
               <use xlink:href="#icon-Package"></use></svg
             >Free Shipping & Returns:
           </span>
-          On all orders over ₹999/-
+          On all orders over ₹599/-
         </p>
         <div
           class="card border-0 bg-body-tertiary rounded text-center mt-7"
