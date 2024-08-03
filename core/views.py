@@ -510,7 +510,7 @@ def blogs(request):
         description_text = soup.get_text(separator='\n')
         # Splitting the text into lines and selecting the first two lines
         description_lines = description_text.split('\n')
-        blog.short_description = '\n'.join(description_lines[:2])
+        blog.short_description = '\n'.join(description_lines[:1])
 
     context = {
         "blogs": blogs,

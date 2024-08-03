@@ -1,0 +1,50 @@
+{% extends "partials/base.html" %}
+{% load static %}
+{% block main %}
+
+<section class="z-index-2 position-relative pb-2 mb-12">
+    <div class="bg-body-secondary mb-3">
+    <div class="container">
+    <nav class="py-4 lh-30px" aria-label="breadcrumb">
+    <ol class="breadcrumb justify-content-center py-1 mb-0">
+    <li class="breadcrumb-item"><a title="Home" href="/">Home</a></li>
+    <li class="breadcrumb-item"><a title="Home" href="/blog">Blog</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{blog_detail.blog_title}}</li>
+    </ol>
+    </nav>
+    </div>
+    </div>
+    </section>
+    <section class="pt-10 pb-16 pb-lg-18 container">
+    <div class="px-lg-25 px-0">
+    <div class=" text-center mb-13">
+    <a href="#" class="btn btn-light btn-hover-bg-dark btn-hover-border-dark btn-hover-text-light shadow-none py-0 px-6 mb-6">
+    Life Style
+    </a>
+    <h3 class=" px-6 text-body-emphasis border-0 fw-500 mb-4 fs-3 " style="background: linear-gradient(90deg, #353935, #066582); -webkit-background-clip: text; color: transparent;">
+        {{blog_detail.blog_title}}
+    </h3>
+    <ul class="list-inline fs-15px fw-semibold letter-spacing-01 d-flex justify-content-center align-items-center">
+    <li class="border-end px-6 text-body-emphasis border-0 text-body">
+    By
+    <a href="#">VRH</a>
+    </li>
+    <li class="list-inline-item px-6">July, 2024</li>
+    <li class="ms-5 list-style-disc">134 views</li>
+    </ul>
+    </div>
+    </div>
+    <div class>
+    <div class="px-lg-25 px-0" style="text-align: center;">
+    <p class=" fs-18px text-body-emphasis mt-4 mb-6">We do good to the planet while delivering smiles to your loved ones. We believe even the smallest choices we make can have a significant impact over time. That’s why it’s our goal to make eco-friendly alternatives more accessible than ever.</p>
+    </div>
+    <img style="text-align: center;" data-src="{{blog_detail.blog_image.url}}" width="50%" height="700" alt class="lazy-image mb-13 img-fluid mt-10" src="#">
+    <div class="px-lg-25 px-0">
+    <p class=" mb-6">{{ blog_detail.blog_description| safe }}</p>
+    </div>
+
+    </div>
+    </section>
+    </main>
+
+{% endblock main %}

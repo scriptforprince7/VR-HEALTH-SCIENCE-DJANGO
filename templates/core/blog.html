@@ -1,0 +1,78 @@
+{% extends "partials/base.html" %} {% load static %} {% block main %}
+
+<main id="content" class="wrapper layout-page">
+  <section class="page-title z-index-2 position-relative">
+    <div class="bg-body-secondary">
+      <div class="container">
+        <nav class="py-4 lh-30px" aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center py-1">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Blog</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="text-center py-13">
+      <div class="container">
+        <h3 class="mb-0" style="background: linear-gradient(250deg, #353935, #066582); -webkit-background-clip: text; color: transparent;">Inside VRHealth: News and Updates</h3>
+      </div>
+    </div>
+  </section>
+  <div class="container mb-lg-18 mb-15 pb-3">
+    <div class="row gy-50px">
+      {% for blog in blogs  %}
+      <div class="col-md-6 col-lg-4">
+        <article
+          class="card card-post-grid-1 bg-transparent border-0"
+          data-animate="fadeInUp"
+        >
+          <figure class="card-img-top position-relative mb-10">
+            <a
+              href="{% url 'core:blog_details' blog.blog_slug %}"
+              class="hover-shine hover-zoom-in d-block"
+              title="How to Plop Hair for Bouncy, Beautiful Curls"
+            >
+              <img
+                data-src="{{blog.blog_image.url}}"
+                class="img-fluid lazy-image w-100"
+                alt="How to Plop Hair for Bouncy, Beautiful Curls"
+                width="370"
+                height="450"
+                src="{{blog.blog_image.url}}"
+              /> </a
+            ><a
+              href="#"
+              class="post-item-cate btn btn-light btn-text-light-body-emphasis btn-hover-bg-dark btn-hover-text-light fw-500 post-cat position-absolute top-100 start-50 translate-middle py-2 px-7 border-0"
+              title="Life style"
+              >Life style</a
+            >
+          </figure>
+          <div class="card-body text-center px-md-9 py-0">
+            <h4 class="card-title lh-base mb-9">
+              <a
+                class="text-decoration-none"
+                href="{% url 'core:blog_details' blog.blog_slug %}"
+                title="How to Plop Hair for Bouncy, Beautiful Curls"
+                >{{blog.blog_title}}</a
+              >
+            </h4>
+            <p>
+              {{ blog.short_description }}
+            </p>
+            <ul
+              class="post-meta list-inline lh-1 d-flex flex-wrap justify-content-center m-0"
+            >
+              <li class="list-inline-item border-end pe-5 me-5">
+                By <a href="#" title="Admin">VRH</a>
+              </li>
+              <li class="list-inline-item">July, 2024</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+
+{% endblock main %}
