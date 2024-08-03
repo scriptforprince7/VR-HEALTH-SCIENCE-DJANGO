@@ -107,12 +107,16 @@ def password_reset_request_view(request):
         form = PasswordResetRequestForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            user = get_object_or_404(User, email=email)
-            token = get_random_string(length=32)
-            PasswordResetToken.objects.update_or_create(user=user, defaults={'token': token, 'created_at': timezone.now()})
-            send_password_reset_email(user, token)
-            messages.success(request, "Password reset link has been sent to your email.")
-            return redirect("userauths:password-reset-request")
+            try:
+                user = User.objects.get(email=email)
+                token = get_random_string(length=32)
+                PasswordResetToken.objects.update_or_create(user=user, defaults={'token': token, 'created_at': timezone.now()})
+                send_password_reset_email(user, token)
+                messages.success(request, "Password reset link has been sent to your email.")
+                return redirect("userauths:password-reset-request")
+            except User.DoesNotExist:
+                messages.error(request, "Email not found. Please register.")
+                return redirect("userauths:password-reset-request")
     else:
         form = PasswordResetRequestForm()
     
@@ -186,6 +190,7 @@ def submit_consultation_form(request):
 
         return JsonResponse({'message': 'You will get a call from VRH team'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 
 

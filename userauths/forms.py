@@ -22,7 +22,7 @@ class UserRegistrationForm(UserCreationForm):
 
 class PasswordResetRequestForm(forms.Form):
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"})
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Entered Registered Email"})
     )
 
 class PasswordResetForm(forms.Form):
