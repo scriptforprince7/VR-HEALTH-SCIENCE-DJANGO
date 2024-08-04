@@ -68,20 +68,20 @@
             </a>
           </li>
         </ul>
-        <ul
-          class="list-unstyled d-flex align-items-center list-inline mb-0 ms-auto"
-        >
-          <li class="list-inline-item me-0">
-            <select class="form-select" name="orderby">
-              <option selected="selected">Default sorting</option>
-              <option value="popularity">Sort by popularity</option>
-              <option value="rating">Sort by average rating</option>
-              <option value="date">Sort by latest</option>
-              <option value="price">Sort by price: low to high</option>
-              <option value="price-desc">Sort by price: high to low</option>
-            </select>
-          </li>
-        </ul>
+        <form method="get" id="sortingForm">
+          <ul class="list-unstyled d-flex align-items-center list-inline mb-0 ms-auto">
+              <li class="list-inline-item me-0">
+                  <select class="form-select" name="orderby" onchange="document.getElementById('sortingForm').submit();">
+                      <option value="default" {% if sort_by == 'default' %}selected{% endif %}>Default sorting</option>
+                      <option value="date" {% if sort_by == 'date' %}selected{% endif %}>Sort by latest</option>
+                      <option value="price" {% if sort_by == 'price' %}selected{% endif %}>Sort by price: low to high</option>
+                      <option value="price-desc" {% if sort_by == 'price-desc' %}selected{% endif %}>Sort by price: high to low</option>
+                  </select>
+              </li>
+          </ul>
+      </form>
+      
+      
       </div>
     </div>
   </section>
@@ -248,7 +248,7 @@
                       </span>
                     </div>
                   </div>
-                  <span class="reviews ms-4 pt-3 fs-14px">0 reviews</span>
+                  <span class="reviews ms-4 pt-3 fs-14px">4.8 Ratings</span>
                 </div>
               </div>
             </div>

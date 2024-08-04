@@ -134,6 +134,15 @@ def main_category(request, category_slug):
     if min_price_filter and max_price_filter:
         products = products.filter(price__range=(min_price_filter, max_price_filter))
 
+    sort_by = request.GET.get('orderby', 'default')
+    
+    if sort_by == 'date':
+        products = products.order_by('-date')
+    elif sort_by == 'price':
+        products = products.order_by('price')
+    elif sort_by == 'price-desc':
+        products = products.order_by('-price')
+
     gst_rate = None
 
     for product in products:
@@ -170,9 +179,12 @@ def main_category(request, category_slug):
         "product_variants": product_variants,
         "variant_types": variant_types,
         "gst_rate": gst_rate,
+        "sort_by": sort_by,
     }
 
     return render(request, "core/main_category.html", context)
+
+
 
 
 
