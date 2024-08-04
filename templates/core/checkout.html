@@ -72,7 +72,9 @@
             </div>
             <div class="col-lg-8 order-lg-first pe-xl-20 pe-lg-6">
                 <div class="checkout">
+                    {% if not user.is_authenticated %}
                     <p class="mb-5">Returning customer? <a href="/user/sign-in">Click here to login</a></p>
+                    {% endif %}
                     <div class="collapse" id="collapsecoupon">
                         <div class="card mw-60 border-0">
                             <div class="card-body py-10 px-8 my-10 border">

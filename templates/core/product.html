@@ -642,6 +642,7 @@ function updatePriceAndImages() {
     var hiddenProductTitle = document.querySelector('.product-title-{{ products.pid }}');
     var productPid = '{{ products.pid }}'; // Ensure this is the actual product PID
     var variantIdHidden = document.getElementById('variant-id-hidden-' + productPid);
+    var hiddenProductImage = document.querySelector('.product-image-{{ products.pid }}');
 
     if (hasVariants) {
         var selectedVariantType = document.querySelector('input[name="variant_size"]:checked');
@@ -671,6 +672,12 @@ function updatePriceAndImages() {
 
         // Update images
         updateImages(selectedVariantTypeId);
+
+        // Update hidden product image
+        var variantImageElement = document.querySelector('img[data-variant-type-id="' + selectedVariantTypeId + '"]');
+        if (variantImageElement) {
+            hiddenProductImage.value = variantImageElement.src;
+        }
     } else {
         document.getElementById('clicked-price').textContent = '{{default_price}}';
         var totalPrice = parseFloat('{{ default_price }}');
@@ -681,6 +688,9 @@ function updatePriceAndImages() {
 
         // Update images
         updateImages('default');
+        
+        // Update hidden product image
+        hiddenProductImage.value = '{{products.image.url}}';
     }
 
     document.querySelector('.product-price-{{ products.pid }}').value = totalPrice.toFixed(2);
@@ -699,19 +709,20 @@ function updateImages(variantTypeId) {
         }
     });
 }
-  
-  function updateSwatchSelection() {
-      var selectedVariantType = document.querySelector('input[name="variant_size"]:checked');
-      var selectedSwatches = document.querySelectorAll('.selected-swatch');
-  
-      selectedSwatches.forEach(function(swatch) {
-          swatch.classList.remove('selected-swatch');
-      });
-  
-      if (selectedVariantType) {
-          selectedVariantType.nextElementSibling.classList.add('selected-swatch');
-      }
-  }
+
+function updateSwatchSelection() {
+    var selectedVariantType = document.querySelector('input[name="variant_size"]:checked');
+    var selectedSwatches = document.querySelectorAll('.selected-swatch');
+
+    selectedSwatches.forEach(function(swatch) {
+        swatch.classList.remove('selected-swatch');
+    });
+
+    if (selectedVariantType) {
+        selectedVariantType.nextElementSibling.classList.add('selected-swatch');
+    }
+}
+
   </script>
 </main>
     {% endblock main %}
