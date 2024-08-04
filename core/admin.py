@@ -50,7 +50,7 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImagesAdmin, ProductVarientAdmin, ProductVariantTypesAdmin, ProductVariantTypeImagesAdmin, ProductDescriptionAdmin]
     list_display = ['main_category','title', 'product_slug', 'packing_size', 'price', 'product_status']
     list_filter = ['main_category', 'category', 'product_status'] 
-    search_fields = ['title', 'description'] 
+    search_fields = ['title',] 
 
 class MainCategoryAdmin(admin.ModelAdmin):
     list_display = ['main_title', 'image', 'description', 'banner_image']  
