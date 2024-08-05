@@ -926,7 +926,7 @@ def payment_invoice(request):
         subject = 'Payment Invoice'
         from_email = 'billing@vrhealthscience.com'
         to_email = email
-        cc_email = 'sprince1500@gmail.com'  # Add the CC email address here
+        cc_email = 'info@vrhealthscience.com'  # Add the CC email address here
         html_message = render_to_string('core/thankyou-order.html', {'context': context})
         plain_message = strip_tags(html_message)
 
