@@ -211,7 +211,7 @@
                         <svg class="icon icon-star-light">
                           <use xlink:href="#icon-shopping-bag-open-light"></use>
                         </svg>
-                        <span class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square" style="--square-size: 18px">{{ request.session.cart_data_obj|length }}</span>
+                        <span class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square" id="cartItemCountttt" style="--square-size: 18px">{{ request.session.cart_data_obj|length }}</span>
                       </a>
                 </div>
               </div> 
@@ -568,10 +568,10 @@
                     </li>
                     <li class="pt-3 mb-4">
                         <a
-                            href="/user/sign-up"
+                            href="/blog"
                             title="Online Gift Card"
                             class="text-body"
-                            >Register</a
+                            >Blog</a
                         >
                     </li>
                     <li class="pt-3 mb-4">
@@ -2112,7 +2112,7 @@ referrerpolicy="no-referrer"
                             ></use>
                         </svg>
                         <span
-                            class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
+                            class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square" id="cartItemCounttt"
                             style="--square-size: 18px"
                             >{{ request.session.cart_data_obj|length }}</span
                         >

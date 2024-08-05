@@ -113,6 +113,8 @@ function updateCartItemsList(cartData) {
   var cartItemCount = Object.keys(cartData).length;
   $("#cartItemCount").text(cartItemCount);
   $("#cartItemCountt").text(cartItemCount);
+  $("#cartItemCounttt").text(cartItemCount);
+  $("#cartItemCountttt").text(cartItemCount);
 
   if ($.isEmptyObject(cartData)) {
     var noProductsHtml = `
